@@ -111,7 +111,8 @@ window.DASHBOARD_DATA = {
         latestActivity: { date: "2026-07-16", text: "完成项目化拆解与各方方案设计对齐：TID 不下线，召回粗排升级为 AID×CID 颗粒度，主视觉指纹容量目标 435 万 → 1000 万" }
       },
       files: [
-        { name: "CID升级项目-项目拆解与跟进表.xlsx", type: "xlsx", addedAt: "2026-07-16", url: "projects/CID 升级项目/CID升级项目-项目拆解与跟进表.xlsx" },
+        { name: "【项目化】CID升级项目.xlsx", type: "xlsx", addedAt: "2026-07-16", url: "projects/CID 升级项目/【项目化】CID升级项目.xlsx" },
+        { name: "CID方案·一期简化版（保留TID）.pdf", type: "pdf", addedAt: "2026-07-10", url: "projects/CID 升级项目/CID方案·一期简化版（保留TID）.pdf" },
         { name: "解法2智投项目TID重构方案可行性调研.pdf", type: "pdf", addedAt: "2026-04-28", url: "projects/CID 升级项目/解法2智投项目TID重构方案可行性调研.pdf" },
         { name: "智投项目TID重构方案&&可行性调研.pdf", type: "pdf", addedAt: "2026-04-24", url: "projects/CID 升级项目/智投项目TID重构方案&&可行性调研.pdf" }
       ],

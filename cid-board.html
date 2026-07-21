@@ -47,7 +47,9 @@
   /* ---------- 主文档锚 ---------- */
   .anchor{display:flex;gap:12px;margin-top:16px;flex-wrap:wrap}
   .adoc{flex:1;min-width:300px;background:var(--panel);border:1.5px solid #d4e3ff;border-radius:12px;
-    padding:13px 16px;box-shadow:var(--shadow);display:flex;gap:12px;align-items:flex-start}
+    padding:13px 16px;box-shadow:var(--shadow);display:flex;gap:12px;align-items:flex-start;
+    color:inherit;transition:.18s}
+  .adoc:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(20,30,60,.12)}
   .adoc.main{border-color:var(--blue);box-shadow:0 0 0 3px var(--blue-soft)}
   .adoc .ic{width:34px;height:34px;border-radius:9px;background:var(--blue-soft);color:var(--blue);
     display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:800;flex-shrink:0}
@@ -162,6 +164,12 @@
   .chip:hover{border-color:var(--blue)}
   .chip.on{background:var(--blue);color:#fff;border-color:var(--blue)}
   .matrix{margin-top:10px;border:1px solid var(--line2);border-radius:12px;overflow:hidden}
+  .stageband{background:linear-gradient(90deg,#f0f5ff,#f8fbff);border-bottom:1px solid var(--line2);padding:12px 16px}
+  .stageband.hidden{display:none}
+  .stageband .sb-t{font-size:13.5px;font-weight:800;color:var(--blue-deep);display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+  .stageband .sb-lead{font-size:11.5px;font-weight:600;color:var(--ink2)}
+  .stageband .sb-g{font-size:11.5px;color:var(--ink2);margin-top:4px;line-height:1.6}
+  .mbody .prog{white-space:pre-line}
   .mrow{border-bottom:1px solid var(--line2)}
   .mrow:last-child{border-bottom:0}
   .mrow.hidden{display:none}
@@ -200,6 +208,38 @@
   .mt-date{font-size:11.5px;font-weight:700;color:var(--ink3);white-space:nowrap;padding-top:2px;width:74px;flex-shrink:0}
   .mt-item .tt{font-size:13px;font-weight:600}
   .mt-item .dd{font-size:12px;color:var(--ink2);margin-top:3px}
+  .upbox{background:#fffdf5;border:1px solid #f3e0bd;border-radius:12px;padding:12px 16px;margin:8px 0 14px}
+  .up-t{font-size:12.5px;font-weight:700;color:#a8660a;margin-bottom:6px}
+  .up-item{display:flex;gap:10px;align-items:flex-start;font-size:12.5px;color:var(--ink2);padding:4px 0}
+  .up-item .ud{flex-shrink:0;font-weight:800;color:#a8660a;width:38px;font-size:12px}
+  .up-item .uo{margin-left:auto;flex-shrink:0;font-size:11px;color:var(--ink3);text-align:right}
+  .ftag{font-size:10px;font-weight:700;padding:2px 7px;border-radius:9px;background:var(--blue-soft);color:var(--blue);flex-shrink:0}
+  .fext{width:34px;height:24px;border-radius:6px;background:var(--grey-soft);color:#6b7488;font-size:10px;font-weight:800;
+    display:inline-flex;align-items:center;justify-content:center;flex-shrink:0}
+  .fext.PDF{background:var(--red-soft);color:var(--red)}
+  .fext.XLS{background:var(--green-soft);color:var(--green)}
+  .mt-item a{color:inherit}
+  .mt-item a:hover .tt{color:var(--blue)}
+  /* 问答浮窗 */
+  .fab{position:fixed;right:26px;bottom:26px;z-index:60;width:54px;height:54px;border-radius:50%;border:none;cursor:pointer;
+    background:linear-gradient(135deg,#0a2a6b,#0052d9);box-shadow:0 10px 26px -6px rgba(0,60,166,.5);
+    display:flex;align-items:center;justify-content:center;transition:.18s}
+  .fab:hover{transform:scale(1.06)}
+  .chatp{position:fixed;right:26px;bottom:92px;z-index:60;width:360px;max-width:92vw;height:480px;background:#fff;
+    border:1px solid var(--line);border-radius:16px;box-shadow:0 24px 60px -18px rgba(20,40,80,.4);
+    display:none;flex-direction:column;overflow:hidden}
+  .chatp.open{display:flex;animation:fade .25s}
+  .ch-h{padding:13px 16px;border-bottom:1px solid var(--line);font-size:13px;font-weight:800}
+  .ch-m{flex:1;overflow-y:auto;padding:14px 16px;display:flex;flex-direction:column;gap:10px}
+  .ch-m .b{max-width:85%;font-size:12.5px;line-height:1.55;padding:9px 12px;border-radius:12px;background:var(--line2);
+    border-bottom-left-radius:4px;white-space:pre-line}
+  .ch-m .b.me{align-self:flex-end;background:var(--blue);color:#fff;border-bottom-left-radius:12px;border-bottom-right-radius:4px}
+  .ch-s{display:flex;flex-wrap:wrap;gap:6px;padding:8px 14px;border-top:1px solid var(--line2)}
+  .ch-s button{font-size:11px;color:var(--blue);background:var(--blue-soft);border:none;padding:5px 10px;border-radius:14px;cursor:pointer}
+  .ch-i{display:flex;gap:8px;padding:10px 14px;border-top:1px solid var(--line)}
+  .ch-i input{flex:1;font:inherit;font-size:12.5px;padding:8px 12px;border:1px solid var(--line);border-radius:9px;outline:none;min-width:0}
+  .ch-i input:focus{border-color:var(--blue)}
+  .ch-i button{border:none;background:var(--blue);color:#fff;font:inherit;font-size:12.5px;padding:0 16px;border-radius:9px;cursor:pointer}
   footer{text-align:center;color:var(--ink3);font-size:11.5px;margin-top:26px}
   .conf{display:inline-block;background:#eef0f4;color:#6b7488;font-size:10.5px;padding:2px 9px;border-radius:6px;font-weight:600}
 </style>
@@ -221,20 +261,20 @@
 
   <!-- ============ 主文档锚（项目的底层记忆） ============ -->
   <div class="anchor">
-    <div class="adoc main">
+    <a class="adoc main" href="projects/CID 升级项目/CID方案·一期简化版（保留TID）.pdf" target="_blank" rel="noopener">
       <div class="ic">主</div>
       <div>
         <div class="tt">《CID 方案 · 一期简化版（保留 TID）》<span class="role">主文档</span></div>
-        <div class="dd">0708 决策变更后重写的一期方案 —— <b>项目因它进入「进行中」</b>：方案边界、两阶段结构、牵头方、验收标准均以此为准。</div>
+        <div class="dd">0708 决策变更后重写的一期方案 —— <b>项目因它进入「进行中」</b>：方案边界、两阶段结构、牵头方、验收标准均以此为准。点击打开原文。</div>
       </div>
-    </div>
-    <div class="adoc">
+    </a>
+    <a class="adoc" href="projects/CID 升级项目/【项目化】CID升级项目.xlsx" target="_blank" rel="noopener">
       <div class="ic">表</div>
       <div>
         <div class="tt">《【项目化】CID升级项目.xlsx》<span class="role">项目表</span></div>
-        <div class="dd">主文档的执行拆解 —— 本看板「③ 拆解与进度」整页来自此表：怎么拆、进度如何、谁负责什么（每周更新进展列）。</div>
+        <div class="dd">主文档的执行拆解 —— 本看板「③ 拆解与进度」整页来自其「02-项目拆解」sheet：怎么拆、进度如何、谁负责什么。点击下载原表。</div>
       </div>
-    </div>
+    </a>
   </div>
   <div class="statemachine">
     项目状态机：<span class="ok">调研中 ✓</span>（并行评估多个方向 → 收敛到 ID 架构，详见 ① 背景）
@@ -246,7 +286,7 @@
     <div class="tab" data-p="bg"><div class="tn">① 背景</div><div class="tt">问题</div><div class="td">TID 为何激增 · 调研过哪些方向、为何收敛</div></div>
     <div class="tab" data-p="plan"><div class="tn">② 方案</div><div class="tt">主文档摘要</div><div class="td">一期做什么 / 目标 / 两阶段 / 收益与代价</div></div>
     <div class="tab on" data-p="exec"><div class="tn">③ 拆解与进度</div><div class="tt">项目表（核心）</div><div class="td">怎么拆 · 进度如何 · 谁负责什么</div></div>
-    <div class="tab" data-p="risk"><div class="tn">④ 风险与纪要</div><div class="tt">风险 · 会议记录</div><div class="td">效果风险 / 资源风险 · 关键会议结论</div></div>
+    <div class="tab" data-p="risk"><div class="tn">④ 风险 · 纪要 · 资料</div><div class="tt">风险 · 会议 · 文件</div><div class="td">效果/资源风险 · 会议结论 · 可点击的项目资料</div></div>
   </div>
 
   <!-- ============ PANEL 1: 背景（调研中阶段的信息） ============ -->
@@ -334,10 +374,15 @@
         <div class="rphase done"><div class="rbar"><span class="rpt"></span></div><div class="rk">0716</div><div class="rt">项目化拆解</div><div class="rs">✓ 分工排期对齐</div></div>
         <div class="rphase cur"><div class="rbar"><span class="rpt"></span></div><div class="rk">0830</div><div class="rt">阶段一 · CID 基建</div><div class="rs">● 进行中</div></div>
         <div class="rphase"><div class="rbar"><span class="rpt"></span></div><div class="rk">0921–1010</div><div class="rt">二A 联调 + 0.1% 实验</div><div class="rs">未开始</div></div>
-        <div class="rphase"><div class="rbar"><span class="rpt"></span></div><div class="rk">1015</div><div class="rt">5% AB 实验</div><div class="rs">未开始</div></div>
-        <div class="rphase"><div class="rbar"><span class="rpt"></span></div><div class="rk">1115</div><div class="rt">5% 车票 · 评估</div><div class="rs">未开始</div></div>
+        <div class="rphase"><div class="rbar"><span class="rpt"></span></div><div class="rk">1015–1115</div><div class="rt">5% 实验 → 车票</div><div class="rs">未开始</div></div>
+        <div class="rphase"><div class="rbar"><span class="rpt"></span></div><div class="rk">1116–1208</div><div class="rt">20% → 80% → 提审 100%</div><div class="rs">未开始</div></div>
+        <div class="rphase"><div class="rbar"><span class="rpt"></span></div><div class="rk">1215</div><div class="rt">完成固化</div><div class="rs">未开始</div></div>
       </div>
-      <div class="parnote">阶段 2B（TID 治理：拆库/行压缩 0830）与主线并行推进，不占上方主时间轴。</div>
+      <div class="parnote">阶段 2B（TID 治理：8.30 拆库/行压缩开发 → 9.01 灰度 → 9.30 灰度完毕）与主线并行推进，不占上方主时间轴。</div>
+      <div class="upbox">
+        <div class="up-t">⚑ 近期关键节点（未来两周 · 摘自项目表里程碑列）</div>
+        <div id="upcoming"></div>
+      </div>
       <div class="filters" id="filters">
         <span class="lab">按阶段筛选</span>
         <span class="chip on" data-f="all">全部</span>
@@ -360,6 +405,25 @@
     <div class="section">
       <h2><span class="num">✦</span>关键会议与结论</h2>
       <div class="mt-list" id="meetings"></div>
+    </div>
+    <div class="section">
+      <h2><span class="num">⇲</span>项目资料<span class="pill grey" style="margin-left:4px">新文件入库将更新本区</span></h2>
+      <p class="hint">主文档与项目表置顶；点击打开原文（文件位于看板同目录 projects/CID 升级项目/ 下）。</p>
+      <div class="mt-list" id="filelist"></div>
+    </div>
+  </div>
+
+  <!-- ============ 问答浮窗（预留知识库接入） ============ -->
+  <button class="fab" id="qa-fab" aria-label="项目问答">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M21 11.5a8.38 8.38 0 0 1-8.5 8.5 9 9 0 0 1-4-.9L3 20l1.4-4.5A8.38 8.38 0 0 1 3.5 11 8.5 8.5 0 0 1 12 2.5a8.38 8.38 0 0 1 9 9Z" stroke="#fff" stroke-width="2" stroke-linejoin="round"/></svg>
+  </button>
+  <div class="chatp" id="chatp">
+    <div class="ch-h">项目问答 <span style="font-weight:500;font-size:11px;color:var(--ink3)">· 基于主文档与项目表 · 知识库接入预留</span></div>
+    <div class="ch-m" id="chatmsgs"></div>
+    <div class="ch-s" id="chatsugs"></div>
+    <div class="ch-i">
+      <input id="chatinput" placeholder="问我任何关于项目的问题">
+      <button id="chatsend">发送</button>
     </div>
   </div>
 
@@ -387,60 +451,139 @@ var DATA = {
     { l:"有消耗 TID",   v:1507,  c:"#e0413b", note:"曝光 68.9%" }
   ],
 
-  /* ---- ③ 项目拆解（来源：【项目化】CID升级项目.xlsx · sheet「02-项目拆解」，0716 版） ---- */
-  modules: [
-    { stage:"s1", cat:"阶段一 · 基建", mod:"CID 生成（投放侧）", owner:"xiujinyang · michaelpei",
-      ms:"7.17 指纹生产协议 → 7.31 完成 CID 整体生产", status:"doing",
-      goal:"CID 生产覆盖率 > 99.99%；DC 主视觉互斥；TID→CID 绑定覆盖率 100%",
-      dep:"指纹生产协议 7.17（数据挖掘）",
-      progress:"[0716] CID 表设计中；需为召回生产 RecallInfo 相关字段（与召粗侧确认字段清单）" },
-    { stage:"s1", cat:"阶段一 · 基建", mod:"数据挖掘（指纹生产）", owner:"leilaxu · natchen",
-      ms:"7.16 工程&产品方案设计 ✓ → 7.17 生产数据协议确认", status:"doing",
-      goal:"指纹计算成功率 > 99.9%；图片 < 5s、视频 < 1min",
-      dep:"CID 生产数据协议确认（投放侧）7.17",
-      progress:"[0716] 各方初步对齐 CID 指纹主视觉定义、相似标准、评测方法（CID定义及评测方法 V1.4）" },
-    { stage:"s1", cat:"阶段一 · 基建", mod:"发布订阅", owner:"jerrizheng · rli",
-      ms:"7.17 完成 CID 生产/传输链路工程方案设计", status:"doing",
-      goal:"发布流 CID 字段（TID 绑定 CID、AID→CIDs、AID_CID→DC/TIDs）覆盖率 > 99.99%",
-      dep:"CID 生产数据协议确认 7.17",
-      progress:"[0716] CID 的生产、传输链路工程方案对齐中" },
-    { stage:"s1", cat:"阶段一 · 基建", mod:"播放链路透传", owner:"nuoyfeng · svdxu",
-      ms:"7.31 增加透传协议字段 → 8.6 完成全链路透传", status:"todo",
-      goal:"查询可用性 > 99.99%、延迟 < 10ms；透传率与日志覆盖率 > 99.99%",
-      dep:"CID 生成数据协议确认 7.17（发布订阅）", progress:"" },
+  /* ---- ③ 项目拆解（来源：【项目化】CID升级项目.xlsx · sheet「02-项目拆解」，逐行搬运，0716 版进展） ---- */
+  stages: [
+    { id:"s1", name:"阶段一 · CID 前置基建", due:"0830 完成", lead:"杨秀金（xiujinyang）· 谢年华（nianhuaxie）",
+      goal:"实现 CID 的生产和全链路透传：● CID 概念在投放侧完整落地（CID 自动生成、DC 主视觉互斥、TID→CID 绑定）● 全链路完成 CID 相关字段透传与日志覆盖 ● AID→CIDs 和 AID_CID→DC/TIDs 查询通路建立",
+      rows:[
+        { dir:"CID 生成", sub:"CID 生产覆盖率 > 99.99%；DC 主视觉互斥正确执行、重复主视觉拦截率 > 99.99%；TID→CID 在线绑定覆盖率 100%",
+          msShort:"7.31 生产&绑定流程设计 → 8.10 开发 → 8.30 放量", status:"doing",
+          ms:"1. 7.31 完成 CID 整个生产和 TID 绑定流程设计，明确商数、广工和机制交互/使用的 schema（进行中）\n2. 8.10 完成 CID 生产和 TID 绑定的开发\n3. 8.20 完成 CID 生产 TID 耗时确认，同步开发过滤逻辑以及观察 DC 过滤比例\n4. 8.30 确认 DC 过滤比例满足业务诉求后，开启放量",
+          dep:"指纹生产协议 7.17",
+          owner:"杨秀金 · 裴星鑫",
+          prog:"[0716] 1. CID 表设计中，猛哥需要生产一个 RecallId，等猛哥确认规则\n2. CID 表生产流程和商数对齐中，已明确不能使用 RPC，需通过 DB+队列的生产和消费处理：\n2.1 正在设计对应的 DB schema\n2.2 CID 生产从同步变异步，需重新设计投放的 CID 生产流程\n2.3 DB 到 pulsar 的同步可能需要广工帮忙建设，jerri 哥在确认中" },
+        { dir:"数据挖掘", sub:"指纹计算成功率 > 99.9%；图片 < 5s、视频 < 1min",
+          msShort:"7.16 方案设计 ✓ → 7.24 定稿 → 8.6 链路 → 8.28 上线", status:"doing",
+          ms:"[7.16] 完成工程&产品方案设计：各方初步对齐 CID 指纹主视觉定义/相似标准/评测方案并启动数据标注；初步输出新 CID 指纹计算流程优化方案\n[7.24] 工程&产品方案定稿：梳理上下游依赖、对齐协议、梳理资源依赖；主视觉指纹定义方案定稿\n[8.6] 完成工程链路搭建，输出数据供下游工程通路验证；完成评测数据标注（7.30），持续标注训练优化样本\n[8.13] 完成效果优化&数据验证：新视频/图片 emb 模型优化，评测效果符合预期\n[8.28] 评测报告输出&上下游数据验证，正式任务上线（例行化机制 8.24 确认）",
+          dep:"1. CID 生产数据协议确认（投放侧）7.17\n2. CID 生产资源交付（GPU/检索/XStor 等计算资源）",
+          owner:"许蕾蕾 · 陈功 · 汤煌 · 林立伟",
+          prog:"[0716] 1. 各方初步对齐 CID 指纹主视觉定义、相似标准、评测方案，启动评测数据标注（CID定义及评测方法 V1.4）：\n· 直播广告：兜底方案「直播间id+开播时间」，优先判断动态切片技术可行性（待猛哥确认 + 投放明确数据交互协议）\n· 搜索广告：明确 srp 广告标题作为主视觉（待投放明确数据交互协议）\n· 激励广告：待进一步讨论\n2. 初步设计整理 CID 主视觉指纹生产方案，待投放明确数据交互协议" },
+        { dir:"发布订阅", sub:"发布流 CID 字段（TID 绑定的 CID、AID 关联的 CIDs、AID_CID 关联的 DC/TIDs）产出覆盖率 > 99.99%",
+          msShort:"7.17 工程方案 → 7.31 数据协议 → 8.10 生产 → 8.30 上线", status:"doing",
+          ms:"7.17 完成 CID 的生产、传输链路中的工程方案设计\n7.31 完成 CID 的正排、倒排数据协议设计\n8.10 完成 CID 相关的正排、倒排数据生产\n8.30 正式上线",
+          dep:"CID 生产数据协议确认（投放）7.17",
+          owner:"郑杰 · rli（李锐）",
+          prog:"[0716] CID 的生产、传输链路中的工程方案对齐中" },
+        { dir:"播放链路透传", sub:"查询可用性 > 99.99%、延迟 < 10ms；透传率和日志覆盖率 > 99.99%",
+          msShort:"7.31 透传协议字段 → 8.6 逻辑开发 → 8.30 测试上线", status:"todo",
+          ms:"7.31 增加 CID 的透传协议字段\n8.6 完成透传逻辑开发\n8.30 完成测试上线",
+          dep:"CID 生成数据协议确认 7.17（发布订阅）",
+          owner:"冯玉琢 · 许熳锋", prog:"" }
+      ] },
+    { id:"s2a", name:"阶段二A · 召粗侧 AID_CID 级联召回", due:"12.15 完成固化", lead:"朱张斌（defyzhu）· 许熳锋（svdxu）",
+      goal:"召粗侧完成从 TID 颗粒度到 AID_CID 颗粒度的升级，实现召粗环节可承载的主视觉指纹容量大幅提升 —— 覆盖站点【视频号】",
+      rows:[
+        { dir:"特征生产", sub:"1. 特征梳理　2. 特征产出",
+          msShort:"7.30 完成 TID 特征梳理 → 9.10 产出新特征", status:"doing",
+          ms:"7.30 完成梳理当前依赖的 TID 特征，和广工对齐特征替换方式\n9.10 产出新的替换特征和 CID 相关特征",
+          dep:"—", owner:"汤煌 · 林立伟", prog:"" },
+        { dir:"特征生产", sub:"特征入样本",
+          msShort:"9.25 完成 CID 粒度特征入训练和 ads 流样本", status:"todo",
+          ms:"9.25 完成 CID 粒度特征入训练和 ads 流样本",
+          dep:"依赖特征生产",
+          owner:"deandnwang · jeffjwzhang",
+          prog:"[0716] 新特征生产会有成本增长，具体成本依赖特征梳理完成：\n1. CID 粒度：生产新特征\n2. AID_CID 粒度特征：可生产新特征，也可取对应的某一个 TID 特征\n3. 组件粒度（文案、落地页等）特征：需要新生产，一个 AID_CID 对应多个" },
+        { dir:"样本改造", sub:"采样 AID 下的多个 CID 用于训练，学习 AID 下如何区分不同 CID",
+          msShort:"9.25 完成样本改造", status:"todo",
+          ms:"9.25 完成样本改造，需要采样 AID 下的多个 CID 用于训练，学习 AID 下如何区分不同 CID",
+          dep:"样本流依赖 Ranking 采样", owner:"张文波 · 李彪", prog:"" },
+        { dir:"资源申请", sub:"1. 训练资源到位　2. 推理资源到位",
+          msShort:"8.30 训练资源（预期 6 组）→ 9.30 推理资源（预期 6 组）", status:"todo",
+          ms:"8.30 完成模型侧训练资源评估并申请资源，预期 6 组训练资源\n9.30 完成模型侧推理资源评估并申请资源，预期 6 组推理资源",
+          dep:"SRE 审批交付资源", owner:"deandnwang · jeffjwzhang", prog:"" },
+        { dir:"资源申请", sub:"在线链路资源到位",
+          msShort:"9.30 完成在线链路资源评估、申请", status:"todo",
+          ms:"9.30 完成在线链路相关资源评估、申请",
+          dep:"工程方案确定、SRE 审批交付资源", owner:"黄卓满 · 毛镭", prog:"" },
+        { dir:"线上链路搭建", sub:"确保策略迁移正确",
+          msShort:"9.20 完成策略整体框架搭建 → 10.10 启动实验后按需迁移", status:"todo",
+          ms:"9.20 完成新支路工程链路策略框架搭建，按需要迁移策略（框架含策略监控，确保工程链路正确、策略模型化后与原策略对齐）：\n【9.20】完成策略整体框架搭建：完成各阶段模型所依赖 quota 功能的框架开发测试用于联调；按小程序经验先提供多样性相关策略\n【10.10 启动实验后】按需策略迁移：根据实验效果和策略过滤量，按需前置相关策略",
+          dep:"1. 请求里拿到符合定向要求的创意形式名单（依赖 search）：8.15 前定协议、9.20 前开发完成\n2. 提供工程框架供开发 FilterModel（依赖 anyrecall：search+index）：8.15 前提供开发壳子\n3. 提供 ANN 召回、CID_AID 打分测试模型用于离线测试（算法）：8.15 提供\n4. 机制盘点 CID 项目需过滤的策略，广工完成迁移（ranking 模块）：8.15 机制盘点（llynnguo·黄丽娜）、广工 8.15 开始迁移、9.20 前完成\n5. 播放链路适配新通路（ranking+router+mixer）：8.15 完成适配，盘点能否复用小程序逻辑",
+          owner:"黄丽娜 · llynnguo", prog:"" },
+        { dir:"线上链路搭建", sub:"新链路端到端延迟相比原广告创意级联召回不增加；召回成功率 > 99.9%",
+          msShort:"下周补充", status:"todo",
+          ms:"下周补充",
+          dep:"模型视角的架构图（deandnwang）", owner:"许熳锋 · 毛镭", prog:"" },
+        { dir:"线上链路搭建", sub:"线上联调模型+策略+工程链路，启动 0.1% 实验",
+          msShort:"9.21 开始 → 10.10 完成", status:"todo",
+          ms:"预期开始时间 9.21、完成时间 10.10\n注：此时特征、样本不 ready，不要求效果，只保证链路正确，模型可能还是 TID 的",
+          dep:"工程支持、推理资源、在线链路资源到位", owner:"许熳锋 · 毛镭", prog:"" },
+        { dir:"模型实验", sub:"1. AID→AID×CID 模型方案设计　2. AID×CID→TID 优选方案设计",
+          msShort:"7.30 完成", status:"doing",
+          ms:"7.30 完成", dep:"—", owner:"deandnwang · jeffjwzhang", prog:"" },
+        { dir:"模型实验", sub:"产出训练 mdl",
+          msShort:"9.25 完成，用于推理调试", status:"todo",
+          ms:"9.25 完成 AID→AID×CID 模型产出训练 mdl，用于推理调试",
+          dep:"依赖方案设计、资源到位", owner:"deandnwang · jeffjwzhang", prog:"" },
+        { dir:"模型实验", sub:"离线 AUC 无退化",
+          msShort:"9.25 开始 → 10.15 完成（离线指标打平）", status:"todo",
+          ms:"预期 9.25 开始、10.15 完成\n基于新特征、新样本训练 AID→AID×CID 模型，调优模型，做到离线指标打平",
+          dep:"依赖样本流改造完成、特征入样本完成", owner:"deandnwang · jeffjwzhang",
+          prog:"[0716] 下周补充" },
+        { dir:"模型实验", sub:"AID×CID→TID 优选落地",
+          msShort:"10.10 完成", status:"todo",
+          ms:"10.10 完成。如采用模型化方案，要求离线指标验证符合预期；如采用策略方案，要求各项灰度测试通过、功能正常",
+          dep:"依赖 AID×CID→TID 优选方案设计、资源到位", owner:"jeffjwzhang", prog:"" },
+        { dir:"模型实验", sub:"在线 AB 实验：消耗 / GMV 无显著下降",
+          msShort:"10.15 5% 实验 → 11.15 车票 → 12.15 固化", status:"todo",
+          ms:"10.15 开始 5% 实验\n11.15 拿到 5% 车票\n11.16 开 20% 班车\n11.27 放 80%\n12.08 提审 100%\n12.15 完成固化",
+          dep:"—", owner:"deandnwang · jeffjwzhang", prog:"" }
+      ] },
+    { id:"s2b", name:"阶段二B · TID 治理相关工作", due:"9.30 灰度完毕", lead:"杨秀金（xiujinyang）",
+      goal:"降低 TID 存储成本和计算成本",
+      rows:[
+        { dir:"数据行压缩 + 拆库 / 清理存量", sub:"1. TID 元素和关联表拆库　2. 元素关联表行压缩　3. 存量 2.0 数据清理",
+          msShort:"8.30 开发完成 → 9.01 启动灰度 → 9.30 灰度完毕", status:"todo",
+          ms:"1. 8.30 完成 TID 拆库 + TID 和元素表关联关系压缩开发\n2. 9.01 启动灰度，9.30 灰度完毕",
+          dep:"依赖发布、审核、联盟、AIGC、数仓完成开发",
+          owner:"杨秀金 · 裴星鑫", prog:"" },
+        { dir:"召粗辅路 TID 容量限制", sub:"红线控制 Torch 路 / 普通路容量，仅 Torch 路放量 TID",
+          msShort:"待细化（随 Torch 路上线节奏）", status:"todo",
+          ms:"待细化", dep:"Torch 路上线", owner:"rli（李锐）· 佟建锋", prog:"" }
+      ] }
+  ],
 
-    { stage:"s2a", cat:"阶段二A · 召粗", mod:"特征生产", owner:"michaeltang · lwlin",
-      ms:"7.30 完成 TID 特征梳理、与广工对齐替换方案", status:"doing",
-      goal:"按需构建 CID / AID_CID 维度特征（TID 特征不下线，双份并存）",
-      dep:"—", progress:"" },
-    { stage:"s2a", cat:"阶段二A · 召粗", mod:"特征入样本", owner:"deandnwang · jeffjwzhang",
-      ms:"9.25 完成 CID 粒度特征入训练与 ads 流样本", status:"todo",
-      goal:"CID 粒度特征进入训练与在线样本流",
-      dep:"特征生产完成",
-      progress:"[0716] 新特征生产会有成本增长，具体成本依赖特征梳理完成" },
-    { stage:"s2a", cat:"阶段二A · 召粗", mod:"样本改造", owner:"mathewzhang · biaoli",
-      ms:"9.25 完成样本改造", status:"todo",
-      goal:"采样 AID 下的多个 CID 用于训练", dep:"样本流依赖 Ranking 采样", progress:"" },
-    { stage:"s2a", cat:"阶段二A · 召粗", mod:"资源申请", owner:"deandnwang / joymanhuang · ivanmao",
-      ms:"8.30 训练资源评估与申请（预期 6 组）→ 9.30 在线链路资源", status:"todo",
-      goal:"训练资源与在线链路资源到位", dep:"工程方案确定、SRE 审批交付", progress:"" },
-    { stage:"s2a", cat:"阶段二A · 召粗", mod:"线上链路搭建", owner:"linalnhuang · llynnguo / svdxu · ivanmao",
-      ms:"9.20 新支路策略框架 → 9.21–10.10 联调 + 0.1% 实验", status:"todo",
-      goal:"端到端延迟不增加、召回成功率 > 99.9%；策略按需迁移",
-      dep:"定向要求的创意形式名单；模型视角架构图（下周补充）", progress:"" },
-    { stage:"s2a", cat:"阶段二A · 召粗", mod:"模型实验", owner:"deandnwang · jeffjwzhang / defyzhu",
-      ms:"7.30 方案设计 → 9.25 训练 mdl → 10.10 TID 优选落地 → 10.15 起 5% 实验 → 11.15 车票", status:"doing",
-      goal:"三塔（AID 塔 + CID 塔 + 上层 MLP）；离线 AUC 无退化；AB 消耗/GMV 无显著下降",
-      dep:"方案设计、资源到位、样本流与特征入样本完成", progress:"" },
+  /* ---- ③ 近期关键节点（未来两周，摘自项目表里程碑列） ---- */
+  upcoming: [
+    { d:"7.17", t:"指纹生产协议 / CID 生产数据协议确认（多方依赖起点）", o:"投放 × 数据挖掘 × 发布订阅" },
+    { d:"7.24", t:"数据挖掘工程&产品方案定稿，主视觉指纹定义定稿", o:"许蕾蕾 · 陈功" },
+    { d:"7.30", t:"TID 特征梳理完成，与广工对齐替换方式", o:"汤煌 · 林立伟" },
+    { d:"7.30", t:"模型方案设计完成（AID→AID×CID + TID 优选）", o:"deandnwang · jeffjwzhang" },
+    { d:"7.31", t:"CID 生产与 TID 绑定流程设计完成（明确交互 schema）", o:"杨秀金 · 裴星鑫" },
+    { d:"7.31", t:"发布订阅正排/倒排数据协议设计 · 播放透传协议字段", o:"郑杰 · rli / 冯玉琢 · 许熳锋" },
+    { d:"8.6",  t:"数据挖掘工程链路搭建 · 播放透传逻辑开发完成", o:"许蕾蕾 · 陈功 / 冯玉琢" },
+    { d:"8.15", t:"线上链路 5 项依赖节点：创意形式名单协议 / FilterModel 壳子 / 测试模型 / 机制策略盘点 / 播放链路适配", o:"search · anyrecall · 算法 · 机制 · 播放" },
+    { d:"8.30", t:"阶段一放量 · 发布订阅上线 · 训练资源申请 · 2B 拆库开发完成", o:"各牵头方" }
+  ],
 
-    { stage:"s2b", cat:"阶段二B · TID 治理", mod:"存储压缩 + 拆库", owner:"xiujinyang · michaelpei",
-      ms:"8.30 完成 TID 元素/关联表拆库、行压缩、清理存量", status:"todo",
-      goal:"降低 TID 存储与计算成本（多列存储压缩为 PB；治理 crt_size）",
-      dep:"发布、审核、联盟、AIGC、数仓完成配合开发", progress:"" },
-    { stage:"s2b", cat:"阶段二B · TID 治理", mod:"召粗辅路 TID 容量限制", owner:"rli · alanjftong",
-      ms:"待细化（随 Torch 路上线节奏）", status:"todo",
-      goal:"红线控制 Torch 路 / 普通路容量，仅在 Torch 路放量 TID，避免辅路同步扩容",
-      dep:"Torch 路上线", progress:"" }
+  /* ---- ④ 项目资料（点击打开，文件位于 projects/CID 升级项目/） ---- */
+  files: [
+    { ext:"PDF", name:"CID方案·一期简化版（保留TID）.pdf", tag:"主文档", d:"07-10", url:"projects/CID 升级项目/CID方案·一期简化版（保留TID）.pdf" },
+    { ext:"XLS", name:"【项目化】CID升级项目.xlsx", tag:"项目表", d:"07-16", url:"projects/CID 升级项目/【项目化】CID升级项目.xlsx" },
+    { ext:"TXT", name:"0710 方案评审会（实时转写）", tag:"纪要", d:"07-10", url:"projects/CID 升级项目/20260710-CID召回粗排局部升级方案评审_转写.txt" },
+    { ext:"TXT", name:"0703 CID 方案二讨论（实时转写）", tag:"纪要", d:"07-03", url:"projects/CID 升级项目/20260703-CID方案二讨论_转写.txt" },
+    { ext:"PDF", name:"解法2智投项目TID重构方案可行性调研.pdf", tag:"历史方案", d:"04-28", url:"projects/CID 升级项目/解法2智投项目TID重构方案可行性调研.pdf" },
+    { ext:"PDF", name:"智投项目TID重构方案&&可行性调研.pdf", tag:"历史方案", d:"04-24", url:"projects/CID 升级项目/智投项目TID重构方案&&可行性调研.pdf" }
+  ],
+
+  /* ---- 问答助手（内置示例；接入知识库见 sendToBot） ---- */
+  qa: [
+    { q:"项目现在推进到哪了？",
+      a:"当前在阶段一「CID 前置基建」（0830 完成），4 个方向中 3 个进行中：CID 生成在设计 DB schema（生产改 DB+队列异步）、数据挖掘已对齐指纹定义 V1.4、发布订阅工程方案对齐中；播放透传 7.31 起步。二A 关键路径：9.21–10.10 联调 0.1% 实验 → 10.15 5% 实验 → 11.15 车票 → 12.15 固化。" },
+    { q:"最近有什么风险或卡点？",
+      a:"① CID 生产明确不能走 RPC，改 DB+队列后投放生产流程要重新设计，DB→pulsar 同步待广工确认；② 直播/搜索/激励广告的主视觉指纹定义还有待定项；③ 新特征生产有成本增长，量级依赖 7.30 特征梳理；④ 效果风险靠 0.1%→5% 分级实验验证。" },
+    { q:"谁负责什么？",
+      a:"阶段一牵头杨秀金/谢年华（CID 生成：杨秀金·裴星鑫；数据挖掘：许蕾蕾·陈功；发布订阅：郑杰·rli；播放透传：冯玉琢·许熳锋）。二A 牵头朱张斌/许熳锋（特征：汤煌·林立伟；模型：deandnwang·jeffjwzhang；链路：黄丽娜·毛镭等）。二B 牵头杨秀金。详见「③ 拆解与进度」。" }
   ],
 
   /* ---- ④ 风险（主文档 + 会议） ---- */
@@ -494,25 +637,31 @@ function esc(s){return String(s==null?"":s).replace(/[&<>"']/g,function(c){
   return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c];});}
 (function(){
   var box=document.getElementById("matrix"), html="";
-  DATA.modules.forEach(function(m,i){
-    var st=ST[m.status]||ST.todo;
-    html+='<div class="mrow" data-stage="'+m.stage+'">'+
-      '<div class="mhead" data-i="'+i+'">'+
-        '<span class="m-cat">'+esc(m.cat)+'</span>'+
-        '<span class="m-mod">'+esc(m.mod)+'</span>'+
-        '<span class="m-ms">'+esc(m.ms)+'</span>'+
-        '<span class="m-owner"><code>'+esc(m.owner)+'</code></span>'+
-        '<span class="stbar"><span class="stdot '+st.c+'"></span>'+st.t+'</span>'+
-        '<span class="chev">›</span>'+
-      '</div>'+
-      '<div class="mbody">'+
-        '<div class="grid2c">'+
-          '<div class="cell"><div class="cl">子目标 / 验收</div>'+esc(m.goal)+'</div>'+
-          '<div class="cell"><div class="cl">依赖</div>'+esc(m.dep)+'</div>'+
+  DATA.stages.forEach(function(s){
+    html+='<div class="stageband" data-stage="'+s.id+'">'+
+      '<div class="sb-t">'+esc(s.name)+' <span class="pill amber">'+esc(s.due)+'</span>'+
+      ' <span class="sb-lead">牵头：'+esc(s.lead)+'</span></div>'+
+      '<div class="sb-g">'+esc(s.goal)+'</div></div>';
+    s.rows.forEach(function(m){
+      var st=ST[m.status]||ST.todo;
+      html+='<div class="mrow" data-stage="'+s.id+'" data-status="'+m.status+'">'+
+        '<div class="mhead">'+
+          '<span class="m-cat">'+esc(m.dir)+'</span>'+
+          '<span class="m-mod">'+esc(m.sub)+'</span>'+
+          '<span class="m-ms">'+esc(m.msShort)+'</span>'+
+          '<span class="m-owner"><code>'+esc(m.owner)+'</code></span>'+
+          '<span class="stbar"><span class="stdot '+st.c+'"></span>'+st.t+'</span>'+
+          '<span class="chev">›</span>'+
         '</div>'+
-        (m.progress?'<div class="prog"><b>最新进展</b> '+esc(m.progress)+'</div>':'')+
-      '</div>'+
-    '</div>';
+        '<div class="mbody">'+
+          '<div class="grid2c">'+
+            '<div class="cell"><div class="cl">里程碑（原表全文）</div><div style="white-space:pre-line">'+esc(m.ms)+'</div></div>'+
+            '<div class="cell"><div class="cl">依赖项（事 / 人 / 时间）</div><div style="white-space:pre-line">'+esc(m.dep)+'</div></div>'+
+          '</div>'+
+          (m.prog?'<div class="prog"><b>进展与问题</b>\n'+esc(m.prog)+'</div>':'')+
+        '</div>'+
+      '</div>';
+    });
   });
   box.innerHTML=html;
   box.querySelectorAll(".mhead").forEach(function(h){
@@ -524,21 +673,22 @@ function renderCount(){
   var vis=[].slice.call(document.querySelectorAll(".mrow")).filter(function(r){return !r.classList.contains("hidden");});
   var c={doing:0,todo:0,done:0};
   vis.forEach(function(r){
-    var m=DATA.modules[+r.querySelector(".mhead").getAttribute("data-i")];
-    c[m.status]=(c[m.status]||0)+1;
+    var s=r.getAttribute("data-status");
+    c[s]=(c[s]||0)+1;
   });
   document.getElementById("countbar").innerHTML=
-    "共 <b>"+vis.length+"</b> 个模块 &nbsp;·&nbsp; "+
+    "共 <b>"+vis.length+"</b> 个拆解项 &nbsp;·&nbsp; "+
     '<span class="stbar"><span class="stdot green"></span>已完成 <b>'+(c.done||0)+"</b></span>"+
     '<span class="stbar"><span class="stdot amber"></span>进行中 <b>'+(c.doing||0)+"</b></span>"+
-    '<span class="stbar"><span class="stdot grey"></span>未开始 <b>'+(c.todo||0)+"</b></span>";
+    '<span class="stbar"><span class="stdot grey"></span>未开始 <b>'+(c.todo||0)+"</b></span>"+
+    '&nbsp;·&nbsp; <a href="projects/CID 升级项目/【项目化】CID升级项目.xlsx" target="_blank" rel="noopener">查看原表 ↗</a>';
 }
 document.querySelectorAll("#filters .chip").forEach(function(ch){
   ch.addEventListener("click",function(){
     document.querySelectorAll("#filters .chip").forEach(function(x){x.classList.remove("on");});
     ch.classList.add("on");
     var f=ch.getAttribute("data-f");
-    document.querySelectorAll(".mrow").forEach(function(r){
+    document.querySelectorAll(".mrow,.stageband").forEach(function(r){
       r.classList.toggle("hidden", f!=="all" && r.getAttribute("data-stage")!==f);
     });
     renderCount();
@@ -555,6 +705,61 @@ document.getElementById("meetings").innerHTML=DATA.meetings.map(function(m){
   return '<div class="mt-item"><span class="mt-date">'+esc(m.d)+'</span>'+
     '<div><div class="tt">'+esc(m.t)+'</div><div class="dd">'+esc(m.dd)+'</div></div></div>';
 }).join("");
+
+/* ---------- 近期关键节点 ---------- */
+document.getElementById("upcoming").innerHTML=DATA.upcoming.map(function(u){
+  return '<div class="up-item"><span class="ud">'+esc(u.d)+'</span><span>'+esc(u.t)+'</span>'+
+    '<span class="uo">'+esc(u.o)+'</span></div>';
+}).join("");
+
+/* ---------- 项目资料 ---------- */
+document.getElementById("filelist").innerHTML=DATA.files.map(function(f){
+  return '<a class="mt-item" href="'+esc(f.url)+'" target="_blank" rel="noopener">'+
+    '<span class="fext '+esc(f.ext)+'">'+esc(f.ext)+'</span>'+
+    '<div style="flex:1;min-width:0"><div class="tt">'+esc(f.name)+' <span class="ftag">'+esc(f.tag)+'</span></div></div>'+
+    '<span class="mt-date" style="width:auto">'+esc(f.d)+'</span></a>';
+}).join("");
+
+/* ---------- 问答浮窗 ---------- */
+(function(){
+  var fab=document.getElementById("qa-fab"), panel=document.getElementById("chatp"),
+      msgs=document.getElementById("chatmsgs"), input=document.getElementById("chatinput");
+  function push(role,text){
+    var d=document.createElement("div");
+    d.className="b"+(role==="me"?" me":"");
+    d.textContent=text;
+    msgs.appendChild(d);
+    msgs.scrollTop=msgs.scrollHeight;
+  }
+  push("bot","你好，我可以基于主文档与项目表回答本项目的问题。试试下面的示例 👇");
+  document.getElementById("chatsugs").innerHTML=DATA.qa.map(function(x,i){
+    return '<button data-q="'+i+'">'+esc(x.q)+'</button>';
+  }).join("");
+  function ask(q){
+    push("me",q);
+    var hit=DATA.qa.filter(function(x){return x.q===q;})[0];
+    push("bot",hit?hit.a:"这个问题暂无内置回答。接入知识库后（见 sendToBot 预留），即可基于全部项目文件自由提问。");
+    sendToBot(q);
+  }
+  /**
+   * 预留：知识库问答接口（与主看板 index.html 同一契约，见 INTEGRATION.md）。
+   * 接入后在此处将 question POST 给问答服务，把返回的 answer 用 push("bot", answer) 渲染。
+   */
+  function sendToBot(question){ /* TODO: 接入知识库问答 */ }
+  fab.addEventListener("click",function(){panel.classList.toggle("open");});
+  document.getElementById("chatsugs").addEventListener("click",function(ev){
+    var b=ev.target.closest("[data-q]");
+    if(b) ask(DATA.qa[+b.getAttribute("data-q")].q);
+  });
+  function send(){
+    var v=input.value.trim();
+    if(!v) return;
+    input.value="";
+    ask(v);
+  }
+  document.getElementById("chatsend").addEventListener("click",send);
+  input.addEventListener("keydown",function(ev){if(ev.key==="Enter")send();});
+})();
 </script>
 </body>
 </html>
