@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CID 升级项目 · 推进看板</title>
+<style>
+  :root{
+    --bg:#f5f7fb; --panel:#ffffff; --ink:#1a2030; --ink2:#5b6478; --ink3:#8a92a6;
+    --line:#e6e9f0; --line2:#eef1f7;
+    --blue:#0052d9; --blue-soft:#e8f0ff; --blue-deep:#003ba6;
+    --green:#1aab6b; --green-soft:#e4f7ee;
+    --amber:#e8920a; --amber-soft:#fdf2dd;
+    --red:#e0413b; --red-soft:#fdeaea;
+    --grey:#97a0b3; --grey-soft:#eef0f4;
+    --shadow:0 1px 3px rgba(20,30,60,.06),0 6px 24px rgba(20,30,60,.05);
+    --radius:14px;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:"PingFang SC","Microsoft YaHei","Segoe UI",-apple-system,sans-serif;
+    line-height:1.55;-webkit-font-smoothing:antialiased}
+  a{color:var(--blue);text-decoration:none}
+  .wrap{max-width:1180px;margin:0 auto;padding:26px 22px 80px}
+
+  /* ---------- header ---------- */
+  .topbar{background:linear-gradient(120deg,#0a2a6b,#0052d9 60%,#2f7bff);
+    border-radius:18px;padding:22px 26px;color:#fff;position:relative;overflow:hidden;
+    box-shadow:0 10px 30px rgba(0,60,166,.25)}
+  .topbar::after{content:"";position:absolute;right:-60px;top:-60px;width:260px;height:260px;
+    background:radial-gradient(circle,rgba(255,255,255,.16),transparent 70%);border-radius:50%}
+  .topbar h1{margin:0;font-size:24px;letter-spacing:.5px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+  .tag-h5{font-size:11px;font-weight:700;background:rgba(255,255,255,.22);
+    padding:3px 9px;border-radius:20px;letter-spacing:1px}
+  .topbar .sub{margin-top:6px;font-size:13px;color:#cfe0ff}
+  .statline{margin-top:18px;display:flex;gap:14px;flex-wrap:wrap;position:relative;z-index:1}
+  .stat{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.18);
+    border-radius:12px;padding:11px 16px;min-width:150px;backdrop-filter:blur(4px)}
+  .stat .k{font-size:11px;color:#cfe0ff;letter-spacing:.5px}
+  .stat .v{font-size:21px;font-weight:700;margin-top:2px}
+  .stat .v small{font-size:12px;font-weight:500;color:#cfe0ff;margin-left:3px}
+  .badge-now{display:inline-flex;align-items:center;gap:6px;background:#ffb020;color:#3a2600;
+    font-weight:700;font-size:12px;padding:4px 11px;border-radius:20px}
+  .badge-now .dot{width:7px;height:7px;border-radius:50%;background:#3a2600;animation:pulse 1.4s infinite}
+  @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(58,38,0,.5)}70%{box-shadow:0 0 0 7px rgba(58,38,0,0)}100%{box-shadow:0 0 0 0 rgba(58,38,0,0)}}
+
+  /* ---------- 主文档锚 ---------- */
+  .anchor{display:flex;gap:12px;margin-top:16px;flex-wrap:wrap}
+  .adoc{flex:1;min-width:300px;background:var(--panel);border:1.5px solid #d4e3ff;border-radius:12px;
+    padding:13px 16px;box-shadow:var(--shadow);display:flex;gap:12px;align-items:flex-start}
+  .adoc.main{border-color:var(--blue);box-shadow:0 0 0 3px var(--blue-soft)}
+  .adoc .ic{width:34px;height:34px;border-radius:9px;background:var(--blue-soft);color:var(--blue);
+    display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:800;flex-shrink:0}
+  .adoc .tt{font-size:13.5px;font-weight:700}
+  .adoc .dd{font-size:11.5px;color:var(--ink2);margin-top:2px}
+  .adoc .role{font-size:10.5px;font-weight:700;color:var(--blue);background:var(--blue-soft);
+    padding:2px 8px;border-radius:10px;margin-left:6px;vertical-align:1px}
+  .statemachine{margin-top:12px;font-size:12px;color:var(--ink2);background:#fff;border:1px dashed var(--line);
+    border-radius:10px;padding:9px 14px}
+  .statemachine b{color:var(--ink)}
+  .statemachine .ok{color:var(--green);font-weight:700}
+  .statemachine .cur{color:var(--amber);font-weight:700}
+
+  /* ---------- tabs ---------- */
+  .tabs{display:flex;gap:8px;margin-top:16px;flex-wrap:wrap}
+  .tab{flex:1;min-width:200px;background:var(--panel);border:1px solid var(--line);border-radius:12px;
+    padding:14px 18px;cursor:pointer;transition:.18s;box-shadow:var(--shadow);text-align:left}
+  .tab:hover{border-color:#c5d6f7}
+  .tab.on{border-color:var(--blue);background:linear-gradient(180deg,#f4f8ff,#fff);box-shadow:0 0 0 3px var(--blue-soft)}
+  .tab .tn{font-size:11px;font-weight:700;color:var(--blue);letter-spacing:1px}
+  .tab .tt{font-size:16px;font-weight:700;margin-top:3px}
+  .tab .td{font-size:12px;color:var(--ink3);margin-top:2px}
+  .panel{display:none;animation:fade .3s}
+  .panel.on{display:block}
+  @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1}}
+  .section{background:var(--panel);border-radius:var(--radius);box-shadow:var(--shadow);
+    margin-top:18px;padding:24px 26px}
+  .section h2{margin:0 0 2px;font-size:16px;display:flex;align-items:center;gap:9px}
+  .section .hint{font-size:12.5px;color:var(--ink2);margin:0 0 18px}
+  .num{width:24px;height:24px;border-radius:7px;background:var(--blue);color:#fff;
+    font-size:13px;font-weight:700;display:inline-flex;align-items:center;justify-content:center}
+  .pill{font-size:10.5px;font-weight:700;padding:3px 9px;border-radius:20px;white-space:nowrap}
+  .pill.green{background:var(--green-soft);color:var(--green)}
+  .pill.amber{background:var(--amber-soft);color:var(--amber)}
+  .pill.red{background:var(--red-soft);color:var(--red)}
+  .pill.grey{background:var(--grey-soft);color:#6b7488}
+  .pill.blue{background:var(--blue-soft);color:var(--blue)}
+
+  /* ---------- 背景 ---------- */
+  .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:4px}
+  @media(max-width:760px){.kpis{grid-template-columns:repeat(2,1fr)}}
+  .kpi{border:1px solid var(--line);border-radius:11px;padding:13px 15px;background:#fcfdff}
+  .kpi .kk{font-size:11.5px;color:var(--ink3)}
+  .kpi .kv{font-size:20px;font-weight:800;margin-top:3px}
+  .kpi .ks{font-size:11px;color:var(--ink3);margin-top:1px}
+  .pos{color:var(--green)}.neg{color:var(--red)}
+  .funnel{margin-top:6px}
+  .frow{display:flex;align-items:center;gap:12px;margin:7px 0}
+  .frow .fl{width:130px;font-size:12.5px;color:var(--ink2);text-align:right;flex-shrink:0}
+  .fbarwrap{flex:1;background:var(--line2);border-radius:7px;overflow:hidden;height:30px;position:relative}
+  .fbar{height:100%;border-radius:7px;display:flex;align-items:center;padding-left:12px;color:#fff;
+    font-size:12.5px;font-weight:700;white-space:nowrap;transition:width 1s cubic-bezier(.2,.7,.3,1)}
+  .fnote{width:120px;font-size:11.5px;color:var(--ink3);flex-shrink:0}
+  .waste{background:var(--red-soft);border:1px solid #f6cfcd;border-radius:10px;padding:11px 16px;
+    margin-top:14px;font-size:12.5px;color:#9a2a26}
+  .waste b{color:var(--red)}
+  .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+  @media(max-width:860px){.grid3{grid-template-columns:1fr}}
+  .solu{border:1px solid var(--line);border-radius:12px;padding:16px;background:#fff}
+  .solu.focus{border-color:var(--blue);box-shadow:0 0 0 3px var(--blue-soft)}
+  .solu .st{font-size:13px;font-weight:700;display:flex;align-items:center;gap:8px;justify-content:space-between}
+  .solu .desc{font-size:12.5px;color:var(--ink2);margin-top:9px}
+  .evol{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:16px;font-size:12.5px}
+  .evol .ev{border:1px solid var(--line);border-radius:10px;padding:8px 14px;background:#fcfdff;color:var(--ink2)}
+  .evol .ev b{display:block;color:var(--ink);font-size:12.5px}
+  .evol .ev.now{border-color:var(--blue);background:var(--blue-soft);color:var(--blue-deep)}
+  .evol .ar{color:var(--ink3);font-size:16px}
+
+  /* ---------- 方案 ---------- */
+  .goalbox{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:18px}
+  @media(max-width:760px){.goalbox{grid-template-columns:1fr}}
+  .goal{border:1.5px solid #d4e3ff;background:#f8fbff;border-radius:12px;padding:15px 18px}
+  .goal .gt{font-size:12px;font-weight:700;color:var(--blue);letter-spacing:.5px}
+  .goal .gv{font-size:14px;font-weight:700;margin-top:5px;line-height:1.6}
+  .goal .gv small{font-weight:500;color:var(--ink2)}
+  .phasetree{background:#fcfdff;border:1px solid var(--line2);border-radius:12px;padding:16px 20px;
+    font-size:13px;line-height:2;margin:14px 0;color:var(--ink2)}
+  .phasetree b{color:var(--ink)}
+  .phasetree .ind{padding-left:26px}
+  .cmp{width:100%;border-collapse:collapse;font-size:13px}
+  .cmp th,.cmp td{padding:10px 13px;text-align:left;border-bottom:1px solid var(--line2);vertical-align:top}
+  .cmp thead th{background:#f3f6fc;font-size:12.5px;color:var(--ink2)}
+  .cmp td.metric{font-weight:600;white-space:nowrap}
+  .change{background:var(--amber-soft);border:1px solid #f3e0bd;border-radius:10px;padding:11px 16px;
+    margin:0 0 16px;font-size:12.5px;color:#6b5320}
+  .change b{color:#a8660a}
+  .honest{background:var(--red-soft);border:1px solid #f6cfcd;border-radius:10px;padding:11px 16px;
+    margin-top:14px;font-size:12.5px;color:#9a2a26}
+  .honest b{color:var(--red)}
+
+  /* ---------- 拆解与进度 ---------- */
+  .roadmap{display:flex;gap:0;margin:6px 0 8px;flex-wrap:wrap}
+  .rphase{flex:1;min-width:150px;position:relative;padding:0 8px 6px}
+  .rphase .rbar{height:6px;border-radius:6px;background:var(--line);position:relative;margin-bottom:14px}
+  .rphase.done .rbar{background:var(--blue)}
+  .rphase.cur .rbar{background:linear-gradient(90deg,#ffb020,var(--line) 70%)}
+  .rphase .rpt{position:absolute;top:-5px;left:0;width:16px;height:16px;border-radius:50%;background:#fff;border:3px solid var(--line)}
+  .rphase.done .rpt{border-color:var(--blue);background:var(--blue)}
+  .rphase.cur .rpt{border-color:#ffb020;background:#ffb020;animation:pulse2 1.5s infinite}
+  @keyframes pulse2{0%{box-shadow:0 0 0 0 rgba(255,176,32,.5)}70%{box-shadow:0 0 0 8px rgba(255,176,32,0)}100%{box-shadow:0 0 0 0 rgba(255,176,32,0)}}
+  .rphase .rk{font-size:11px;font-weight:700;color:var(--blue);letter-spacing:.5px}
+  .rphase .rt{font-size:13.5px;font-weight:700;margin-top:2px}
+  .rphase .rs{font-size:11px;margin-top:3px;font-weight:600;color:var(--ink3)}
+  .rphase.done .rs{color:var(--blue)}
+  .rphase.cur .rs{color:var(--amber)}
+  .parnote{font-size:11.5px;color:#a8660a;background:var(--amber-soft);border-radius:8px;padding:6px 12px;
+    display:inline-block;margin:4px 0 14px}
+  .filters{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:6px 0 8px}
+  .filters .lab{font-size:12px;color:var(--ink3);font-weight:600;margin-right:2px}
+  .chip{font-size:12px;font-weight:600;padding:5px 13px;border-radius:20px;border:1px solid var(--line);
+    background:#fff;cursor:pointer;color:var(--ink2);transition:.15s;user-select:none}
+  .chip:hover{border-color:var(--blue)}
+  .chip.on{background:var(--blue);color:#fff;border-color:var(--blue)}
+  .matrix{margin-top:10px;border:1px solid var(--line2);border-radius:12px;overflow:hidden}
+  .mrow{border-bottom:1px solid var(--line2)}
+  .mrow:last-child{border-bottom:0}
+  .mrow.hidden{display:none}
+  .mhead{display:grid;grid-template-columns:120px 1fr 210px 150px 92px 26px;gap:12px;align-items:center;
+    padding:12px 16px;cursor:pointer;user-select:none}
+  @media(max-width:860px){.mhead{grid-template-columns:1fr 92px 26px}.mhead .m-cat,.mhead .m-ms,.mhead .m-owner{display:none}}
+  .mhead:hover{background:#f7f9fd}
+  .m-cat{font-size:11px;font-weight:700;color:var(--ink3)}
+  .m-mod{font-size:13px;font-weight:600}
+  .m-ms{font-size:11.5px;color:var(--ink2)}
+  .m-owner{font-size:11.5px;color:var(--ink2)}
+  .m-owner code{background:var(--grey-soft);padding:1px 6px;border-radius:5px;font-size:10.5px}
+  .stbar{display:inline-flex;align-items:center;gap:6px;font-size:11.5px;font-weight:700}
+  .stdot{width:8px;height:8px;border-radius:50%;display:inline-block}
+  .stdot.green{background:var(--green)}.stdot.amber{background:var(--amber)}.stdot.grey{background:var(--grey)}.stdot.red{background:var(--red)}
+  .chev{font-size:13px;color:var(--ink3);transition:.2s;text-align:center}
+  .mrow.open .chev{transform:rotate(90deg)}
+  .mbody{display:none;padding:0 16px 14px;font-size:12.5px;color:var(--ink2)}
+  .mrow.open .mbody{display:block;animation:fade .2s}
+  .mbody .grid2c{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:10px}
+  @media(max-width:760px){.mbody .grid2c{grid-template-columns:1fr}}
+  .mbody .cell{background:#f7f9fd;border-radius:9px;padding:10px 13px}
+  .mbody .cl{font-size:10.5px;font-weight:700;color:var(--ink3);margin-bottom:4px}
+  .mbody .prog{border-left:3px solid var(--blue);background:#f4f8ff;border-radius:0 8px 8px 0;
+    padding:9px 13px;margin-top:10px;white-space:pre-line}
+  .countbar{display:flex;gap:16px;font-size:12px;color:var(--ink2);margin:14px 2px 0;flex-wrap:wrap}
+  .countbar b{font-size:14px}
+
+  /* ---------- 风险与纪要 ---------- */
+  .riskrow{border:1px solid #f3cecb;background:linear-gradient(180deg,#fff,#fff7f6);
+    border-radius:12px;padding:13px 16px;margin-bottom:10px;font-size:12.5px;color:var(--ink2)}
+  .riskrow .t{font-size:13px;font-weight:700;color:var(--red);margin-bottom:3px;display:flex;gap:8px;align-items:center}
+  .mt-list{border:1px solid var(--line2);border-radius:12px;overflow:hidden}
+  .mt-item{display:flex;gap:14px;padding:13px 16px;border-bottom:1px solid var(--line2);align-items:flex-start}
+  .mt-item:last-child{border-bottom:0}
+  .mt-date{font-size:11.5px;font-weight:700;color:var(--ink3);white-space:nowrap;padding-top:2px;width:74px;flex-shrink:0}
+  .mt-item .tt{font-size:13px;font-weight:600}
+  .mt-item .dd{font-size:12px;color:var(--ink2);margin-top:3px}
+  footer{text-align:center;color:var(--ink3);font-size:11.5px;margin-top:26px}
+  .conf{display:inline-block;background:#eef0f4;color:#6b7488;font-size:10.5px;padding:2px 9px;border-radius:6px;font-weight:600}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ============ HEADER ============ -->
+  <div class="topbar">
+    <h1>CID 升级项目 <span class="tag-h5">项目推进看板</span></h1>
+    <div class="sub">腾讯广告 · TID 激增治理 &nbsp;|&nbsp; 一个问题：TID 激增 → 一个方案：CID（召粗 AID_CID 局部升级，保留 TID）</div>
+    <div class="statline">
+      <div class="stat"><div class="k">当天在线 TID</div><div class="v">2.63<small>亿（红线容量 ~8000w）</small></div></div>
+      <div class="stat"><div class="k">实际有消耗 TID</div><div class="v">1507<small>w · 仅占在线 ~6%</small></div></div>
+      <div class="stat"><div class="k">一期目标（召粗容量）</div><div class="v">×3<small>指纹 737w → 2200w</small></div></div>
+      <div class="stat"><div class="k">项目状态</div><div class="v" style="font-size:15px"><span class="badge-now"><span class="dot"></span>进行中 · 阶段一基建（830）</span></div></div>
+    </div>
+  </div>
+
+  <!-- ============ 主文档锚（项目的底层记忆） ============ -->
+  <div class="anchor">
+    <div class="adoc main">
+      <div class="ic">主</div>
+      <div>
+        <div class="tt">《CID 方案 · 一期简化版（保留 TID）》<span class="role">主文档</span></div>
+        <div class="dd">0708 决策变更后重写的一期方案 —— <b>项目因它进入「进行中」</b>：方案边界、两阶段结构、牵头方、验收标准均以此为准。</div>
+      </div>
+    </div>
+    <div class="adoc">
+      <div class="ic">表</div>
+      <div>
+        <div class="tt">《【项目化】CID升级项目.xlsx》<span class="role">项目表</span></div>
+        <div class="dd">主文档的执行拆解 —— 本看板「③ 拆解与进度」整页来自此表：怎么拆、进度如何、谁负责什么（每周更新进展列）。</div>
+      </div>
+    </div>
+  </div>
+  <div class="statemachine">
+    项目状态机：<span class="ok">调研中 ✓</span>（并行评估多个方向 → 收敛到 ID 架构，详见 ① 背景）
+    &nbsp;→&nbsp; <span class="cur">进行中 ●</span>（主文档就位 · 按项目表推进，详见 ③ 拆解与进度）
+  </div>
+
+  <!-- ============ TABS ============ -->
+  <div class="tabs" id="tabs">
+    <div class="tab" data-p="bg"><div class="tn">① 背景</div><div class="tt">问题</div><div class="td">TID 为何激增 · 调研过哪些方向、为何收敛</div></div>
+    <div class="tab" data-p="plan"><div class="tn">② 方案</div><div class="tt">主文档摘要</div><div class="td">一期做什么 / 目标 / 两阶段 / 收益与代价</div></div>
+    <div class="tab on" data-p="exec"><div class="tn">③ 拆解与进度</div><div class="tt">项目表（核心）</div><div class="td">怎么拆 · 进度如何 · 谁负责什么</div></div>
+    <div class="tab" data-p="risk"><div class="tn">④ 风险与纪要</div><div class="tt">风险 · 会议记录</div><div class="td">效果风险 / 资源风险 · 关键会议结论</div></div>
+  </div>
+
+  <!-- ============ PANEL 1: 背景（调研中阶段的信息） ============ -->
+  <div class="panel" id="p-bg">
+    <div class="section">
+      <h2><span class="num">1</span>问题：TID 在线量爆炸，绝大多数无效</h2>
+      <p class="hint">口径：大盘全天（当天上线过即计入），取 5.22 日。AI 时代广告主海量造素材博冷启动，堆量而非卷优质。</p>
+      <div class="kpis">
+        <div class="kpi"><div class="kk">单广告 → 展开 TID</div><div class="kv">×54</div><div class="ks">乘法叉乘展开</div></div>
+        <div class="kpi"><div class="kk">当天在线 TID</div><div class="kv">2.63<span style="font-size:13px">亿</span></div><div class="ks">红线容量 ~8000w，长期截断</div></div>
+        <div class="kpi"><div class="kk">有曝光 TID</div><div class="kv">2187<span style="font-size:13px">w</span></div><div class="ks">仅占在线 8.3%</div></div>
+        <div class="kpi"><div class="kk">有消耗 TID</div><div class="kv neg">1507<span style="font-size:13px">w</span></div><div class="ks">仅占在线 ~6%</div></div>
+      </div>
+      <div class="funnel" id="funnel"></div>
+      <div class="waste">⚠ <b>核心矛盾</b>：海量 TID 被生产、审核、索引、召回，却几乎不产生价值。当天在线 2.63 亿，真正有消耗的仅 1507w —— 系统容量与成本被无效 TID 吃掉，这就是本项目要解决的<b>唯一的问题</b>。</div>
+    </div>
+
+    <div class="section">
+      <h2><span class="num">2</span>调研中：三条方向 → 收敛到 ID 架构 → 演进为一期简化版</h2>
+      <p class="hint">「调研中」阶段并行评估过三条解法；收敛到 ID 架构后，方案本身又经历两次迭代，最终由 0708 决策定稿为主文档。</p>
+      <div class="grid3">
+        <div class="solu">
+          <div class="st"><span>① 供给端配额 cap</span><span class="pill grey">暂缓 · 未执行</span></div>
+          <div class="desc">学 meta / 字节按消耗分配可投广告数，间接控制创意。2026/1 汇报过，综合客户沟通因素未执行。</div>
+        </div>
+        <div class="solu">
+          <div class="st"><span>② 系统扩容</span><span class="pill amber">实验 · 效果不佳</span></div>
+          <div class="desc">直接加机器扩 TID 容量。全盘实验扩到 8500w 跑量无明显差别（摊平冷启动），无团队敢提单。</div>
+        </div>
+        <div class="solu focus">
+          <div class="st"><span>③ ID 架构升级</span><span class="pill blue">选定 → 已立项</span></div>
+          <div class="desc">优化 AMS 内部 ID 体系、从源头限制膨胀倍数，唯一瞄准「有效降低 ID 数量」的方向。</div>
+        </div>
+      </div>
+      <div class="evol">
+        <div class="ev"><b>主成分 PCID</b>对标字节 · 未过会（不解决成本）</div><span class="ar">→</span>
+        <div class="ev"><b>网状 CID（v3）</b>全链路下线 TID · 已过会启动</div><span class="ar">→</span>
+        <div class="ev now"><b>一期简化版（0708 定稿）</b>保留 TID · 只做召粗局部升级 ← 当前主文档</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ PANEL 2: 方案（主文档摘要） ============ -->
+  <div class="panel" id="p-plan">
+    <div class="section">
+      <h2><span class="num">1</span>一期做什么 · 目标</h2>
+      <p class="hint">以下内容全部摘自主文档《CID 方案 · 一期简化版（保留 TID）》（@michaelpei），此处只做摘要，细节以文档为准。</p>
+      <div class="change"><b>0708 决策变更</b>：v3 版本目标是「下线 TID」、改动涉及全链路；最新决策为<b>保留 TID、只在召回/粗排环节做局部升级</b>。原阶段 2b 中 TID 下线相关新库表设计、创意组件化改造及渲染侧卷入<b>均取消</b>。</div>
+      <div class="goalbox">
+        <div class="goal">
+          <div class="gt">一期做什么</div>
+          <div class="gv">引入 <b>CID（创意主视觉 ID = 主视觉指纹 + 创意形式）</b>作为中间粒度，只在召回/粗排把排序颗粒度从 TID 切到 <b>AID_CID</b>。<br>
+          <small>TID 保持现状：离线继续生产、播放系统仍以 TID 为主 key，精排/重排/渲染/审核不动。CID 为 UINT64：高 14 位创意形式 + 低 50 位主视觉指纹。</small></div>
+        </div>
+        <div class="goal">
+          <div class="gt">一期目标</div>
+          <div class="gv">机器资源基本持平前提下，召粗承载指纹容量提升至 <b class="pos">3 倍</b>。<br>
+          <small>视频号当前在线 5900w TID ≈ 737w 指纹 → 提升后约 2200w 指纹（≈1.8 亿 TID）。Embedding 总量「700w aid + 5000w tid」→「700w aid + 1000w cid」。</small></div>
+        </div>
+      </div>
+      <div class="phasetree">
+        <b>阶段 1 · CID 前置基建</b>（牵头：投放/机制 xiujinyang、nianhuaxie）—— CID 自动生成、DC 主视觉互斥（历史约 7.1% 广告受影响，设豁免通道）、TID→CID 绑定（N:1，不可变）、四张映射表、全链路透传<br>
+        <span class="ind">└→ <b>阶段 2A · 召粗侧 AID_CID 级联召回</b>（牵头：召粗模型 defyzhu）—— CID/AID_CID 维度特征、三塔模型（方案1 AID→CID 级联优先）、AID_CID→TID 优选（仅文案/落地页）、Torch 路直达精排（试点视频号）、CID 定向过滤</span><br>
+        <span class="ind">└→ <b>阶段 2B · 保留 TID 的相关工作</b>（牵头：投放 xiujinyang）—— 投放 TID 存储压缩（多列→PB、治理 crt_size）、召粗辅路 TID 容量红线控制（仅 Torch 路放量）</span>
+      </div>
+      <table class="cmp">
+        <thead><tr><th style="width:110px">阶段</th><th>关键验收标准（摘自主文档）</th></tr></thead>
+        <tbody>
+          <tr><td class="metric">阶段 1</td><td>CID 生产覆盖率 &gt; 99.99%；DC 互斥拦截率 &gt; 99.99%；TID→CID 绑定覆盖率 100%；AID_CID→DC/TIDs 查询可用性 &gt; 99.99%、延迟 &lt; 10ms；全链路透传与日志覆盖率 &gt; 99.99%</td></tr>
+          <tr><td class="metric">阶段 2A</td><td>特征服务可用性 &gt; 99.99%；新召粗模型离线 AUC/GAUC 无退化；召回成功率 &gt; 99.9%、延迟无显著退化；在线 AB 消耗/GMV 无显著下降</td></tr>
+          <tr><td class="metric">阶段 2B</td><td>投放存储 schema 压缩为 PB 并给出预期收益；红线控制 Torch 路 / 普通路容量，仅 Torch 路放量 TID</td></tr>
+        </tbody>
+      </table>
+      <div class="honest"><b>诚实标注 · 未实现收益</b>：v3 目标年成本 3.34 亿 → 0.62 亿的收益<b>大部分拿不到</b> —— TID 继续在线生产，精排/重排/渲染/审核/定向/数仓仍按 TID 运作，这些才是成本大头。一期收益是召粗侧内存/打分压力显著缓解、召粗不再受 TID 膨胀影响。代价：AID_CID→TID 多一层优选模型；特征双份长期并存；灰度期新老通路并行；在线多一次 MLP 前向。二期（召回辅路升级 / Torch 化）待后续讨论。</div>
+    </div>
+  </div>
+
+  <!-- ============ PANEL 3: 拆解与进度（项目表，核心） ============ -->
+  <div class="panel on" id="p-exec">
+    <div class="section">
+      <h2><span class="num">3</span>项目拆解与进度<span class="pill blue" style="margin-left:4px">来源：【项目化】CID升级项目.xlsx</span></h2>
+      <p class="hint">回答三件事：<b>怎么拆解 · 进度如何 · 谁负责什么</b>。行可展开查看子目标、依赖与最新进展（进展列每周由各负责人更新，当前为 0716 版）。</p>
+      <div class="roadmap">
+        <div class="rphase done"><div class="rbar"><span class="rpt"></span></div><div class="rk">0708</div><div class="rt">方案定稿</div><div class="rs">✓ 主文档就位</div></div>
+        <div class="rphase done"><div class="rbar"><span class="rpt"></span></div><div class="rk">0716</div><div class="rt">项目化拆解</div><div class="rs">✓ 分工排期对齐</div></div>
+        <div class="rphase cur"><div class="rbar"><span class="rpt"></span></div><div class="rk">0830</div><div class="rt">阶段一 · CID 基建</div><div class="rs">● 进行中</div></div>
+        <div class="rphase"><div class="rbar"><span class="rpt"></span></div><div class="rk">0921–1010</div><div class="rt">二A 联调 + 0.1% 实验</div><div class="rs">未开始</div></div>
+        <div class="rphase"><div class="rbar"><span class="rpt"></span></div><div class="rk">1015</div><div class="rt">5% AB 实验</div><div class="rs">未开始</div></div>
+        <div class="rphase"><div class="rbar"><span class="rpt"></span></div><div class="rk">1115</div><div class="rt">5% 车票 · 评估</div><div class="rs">未开始</div></div>
+      </div>
+      <div class="parnote">阶段 2B（TID 治理：拆库/行压缩 0830）与主线并行推进，不占上方主时间轴。</div>
+      <div class="filters" id="filters">
+        <span class="lab">按阶段筛选</span>
+        <span class="chip on" data-f="all">全部</span>
+        <span class="chip" data-f="s1">阶段一 · 基建</span>
+        <span class="chip" data-f="s2a">阶段二A · 召粗切换</span>
+        <span class="chip" data-f="s2b">阶段二B · TID 治理</span>
+      </div>
+      <div class="matrix" id="matrix"></div>
+      <div class="countbar" id="countbar"></div>
+    </div>
+  </div>
+
+  <!-- ============ PANEL 4: 风险与纪要 ============ -->
+  <div class="panel" id="p-risk">
+    <div class="section">
+      <h2><span class="num">4</span>风险跟进</h2>
+      <p class="hint">来源：主文档风险章节 + 0703 / 0710 会议结论。</p>
+      <div id="risks"></div>
+    </div>
+    <div class="section">
+      <h2><span class="num">✦</span>关键会议与结论</h2>
+      <div class="mt-list" id="meetings"></div>
+    </div>
+  </div>
+
+  <footer>
+    CID 升级项目 · 推进看板 &nbsp;·&nbsp; 底层记忆：主文档《CID 方案 · 一期简化版（保留 TID）》 + 项目表《【项目化】CID升级项目.xlsx》（0716 版进展）<br>
+    <span class="conf">内部资料 · 请勿外传</span>
+  </footer>
+</div>
+
+<script>
+"use strict";
+
+/* =====================================================================
+   底层记忆：本看板全部内容由下面这一个 DATA 对象驱动。
+   更新方式：只改 DATA（通常只需按项目表新版刷新 modules 的
+   progress / status），不动任何渲染代码。
+   ===================================================================== */
+var DATA = {
+  /* ---- ① 背景漏斗（5.22 口径） ---- */
+  funnel: [
+    { l:"新建展开 TID", v:12101, c:"#6b7fd1", note:"×54 / 广告" },
+    { l:"过审 TID",     v:10996, c:"#0052d9", note:"过审 90.9%" },
+    { l:"当天在线 TID", v:26315, c:"#1aab6b", note:"2.63 亿" },
+    { l:"有曝光 TID",   v:2187,  c:"#e8920a", note:"在线 8.3%" },
+    { l:"有消耗 TID",   v:1507,  c:"#e0413b", note:"曝光 68.9%" }
+  ],
+
+  /* ---- ③ 项目拆解（来源：【项目化】CID升级项目.xlsx · sheet「02-项目拆解」，0716 版） ---- */
+  modules: [
+    { stage:"s1", cat:"阶段一 · 基建", mod:"CID 生成（投放侧）", owner:"xiujinyang · michaelpei",
+      ms:"7.17 指纹生产协议 → 7.31 完成 CID 整体生产", status:"doing",
+      goal:"CID 生产覆盖率 > 99.99%；DC 主视觉互斥；TID→CID 绑定覆盖率 100%",
+      dep:"指纹生产协议 7.17（数据挖掘）",
+      progress:"[0716] CID 表设计中；需为召回生产 RecallInfo 相关字段（与召粗侧确认字段清单）" },
+    { stage:"s1", cat:"阶段一 · 基建", mod:"数据挖掘（指纹生产）", owner:"leilaxu · natchen",
+      ms:"7.16 工程&产品方案设计 ✓ → 7.17 生产数据协议确认", status:"doing",
+      goal:"指纹计算成功率 > 99.9%；图片 < 5s、视频 < 1min",
+      dep:"CID 生产数据协议确认（投放侧）7.17",
+      progress:"[0716] 各方初步对齐 CID 指纹主视觉定义、相似标准、评测方法（CID定义及评测方法 V1.4）" },
+    { stage:"s1", cat:"阶段一 · 基建", mod:"发布订阅", owner:"jerrizheng · rli",
+      ms:"7.17 完成 CID 生产/传输链路工程方案设计", status:"doing",
+      goal:"发布流 CID 字段（TID 绑定 CID、AID→CIDs、AID_CID→DC/TIDs）覆盖率 > 99.99%",
+      dep:"CID 生产数据协议确认 7.17",
+      progress:"[0716] CID 的生产、传输链路工程方案对齐中" },
+    { stage:"s1", cat:"阶段一 · 基建", mod:"播放链路透传", owner:"nuoyfeng · svdxu",
+      ms:"7.31 增加透传协议字段 → 8.6 完成全链路透传", status:"todo",
+      goal:"查询可用性 > 99.99%、延迟 < 10ms；透传率与日志覆盖率 > 99.99%",
+      dep:"CID 生成数据协议确认 7.17（发布订阅）", progress:"" },
+
+    { stage:"s2a", cat:"阶段二A · 召粗", mod:"特征生产", owner:"michaeltang · lwlin",
+      ms:"7.30 完成 TID 特征梳理、与广工对齐替换方案", status:"doing",
+      goal:"按需构建 CID / AID_CID 维度特征（TID 特征不下线，双份并存）",
+      dep:"—", progress:"" },
+    { stage:"s2a", cat:"阶段二A · 召粗", mod:"特征入样本", owner:"deandnwang · jeffjwzhang",
+      ms:"9.25 完成 CID 粒度特征入训练与 ads 流样本", status:"todo",
+      goal:"CID 粒度特征进入训练与在线样本流",
+      dep:"特征生产完成",
+      progress:"[0716] 新特征生产会有成本增长，具体成本依赖特征梳理完成" },
+    { stage:"s2a", cat:"阶段二A · 召粗", mod:"样本改造", owner:"mathewzhang · biaoli",
+      ms:"9.25 完成样本改造", status:"todo",
+      goal:"采样 AID 下的多个 CID 用于训练", dep:"样本流依赖 Ranking 采样", progress:"" },
+    { stage:"s2a", cat:"阶段二A · 召粗", mod:"资源申请", owner:"deandnwang / joymanhuang · ivanmao",
+      ms:"8.30 训练资源评估与申请（预期 6 组）→ 9.30 在线链路资源", status:"todo",
+      goal:"训练资源与在线链路资源到位", dep:"工程方案确定、SRE 审批交付", progress:"" },
+    { stage:"s2a", cat:"阶段二A · 召粗", mod:"线上链路搭建", owner:"linalnhuang · llynnguo / svdxu · ivanmao",
+      ms:"9.20 新支路策略框架 → 9.21–10.10 联调 + 0.1% 实验", status:"todo",
+      goal:"端到端延迟不增加、召回成功率 > 99.9%；策略按需迁移",
+      dep:"定向要求的创意形式名单；模型视角架构图（下周补充）", progress:"" },
+    { stage:"s2a", cat:"阶段二A · 召粗", mod:"模型实验", owner:"deandnwang · jeffjwzhang / defyzhu",
+      ms:"7.30 方案设计 → 9.25 训练 mdl → 10.10 TID 优选落地 → 10.15 起 5% 实验 → 11.15 车票", status:"doing",
+      goal:"三塔（AID 塔 + CID 塔 + 上层 MLP）；离线 AUC 无退化；AB 消耗/GMV 无显著下降",
+      dep:"方案设计、资源到位、样本流与特征入样本完成", progress:"" },
+
+    { stage:"s2b", cat:"阶段二B · TID 治理", mod:"存储压缩 + 拆库", owner:"xiujinyang · michaelpei",
+      ms:"8.30 完成 TID 元素/关联表拆库、行压缩、清理存量", status:"todo",
+      goal:"降低 TID 存储与计算成本（多列存储压缩为 PB；治理 crt_size）",
+      dep:"发布、审核、联盟、AIGC、数仓完成配合开发", progress:"" },
+    { stage:"s2b", cat:"阶段二B · TID 治理", mod:"召粗辅路 TID 容量限制", owner:"rli · alanjftong",
+      ms:"待细化（随 Torch 路上线节奏）", status:"todo",
+      goal:"红线控制 Torch 路 / 普通路容量，仅在 Torch 路放量 TID，避免辅路同步扩容",
+      dep:"Torch 路上线", progress:"" }
+  ],
+
+  /* ---- ④ 风险（主文档 + 会议） ---- */
+  risks: [
+    { t:"召粗粒度变粗的效果风险", d:"排序颗粒度 TID→AID_CID 变粗，对最终效果的影响存在风险；KNN 切 ANN 亦有效果风险。对策：离线 AUC 验证 + 0.1% → 5% AB 分级放量，消耗/GMV 无显著下降为准。" },
+    { t:"AID_CID→TID 优选模型的准确性", d:"优选质量直接决定送入精排的候选质量；仅基于文案/落地页优选，具体方案待与模型侧细化，需单独调优。" },
+    { t:"TID 定向过滤后置的内存/效果风险", d:"定向过滤后置到粗排出口（约 200 TID vs RetrievalProxy 内约 1 万），计算量大幅减小；可选 server 化独立部署。广工考虑把 TID 定向过滤下沉到各召回支路（单独列项）。" },
+    { t:"特征双份存储与新增成本", d:"TID 与 CID/AID_CID 两套特征长期并存；新特征生产有成本增长，具体量级依赖 7.30 特征梳理完成后测算（成本先打问号，详细方案后确认新增 vs 临时借用）。" },
+    { t:"样本回溯资源缺口", d:"模型使用约 4 年样本，特征切换后回溯需刷数百 PB 数据，临时资源需求大，需提前预警并申请支持。" }
+  ],
+
+  /* ---- ④ 会议记录 ---- */
+  meetings: [
+    { d:"0716", t:"项目化拆解完成（项目表 0716 版）", dd:"各方分工、里程碑、依赖关系进项目表；阶段一各模块方案设计基本对齐，进入执行。" },
+    { d:"0710", t:"方案评审会：召粗局部升级方案过会", dd:"确认 TID 不下线、只做召粗 AID_CID 升级；里程碑现场对齐：阶段一 830、阶段二暂拍 1130（后由项目表细化）；检索定向过滤（proxy 卡点）、TID 表压缩、规格治理、KNN→ANN 各单独列项。" },
+    { d:"0708", t:"决策变更：保留 TID", dd:"由「全链路下线 TID（v3）」调整为「保留 TID、召粗局部升级」；随后重写并产出主文档《CID 方案 · 一期简化版（保留 TID）》。" },
+    { d:"0703", t:"CID 方案二讨论", dd:"确定走「创意组件化/分版位切换」路径与并行两阶段结构；特征约 65%（317 个）可平迁、35%（约 200 个）有 diff 需实验；汇报口径：集中开发 3–6 个月、迁移从长计议；试点选微信流量（小程序/视频号）。" }
+  ]
+};
+
+/* ---------- tab 切换 ---------- */
+document.querySelectorAll("#tabs .tab").forEach(function(t){
+  t.addEventListener("click",function(){
+    document.querySelectorAll("#tabs .tab").forEach(function(x){x.classList.remove("on");});
+    t.classList.add("on");
+    document.querySelectorAll(".panel").forEach(function(p){p.classList.remove("on");});
+    document.getElementById("p-"+t.getAttribute("data-p")).classList.add("on");
+    window.scrollTo({top:0,behavior:"smooth"});
+  });
+});
+
+/* ---------- 背景漏斗 ---------- */
+(function(){
+  var max=26315, box=document.getElementById("funnel"), html="";
+  DATA.funnel.forEach(function(f){
+    var pct=Math.max(6,Math.round(f.v/max*100));
+    var label=f.v>=10000?(f.v/10000).toFixed(2)+" 亿":f.v+" w";
+    html+='<div class="frow"><div class="fl">'+f.l+'</div>'+
+      '<div class="fbarwrap"><div class="fbar" style="width:0%;background:'+f.c+'" data-w="'+pct+'">'+label+'</div></div>'+
+      '<div class="fnote">'+f.note+'</div></div>';
+  });
+  box.innerHTML=html;
+  setTimeout(function(){
+    box.querySelectorAll(".fbar").forEach(function(b){b.style.width=b.getAttribute("data-w")+"%";});
+  },200);
+})();
+
+/* ---------- 拆解矩阵 ---------- */
+var ST={doing:{c:"amber",t:"进行中"},todo:{c:"grey",t:"未开始"},done:{c:"green",t:"已完成"},risk:{c:"red",t:"有风险"}};
+function esc(s){return String(s==null?"":s).replace(/[&<>"']/g,function(c){
+  return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c];});}
+(function(){
+  var box=document.getElementById("matrix"), html="";
+  DATA.modules.forEach(function(m,i){
+    var st=ST[m.status]||ST.todo;
+    html+='<div class="mrow" data-stage="'+m.stage+'">'+
+      '<div class="mhead" data-i="'+i+'">'+
+        '<span class="m-cat">'+esc(m.cat)+'</span>'+
+        '<span class="m-mod">'+esc(m.mod)+'</span>'+
+        '<span class="m-ms">'+esc(m.ms)+'</span>'+
+        '<span class="m-owner"><code>'+esc(m.owner)+'</code></span>'+
+        '<span class="stbar"><span class="stdot '+st.c+'"></span>'+st.t+'</span>'+
+        '<span class="chev">›</span>'+
+      '</div>'+
+      '<div class="mbody">'+
+        '<div class="grid2c">'+
+          '<div class="cell"><div class="cl">子目标 / 验收</div>'+esc(m.goal)+'</div>'+
+          '<div class="cell"><div class="cl">依赖</div>'+esc(m.dep)+'</div>'+
+        '</div>'+
+        (m.progress?'<div class="prog"><b>最新进展</b> '+esc(m.progress)+'</div>':'')+
+      '</div>'+
+    '</div>';
+  });
+  box.innerHTML=html;
+  box.querySelectorAll(".mhead").forEach(function(h){
+    h.addEventListener("click",function(){h.parentElement.classList.toggle("open");});
+  });
+  renderCount();
+})();
+function renderCount(){
+  var vis=[].slice.call(document.querySelectorAll(".mrow")).filter(function(r){return !r.classList.contains("hidden");});
+  var c={doing:0,todo:0,done:0};
+  vis.forEach(function(r){
+    var m=DATA.modules[+r.querySelector(".mhead").getAttribute("data-i")];
+    c[m.status]=(c[m.status]||0)+1;
+  });
+  document.getElementById("countbar").innerHTML=
+    "共 <b>"+vis.length+"</b> 个模块 &nbsp;·&nbsp; "+
+    '<span class="stbar"><span class="stdot green"></span>已完成 <b>'+(c.done||0)+"</b></span>"+
+    '<span class="stbar"><span class="stdot amber"></span>进行中 <b>'+(c.doing||0)+"</b></span>"+
+    '<span class="stbar"><span class="stdot grey"></span>未开始 <b>'+(c.todo||0)+"</b></span>";
+}
+document.querySelectorAll("#filters .chip").forEach(function(ch){
+  ch.addEventListener("click",function(){
+    document.querySelectorAll("#filters .chip").forEach(function(x){x.classList.remove("on");});
+    ch.classList.add("on");
+    var f=ch.getAttribute("data-f");
+    document.querySelectorAll(".mrow").forEach(function(r){
+      r.classList.toggle("hidden", f!=="all" && r.getAttribute("data-stage")!==f);
+    });
+    renderCount();
+  });
+});
+
+/* ---------- 风险 ---------- */
+document.getElementById("risks").innerHTML=DATA.risks.map(function(r){
+  return '<div class="riskrow"><div class="t">⚠ '+esc(r.t)+'</div>'+esc(r.d)+'</div>';
+}).join("");
+
+/* ---------- 会议 ---------- */
+document.getElementById("meetings").innerHTML=DATA.meetings.map(function(m){
+  return '<div class="mt-item"><span class="mt-date">'+esc(m.d)+'</span>'+
+    '<div><div class="tt">'+esc(m.t)+'</div><div class="dd">'+esc(m.dd)+'</div></div></div>';
+}).join("");
+</script>
+</body>
+</html>
