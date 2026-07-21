@@ -324,6 +324,48 @@
   }
   .chat-input button:hover { background: var(--blue-dark); }
 
+  /* ================= 编辑模式 ================= */
+  .ebtn {
+    font-size: 12.5px; font-weight: 600; border: 1px solid var(--border); background: #fff;
+    color: var(--text-3); padding: 7px 12px; border-radius: 9px; cursor: pointer;
+    transition: all .18s; white-space: nowrap;
+  }
+  .ebtn:hover { border-color: var(--blue); color: var(--blue); }
+  .ebtn.on { background: var(--blue); border-color: var(--blue); color: #fff; }
+  .ebtn.danger:hover { border-color: var(--red); color: var(--red); }
+  .trow .ops { display: none; gap: 4px; flex: none; }
+  body.editing .trow .ops { display: flex; }
+  .ops button {
+    border: none; background: var(--border-2); width: 24px; height: 24px;
+    border-radius: 6px; cursor: pointer; font-size: 12px; color: var(--text-3);
+  }
+  .ops button:hover { background: var(--blue-bg); color: var(--blue); }
+  .add-todo {
+    display: none; width: 100%; margin-top: 8px; padding: 8px;
+    border: 1.5px dashed #C7D6F5; background: transparent; color: var(--blue);
+    font-size: 12.5px; border-radius: 9px; cursor: pointer; transition: background .18s;
+  }
+  body.editing .add-todo { display: block; }
+  .add-todo:hover { background: var(--blue-bg); }
+  .tform {
+    display: flex; flex-wrap: wrap; gap: 6px; padding: 10px 4px;
+    border-bottom: 1px solid var(--border-2); align-items: center;
+  }
+  .tform input, .tform select {
+    font: inherit; font-size: 12.5px; padding: 6px 8px;
+    border: 1px solid var(--border); border-radius: 7px; outline: none; background: #fff;
+  }
+  .tform input:focus, .tform select:focus { border-color: var(--blue); }
+  .tform .f-task { flex: 1 1 100%; }
+  .tform .f-owner { width: 110px; }
+  .tform .f-due { width: 140px; }
+  .tform .btns { display: flex; gap: 6px; margin-left: auto; }
+  .tform .btns button { font-size: 12px; border: none; border-radius: 7px; padding: 6px 12px; cursor: pointer; }
+  .tform .save { background: var(--blue); color: #fff; }
+  .tform .cancel { background: var(--border-2); color: var(--text-2); }
+  body.editing [data-pedit] { outline: 1.5px dashed #C7D6F5; outline-offset: 2px; cursor: pointer; border-radius: 4px; }
+  body.editing [data-pedit]:hover { outline-color: var(--blue); }
+
   /* ================= 报错态 ================= */
   .fatal {
     max-width: 560px; margin: 80px auto; padding: 24px;
@@ -363,6 +405,11 @@
   <div class="searchbox">
     <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="7" stroke="#8A9099" stroke-width="2"/><path d="m20 20-3.5-3.5" stroke="#8A9099" stroke-width="2" stroke-linecap="round"/></svg>
     <input id="search-input" type="search" placeholder="搜索项目 / 赛道…">
+  </div>
+  <div style="display:flex;gap:8px;align-items:center">
+    <button class="ebtn" id="edit-toggle" title="开启后可直接修改待办、里程碑、健康度等内容，修改自动保存在本浏览器">✎ 编辑</button>
+    <button class="ebtn" id="edit-export" hidden title="把当前数据（含修改）下载为 data.js">导出 data.js</button>
+    <button class="ebtn danger" id="edit-reset" hidden title="清除本地修改，恢复原始数据">重置</button>
   </div>
 </header>
 
@@ -456,10 +503,30 @@
     query: "",
     drawerId: null,
     tab: "overview",
-    chat: []
+    chat: [],
+    edit: false,        // 编辑模式开关
+    editingRef: null,   // 正在编辑的待办 "pid:side:idx"
+    adding: null        // 正在新增的待办 { side, pid|null }
   };
   var DATA = null;
+  var ORIG = null;
   var rolled = false;
+
+  /* ---------- 本地持久化：编辑内容存 localStorage ---------- */
+  var LS_KEY = "dashboard-data-local";
+  function saveLocal() {
+    try {
+      localStorage.setItem(LS_KEY, JSON.stringify({ base: ORIG.meta.updatedAt, data: DATA }));
+    } catch (e) { /* 隐私模式等场景下静默降级：修改仅在本次会话生效 */ }
+  }
+  /* 仅当本地修改基于同一版数据（updatedAt 一致）时才加载，避免覆盖新生成的数据 */
+  function loadLocal(orig) {
+    try {
+      var s = JSON.parse(localStorage.getItem(LS_KEY));
+      if (s && s.base === orig.meta.updatedAt && s.data && s.data.meta && Array.isArray(s.data.projects)) return s.data;
+    } catch (e) {}
+    return null;
+  }
 
   function filtered() {
     var q = state.query.trim().toLowerCase();
@@ -479,7 +546,7 @@
     var steps = STAGES.map(function (s, i) {
       var cls = i < idx ? "done" : i === idx ? "cur" : "";
       var mark = i < idx ? "✓" : (i + 1);
-      return '<div class="rstep ' + cls + '"><span class="dot">' + mark + '</span><span class="lb">' + s.label + "</span></div>";
+      return '<div class="rstep ' + cls + '" data-pedit="' + esc(p.id) + ':stage:' + i + '" title="编辑模式下点击设为当前阶段"><span class="dot">' + mark + '</span><span class="lb">' + s.label + "</span></div>";
     }).join("");
     var iv = r.interviews || {};
     return '<div class="pcard" data-open="' + esc(p.id) + '">' +
@@ -489,7 +556,7 @@
             "<h3>" + esc(p.name) + "</h3>" +
             '<span class="track-pill">' + esc(p.track) + "</span>" +
           "</div>" +
-          '<div class="stars">' + stars(r.rating) + "</div>" +
+          '<div class="stars" data-pedit="' + esc(p.id) + ':rating" title="编辑模式下点击修改评级">' + stars(r.rating) + "</div>" +
         "</div>" +
         '<span class="date-sm">' + fmt(p.updatedAt) + "</span>" +
       "</div>" +
@@ -500,7 +567,7 @@
       "</div>" +
       '<div class="card-foot">' +
         '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" style="flex:none"><path d="M5 12h14m-6-6 6 6-6 6" stroke="#0052D9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>' +
-        '<span class="txt"><b>下一步 ·</b> ' + esc(r.nextAction) + "</span>" +
+        '<span class="txt" data-pedit="' + esc(p.id) + ':nextAction" title="编辑模式下点击修改"><b>下一步 ·</b> ' + esc(r.nextAction) + "</span>" +
       "</div></div>";
   }
 
@@ -513,7 +580,7 @@
       if (i === 0) cls += " first";
       if (i === ms.length - 1) cls += " last";
       var mark = m.status === "done" ? "✓" : m.status === "active" ? "●" : "";
-      return '<div class="mstep ' + cls + '"><div class="trk"></div><span class="dot">' + mark + '</span><span class="lb">' + esc(m.name) + "</span></div>";
+      return '<div class="mstep ' + cls + '" data-pedit="' + esc(p.id) + ':ms:' + i + '" title="编辑模式下点击切换 未开始/进行中/已完成"><div class="trk"></div><span class="dot">' + mark + '</span><span class="lb">' + esc(m.name) + "</span></div>";
     }).join("");
     var h = e.health;
     var act = e.latestActivity || {};
@@ -532,16 +599,16 @@
           "</div>" +
           '<div style="font-size:12.5px;color:var(--text-2)"><span style="color:var(--muted)">当前里程碑 ·</span> <b>' + esc(e.currentMilestone) + "</b></div>" +
         "</div>" +
-        '<div class="health-chip ' + esc(h) + '"><i></i>' + (HEALTH[h] || esc(h)) + "</div>" +
+        '<div class="health-chip ' + esc(h) + '" data-pedit="' + esc(p.id) + ':health" title="编辑模式下点击切换 健康/关注/预警"><i></i>' + (HEALTH[h] || esc(h)) + "</div>" +
       "</div>" +
       '<div class="msteps">' + steps + "</div>" +
-      '<div class="risk-box ' + (h === "green" ? "" : esc(h)) + '">' + warnSvg + "<span>" + esc(e.risk || "暂无") + "</span></div>" +
+      '<div class="risk-box ' + (h === "green" ? "" : esc(h)) + '" data-pedit="' + esc(p.id) + ':risk" title="编辑模式下点击修改">' + warnSvg + "<span>" + esc(e.risk || "暂无") + "</span></div>" +
       '<div style="display:flex;gap:8px;margin-top:14px">' +
         '<div class="infobox"><div class="lb">待办</div><div class="v" style="font-size:13.5px">' + sideLabel("us") + ' <span data-roll>' + openTodos(p, "us") + "</span> · " + sideLabel("partner") + ' <span data-roll>' + openTodos(p, "partner") + "</span></div></div>" +
         '<div class="infobox"><div class="lb" style="margin-bottom:3px">关键文件</div><div style="display:flex;gap:7px">' + icons + "</div></div>" +
       "</div>" +
       '<div class="card-foot"><span class="dot-live"></span>' +
-        '<span class="txt"><span class="tm">' + fmt(act.date) + "</span> " + esc(act.text) + "</span>" +
+        '<span class="txt" data-pedit="' + esc(p.id) + ':activity" title="编辑模式下点击修改"><span class="tm">' + fmt(act.date) + "</span> " + esc(act.text) + "</span>" +
       "</div></div>";
   }
 
@@ -613,11 +680,29 @@
   }
 
   /* ================= 当前进度（双栏待办） ================= */
+  function todoFormHtml(o) {
+    var t = o.t || { task: "", owner: "", due: "" };
+    var ref = o.mode === "edit" ? o.ref : "new:" + o.side + (o.pid ? ":" + o.pid : "");
+    var sel = "";
+    if (o.mode === "add" && !o.pid) {
+      sel = '<select class="f-proj">' + DATA.projects.map(function (p) {
+        return '<option value="' + esc(p.id) + '">' + esc(p.name) + "</option>";
+      }).join("") + "</select>";
+    }
+    return '<div class="tform" data-tform="' + esc(ref) + '">' +
+      '<input class="f-task" placeholder="事项（必填）" value="' + esc(t.task) + '">' + sel +
+      '<input class="f-owner" placeholder="负责人" value="' + esc(t.owner) + '">' +
+      '<input class="f-due" type="date" value="' + esc(t.due) + '">' +
+      '<span class="btns"><button class="save" data-tsave>保存</button><button class="cancel" data-tcancel>取消</button></span></div>';
+  }
   function todoRow(x) {
+    if (state.editingRef === x.ref) return todoFormHtml({ mode: "edit", ref: x.ref, t: x.t });
     return '<div class="trow ' + (x.t.done ? "done" : "") + '" data-todo="' + esc(x.ref) + '">' +
       '<span class="box">' + (x.t.done ? "✓" : "") + "</span>" +
       '<div style="flex:1"><div class="tx">' + esc(x.t.task) + "</div>" +
-      '<div class="mt">' + esc(x.p) + " · " + esc(x.t.owner) + " · 截止 " + fmt(x.t.due) + "</div></div></div>";
+      '<div class="mt">' + esc(x.p) + " · " + esc(x.t.owner) + " · 截止 " + fmt(x.t.due) + "</div></div>" +
+      '<span class="ops"><button data-tedit="' + esc(x.ref) + '" title="编辑">✎</button>' +
+      '<button data-tdel="' + esc(x.ref) + '" title="删除">✕</button></span></div>';
   }
   function collectTodos(side) {
     var items = [];
@@ -633,17 +718,22 @@
     var us = collectTodos("us"), them = collectTodos("partner");
     var usOpen = us.filter(function (x) { return !x.t.done; }).length;
     var themOpen = them.filter(function (x) { return !x.t.done; }).length;
-    function col(cls, title, open, items) {
+    function col(side, cls, title, open, items) {
+      var addForm = (state.adding && state.adding.side === side && !state.adding.pid)
+        ? todoFormHtml({ mode: "add", side: side }) : "";
       return '<div class="panel-card"><div class="todo-head ' + cls + '">' + title +
         ' · 待办 <span data-roll>' + open + "</span></div>" +
         (items.length ? items.map(todoRow).join("")
           : '<div class="empty" style="border:none;padding:26px 0">暂无待办事项</div>') +
+        addForm +
+        '<button class="add-todo" data-tadd="' + side + '">＋ 新增待办</button>' +
       "</div>";
     }
     return '<section class="sec">' +
-      '<div class="sec-head"><h2>当前进度 · 双方待办</h2></div>' +
+      '<div class="sec-head"><h2>当前进度 · 双方待办</h2>' +
+      (state.edit ? '<span class="hint">编辑模式：✎/✕ 修改删除待办，卡片上虚线框内容可点击修改</span>' : "") + "</div>" +
       '<div class="grid2" style="margin-top:14px">' +
-        col("us", sideLabel("us"), usOpen, us) + col("them", sideLabel("partner"), themOpen, them) +
+        col("us", "us", sideLabel("us"), usOpen, us) + col("partner", "them", sideLabel("partner"), themOpen, them) +
       "</div></section>";
   }
 
@@ -724,11 +814,15 @@
     } else if (tab === "todo") {
       function group(side, title, cls) {
         var list = (p.todos || {})[side] || [];
-        if (!list.length) return "";
+        if (!list.length && !state.edit) return "";
+        var addForm = (state.adding && state.adding.side === side && state.adding.pid === p.id)
+          ? todoFormHtml({ mode: "add", side: side, pid: p.id }) : "";
         return '<div class="todo-head ' + cls + '" style="margin:0 0 4px">' + title + "</div>" +
           list.map(function (t, i) {
             return todoRow({ p: p.name, t: t, ref: p.id + ":" + side + ":" + i });
-          }).join("") + '<div style="height:14px"></div>';
+          }).join("") + addForm +
+          '<button class="add-todo" data-tadd="' + side + ':' + esc(p.id) + '">＋ 新增待办</button>' +
+          '<div style="height:14px"></div>';
       }
       var g = group("us", sideLabel("us"), "us") + group("partner", sideLabel("partner"), "them");
       h += g || '<div class="empty" style="border:none">该项目暂无关联待办</div>';
@@ -898,18 +992,143 @@
     });
   }
 
-  function toggleTodo(ref) {
-    var parts = ref.split(":");
-    var p = DATA.projects.filter(function (x) { return x.id === parts[0]; })[0];
-    var t = p && ((p.todos || {})[parts[1]] || [])[+parts[2]];
-    if (!t) return;
-    t.done = !t.done; // 状态存内存
+  function rerender() {
     renderMain();
     if (state.drawerId) renderDrawer();
   }
 
+  function locateTodo(ref) {
+    var parts = ref.split(":");
+    var p = DATA.projects.filter(function (x) { return x.id === parts[0]; })[0];
+    if (!p) return null;
+    var list = (p.todos || {})[parts[1]];
+    if (!list) return null;
+    return { p: p, list: list, i: +parts[2] };
+  }
+
+  function toggleTodo(ref) {
+    var loc = locateTodo(ref);
+    var t = loc && loc.list[loc.i];
+    if (!t) return;
+    t.done = !t.done;
+    saveLocal();
+    rerender();
+  }
+
+  /* ---------- 编辑：待办表单 ---------- */
+  function saveTodoForm(form) {
+    if (!form) return;
+    var ref = form.getAttribute("data-tform");
+    var task = form.querySelector(".f-task").value.trim();
+    if (!task) { alert("事项不能为空"); return; }
+    var owner = form.querySelector(".f-owner").value.trim() || "待定";
+    var due = form.querySelector(".f-due").value || "";
+    if (ref.indexOf("new:") === 0) {
+      var parts = ref.split(":");
+      var side = parts[1];
+      var pid = parts[2] || (form.querySelector(".f-proj") || {}).value;
+      var p = DATA.projects.filter(function (x) { return x.id === pid; })[0];
+      if (!p) return;
+      if (!p.todos) p.todos = { us: [], partner: [] };
+      if (!p.todos[side]) p.todos[side] = [];
+      p.todos[side].push({ task: task, owner: owner, due: due, done: false });
+    } else {
+      var loc = locateTodo(ref);
+      if (!loc) return;
+      loc.list[loc.i].task = task;
+      loc.list[loc.i].owner = owner;
+      loc.list[loc.i].due = due;
+    }
+    state.editingRef = null;
+    state.adding = null;
+    saveLocal();
+    rerender();
+  }
+
+  /* ---------- 编辑：卡片字段（点击虚线区域） ---------- */
+  function handleFieldEdit(spec) {
+    var parts = spec.split(":");
+    var p = DATA.projects.filter(function (x) { return x.id === parts[0]; })[0];
+    if (!p) return;
+    var f = parts[1], v;
+    if (f === "nextAction" && p.research) {
+      v = prompt("修改「下一步」", p.research.nextAction || "");
+      if (v === null) return; p.research.nextAction = v.trim();
+    } else if (f === "rating" && p.research) {
+      v = prompt("初步评级（1–5）", p.research.rating);
+      if (v === null) return;
+      var n = parseInt(v, 10);
+      if (!(n >= 1 && n <= 5)) return;
+      p.research.rating = n;
+    } else if (f === "stage" && p.research) {
+      p.research.stage = STAGES[+parts[2]].key;
+    } else if (f === "risk" && p.execution) {
+      v = prompt("修改「风险 / 阻塞」", p.execution.risk || "");
+      if (v === null) return; p.execution.risk = v.trim();
+    } else if (f === "activity" && p.execution) {
+      var a = p.execution.latestActivity || (p.execution.latestActivity = { date: "", text: "" });
+      v = prompt("修改「最近动态」", a.text || "");
+      if (v === null) return; a.text = v.trim();
+    } else if (f === "health" && p.execution) {
+      var ho = ["green", "yellow", "red"];
+      p.execution.health = ho[(ho.indexOf(p.execution.health) + 1) % 3];
+    } else if (f === "ms" && p.execution) {
+      var m = (p.execution.milestones || [])[+parts[2]];
+      if (!m) return;
+      var so = ["pending", "active", "done"];
+      m.status = so[(so.indexOf(m.status) + 1) % 3];
+    } else return;
+    saveLocal();
+    rerender();
+  }
+
+  /* ---------- 编辑：统一点击分发（app 与抽屉共用） ---------- */
+  function handleEditClick(ev) {
+    var b;
+    if ((b = ev.target.closest("[data-tsave]"))) { saveTodoForm(b.closest("[data-tform]")); return true; }
+    if (ev.target.closest("[data-tcancel]")) { state.editingRef = null; state.adding = null; rerender(); return true; }
+    if (ev.target.closest("[data-tform]")) return true; // 表单内部点击不冒泡到行/卡片
+    if ((b = ev.target.closest("[data-tedit]"))) {
+      state.adding = null;
+      state.editingRef = b.getAttribute("data-tedit");
+      rerender();
+      return true;
+    }
+    if ((b = ev.target.closest("[data-tdel]"))) {
+      var ref = b.getAttribute("data-tdel");
+      if (confirm("删除这条待办？")) {
+        var loc = locateTodo(ref);
+        if (loc) { loc.list.splice(loc.i, 1); saveLocal(); rerender(); }
+      }
+      return true;
+    }
+    if ((b = ev.target.closest("[data-tadd]"))) {
+      var parts = b.getAttribute("data-tadd").split(":");
+      state.editingRef = null;
+      state.adding = { side: parts[0], pid: parts[1] || null };
+      rerender();
+      return true;
+    }
+    if (state.edit && (b = ev.target.closest("[data-pedit]"))) {
+      handleFieldEdit(b.getAttribute("data-pedit"));
+      return true;
+    }
+    return false;
+  }
+
+  /* ---------- 编辑：导出当前数据为 data.js ---------- */
+  function exportData() {
+    var content = "// 由看板「导出 data.js」生成，字段规范见 README.md\n" +
+      "window.DASHBOARD_DATA = " + JSON.stringify(DATA, null, 2) + ";\n";
+    var a = document.createElement("a");
+    a.href = URL.createObjectURL(new Blob([content], { type: "text/javascript" }));
+    a.download = "data.js";
+    a.click();
+  }
+
   function bindEvents() {
     document.getElementById("app").addEventListener("click", function (ev) {
+      if (handleEditClick(ev)) return;
       if (ev.target.closest("a")) return; // 文件/纪要链接：直接跳转，不触发抽屉
       var todo = ev.target.closest("[data-todo]");
       if (todo) { toggleTodo(todo.getAttribute("data-todo")); return; }
@@ -921,6 +1140,7 @@
       }
     });
     document.getElementById("drawer-root").addEventListener("click", function (ev) {
+      if (handleEditClick(ev)) return;
       if (ev.target.closest("[data-close-drawer]")) {
         state.drawerId = null;
         renderDrawer();
@@ -930,6 +1150,28 @@
       if (tab) { state.tab = tab.getAttribute("data-tab"); renderDrawer(); return; }
       var todo = ev.target.closest("[data-todo]");
       if (todo) toggleTodo(todo.getAttribute("data-todo"));
+    });
+    document.getElementById("edit-toggle").addEventListener("click", function () {
+      state.edit = !state.edit;
+      state.editingRef = null;
+      state.adding = null;
+      document.body.classList.toggle("editing", state.edit);
+      this.classList.toggle("on", state.edit);
+      document.getElementById("edit-export").hidden = !state.edit;
+      document.getElementById("edit-reset").hidden = !state.edit;
+      rerender();
+    });
+    document.getElementById("edit-export").addEventListener("click", exportData);
+    document.getElementById("edit-reset").addEventListener("click", function () {
+      if (!confirm("恢复为原始数据？你在页面上做的全部修改将被清除。")) return;
+      try { localStorage.removeItem(LS_KEY); } catch (e) {}
+      DATA = JSON.parse(JSON.stringify(ORIG));
+      window.DASHBOARD_DATA = DATA;
+      state.editingRef = null;
+      state.adding = null;
+      renderMeta();
+      renderFilterSeg();
+      rerender();
     });
     document.getElementById("filter-seg").addEventListener("click", function (ev) {
       var b = ev.target.closest("[data-filter]");
@@ -965,7 +1207,9 @@
     document.title = DATA.meta.title || "项目投研看板";
   }
 
-  DATA = data;
+  ORIG = JSON.parse(JSON.stringify(data));
+  DATA = loadLocal(data) || data;
+  window.DASHBOARD_DATA = DATA;
   try {
     renderMeta();
     renderFilterSeg();
@@ -989,6 +1233,7 @@
       if (!newData || !newData.meta || !Array.isArray(newData.projects)) {
         throw new Error("refresh(newData)：数据格式不正确，需包含 meta 与 projects");
       }
+      ORIG = JSON.parse(JSON.stringify(newData));
       DATA = newData;
       window.DASHBOARD_DATA = newData;
       renderMeta();
