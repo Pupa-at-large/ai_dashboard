@@ -13,7 +13,7 @@ window.DASHBOARD_DATA = {
   meta: {
     title: "智投 TID 专项看板",
     subtitle: "TID Governance & Optimization Monitor",
-    updatedAt: "2026-07-21 16:00",
+    updatedAt: "2026-07-21 19:00",
     todoLabels: { us: "平台/架构侧", partner: "业务/投放侧" }
   },
 
@@ -91,37 +91,51 @@ window.DASHBOARD_DATA = {
       }
     },
 
-    // ---------- 调研期 ----------
     {
-      id: "zt-refactor",
-      name: "智投 TID 重构",
-      track: "智投 / 创意架构",
-      status: "research",
-      updatedAt: "2026-04-28",
-      research: {
-        stage: "report",
-        interviews: { internal: 3, external: 0 },
-        questions: [
-          "同一项目多广告下相同素材 TID 合并后，检索与竞价链路能否兼容",
-          "重构预计可压降多少日新建 TID（当前智投日新建近 5000 万，指纹数仅为 TID 的 1/4）"
+      id: "cid-upgrade",
+      name: "CID 升级项目",
+      track: "创意架构 / 召回粗排",
+      status: "established",
+      updatedAt: "2026-07-16",
+      execution: {
+        currentMilestone: "阶段一 · CID 前置基建",
+        milestones: [
+          { name: "方案评审", status: "done", date: "2026-07-10" },
+          { name: "项目化拆解", status: "done", date: "2026-07-16" },
+          { name: "阶段一基建", status: "active", date: "2026-08-30" },
+          { name: "二A 5%实验", status: "pending", date: "2026-10-15" },
+          { name: "推全评估", status: "pending", date: "2026-11-15" }
         ],
-        rating: 4,
-        nextAction: "评审可行性调研结论，确定试点行业与灰度节奏"
+        health: "yellow",
+        risk: "约 35%（近 200 个）TID 特征有 diff 需模型实验（20+ 模型、500+ 预测任务）；样本回溯需刷数百 PB 数据、临时资源缺口大；效果风险待实验验证",
+        latestActivity: { date: "2026-07-16", text: "完成项目化拆解与各方方案设计对齐：TID 不下线，召回粗排升级为 AID×CID 颗粒度，主视觉指纹容量目标 435 万 → 1000 万" }
       },
       files: [
-        { name: "解法2智投项目TID重构方案可行性调研.pdf", type: "pdf", addedAt: "2026-04-28", url: "projects/智投 TID 重构/解法2智投项目TID重构方案可行性调研.pdf" },
-        { name: "智投项目TID重构方案&&可行性调研.pdf", type: "pdf", addedAt: "2026-04-24", url: "projects/智投 TID 重构/智投项目TID重构方案&&可行性调研.pdf" }
+        { name: "CID升级项目-项目拆解与跟进表.xlsx", type: "xlsx", addedAt: "2026-07-16", url: "projects/CID 升级项目/CID升级项目-项目拆解与跟进表.xlsx" },
+        { name: "解法2智投项目TID重构方案可行性调研.pdf", type: "pdf", addedAt: "2026-04-28", url: "projects/CID 升级项目/解法2智投项目TID重构方案可行性调研.pdf" },
+        { name: "智投项目TID重构方案&&可行性调研.pdf", type: "pdf", addedAt: "2026-04-24", url: "projects/CID 升级项目/智投项目TID重构方案&&可行性调研.pdf" }
       ],
-      interviewNotes: [],
+      interviewNotes: [
+        { title: "CID 方案评审：召回粗排局部升级（TID 不下线）", type: "internal", date: "2026-07-10", who: "李猛 / 汤煌 / 李锐 / 谢年华 / 许熳锋 等", url: "projects/CID 升级项目/20260710-CID召回粗排局部升级方案评审_转写.txt" },
+        { title: "CID 方案二讨论：创意组件化与分版位切换", type: "internal", date: "2026-07-03", who: "李猛 / 杨秀金 / 谢年华 / 朱张斌 等", url: "projects/CID 升级项目/20260703-CID方案二讨论_转写.txt" }
+      ],
       todos: {
         us: [
-          { task: "组织重构方案评审会并排期", owner: "架构-佟建锋", due: "2026-07-30", done: false }
+          { task: "完成 TID 特征梳理，与广工对齐替换方案", owner: "特征-汤煌/林立伟", due: "2026-07-30", done: false },
+          { task: "完成 AID→AID×CID 三塔模型方案设计", owner: "模型-deandnwang", due: "2026-07-30", done: false },
+          { task: "检索创意定向过滤（retrieval proxy 卡点）单列解法", owner: "检索-李锐/许熳锋", due: "2026-07-31", done: false },
+          { task: "完成模型训练资源评估与申请（预期 6 组）", owner: "模型-deandnwang", due: "2026-08-30", done: false }
         ],
         partner: [
-          { task: "智投侧确认项目→广告 TID 展开规则的合并边界", owner: "智投-tottizhang", due: "2026-08-08", done: false }
+          { task: "确认 CID 生产数据协议与指纹生产协议", owner: "投放-杨秀金", due: "2026-07-17", done: true },
+          { task: "完成 CID 整体生产（覆盖率 >99.99%）", owner: "投放-杨秀金", due: "2026-07-31", done: false },
+          { task: "完成播放链路 CID 透传（透传协议字段 7.31 先行）", owner: "播放-冯玉琢", due: "2026-08-06", done: false },
+          { task: "阶段二B：TID 元素/关联表拆库与行压缩", owner: "投放-杨秀金/michaelpei", due: "2026-08-30", done: false }
         ]
       }
     },
+
+    // ---------- 调研期 ----------
     {
       id: "explore-path",
       name: "探索路收益验证",
@@ -168,8 +182,12 @@ window.DASHBOARD_DATA = {
         a: "探索路已上线：共 707 台标准设备、约 900 万/年，按 1.2 亿 TID 容量计单 TID 成本约 0.075 元/年（普通路的 1%）。已按计划于 6.30 放量至 1.2 亿，目前实验消耗不显著、耗时基本一致，正在跟踪收益以决定是否放大流量。"
       },
       {
+        q: "CID 升级项目最新进展？",
+        a: "7.10 方案评审定稿：TID 不下线，仅召回粗排升级为 AID×CID 颗粒度，主视觉指纹容量目标 435 万 → 1000 万；7.16 已完成项目化拆解。关键节点：阶段一 CID 基建 8.30 完成（CID 生产 7.31、播放透传 8.6），阶段二A 10.15 启动 5% 实验、11.15 评估，阶段二B TID 拆库/行压缩 8.30。主要风险：约 35% 特征有 diff 需模型实验，样本回溯资源缺口大。"
+      },
+      {
         q: "检索侧有什么问题？",
-        a: "信息流召回支路已达 66 条、以每周约 1 条的速度增长，存在资源错配（如 10039 支路成本是视频号主路的 2.5 倍、消耗贡献仅 1/50000）。已完成支路「看清」统一看板，正在推进「看透」ROI 度量与准入准出规范。"
+        a: "信息流召回支路已达 66 条、以每周约 1 条的速度增长，存在资源错配（如 10039 支路成本是视频号主路的 2.5 倍、消耗贡献仅 1/50000）。已完成支路「看清」统一看板，正在推进「看透」ROI 度量与准入准出规范。另外 retrieval proxy 作为中心节点不可平行扩容，是召回粗排的核心卡点，已在 CID 升级项目中单列解法。"
       }
     ]
   }
