@@ -1,178 +1,175 @@
 // =============================================================
-// 项目投研看板 · 数据文件
-// 本文件由脚本自动生成/更新（当前为手工示例数据）。
-// 使用 .js 而非 .json：可直接以 file:// 双击打开 index.html，
-// 不受浏览器跨域限制。
+// 智投 TID 专项看板 · 数据文件
+// 本文件由脚本自动生成/更新（当前为根据 2026-07 上传资料手工整理）。
+// 使用 .js 而非 .json：可直接以 file:// 双击打开 index.html。
 // 字段含义详见 README.md。日期统一存 YYYY-MM-DD，页面展示 MM-DD。
 // 文件/纪要的 url：本地文件填相对路径（projects/<项目名>/<文件名>），
 // 在线文档填完整 https 链接；留空则条目不可点击。
+//
+// 【注意】各项目的 todos（待办）为从会议转写与文档中提炼的建议项，
+// 负责人与截止日期需相关同学人工确认后修正。
 // =============================================================
 window.DASHBOARD_DATA = {
   meta: {
-    title: "项目投研看板",
-    subtitle: "Project Research & Portfolio Monitor",
-    updatedAt: "2026-07-21 14:32"
+    title: "智投 TID 专项看板",
+    subtitle: "TID Governance & Optimization Monitor",
+    updatedAt: "2026-07-21 16:00",
+    todoLabels: { us: "平台/架构侧", partner: "业务/投放侧" }
   },
 
   projects: [
-    // ---------- 调研期项目 ----------
+    // ---------- 已立项（推进中） ----------
     {
-      id: "xinglian",
-      name: "星链光子",
-      track: "光通信",
-      status: "research",
-      updatedAt: "2026-07-21",
-      research: {
-        stage: "interview",
-        interviews: { internal: 6, external: 3 },
-        questions: [
-          "核心团队光芯片量产良率能否达到 80%？",
-          "下游数据中心客户的真实付费意愿"
+      id: "tid-gov",
+      name: "TID 激增治理",
+      track: "系统容量 / 成本",
+      status: "established",
+      updatedAt: "2026-06-30",
+      execution: {
+        currentMilestone: "探索路放量观察",
+        milestones: [
+          { name: "问题定位", status: "done", date: "2026-04-13" },
+          { name: "框架对齐", status: "done", date: "2026-04-24" },
+          { name: "探索路上线", status: "done", date: "2026-04-28" },
+          { name: "放量 1.2 亿", status: "active", date: "2026-06-30" },
+          { name: "扩容 ROI 决策", status: "pending", date: "2026-08-31" }
         ],
-        rating: 4,
-        nextAction: "本周完成 2 位外部技术专家访谈"
+        health: "yellow",
+        risk: "日新建 TID 峰值达 1.15 亿（较去年双11再涨 50%），系统容量红线 8000 万；投放 DB 磁盘占用超 80%，硬件升无可升",
+        latestActivity: { date: "2026-06-30", text: "探索路按计划放量至 1.2 亿 TID，实验消耗不显著、耗时基本一致，持续跟踪收益" }
       },
       files: [
-        { name: "星链光子-BP-v3.pdf", type: "pdf", addedAt: "2026-07-19", url: "projects/星链光子/星链光子-BP-v3.pdf" },
-        { name: "光通信赛道扫描.xlsx", type: "xlsx", addedAt: "2026-07-15", url: "projects/星链光子/光通信赛道扫描.xlsx" },
-        { name: "初筛评分表.docx", type: "docx", addedAt: "2026-07-11", url: "projects/星链光子/初筛评分表.docx" }
+        { name: "tid分月数量 0506.xlsx", type: "xlsx", addedAt: "2026-05-12", url: "projects/TID 激增治理/tid分月数量 0506.xlsx" },
+        { name: "TiD升级.pdf（0429 组会同步）", type: "pdf", addedAt: "2026-04-28", url: "projects/TID 激增治理/TiD升级.pdf" },
+        { name: "TID激增问题讨论框架 0422.pdf", type: "pdf", addedAt: "2026-04-24", url: "projects/TID 激增治理/TID激增问题讨论框架 0422.pdf" },
+        { name: "TID当前存在问题讨论.pdf", type: "pdf", addedAt: "2026-04-22", url: "projects/TID 激增治理/TID当前存在问题讨论.pdf" }
       ],
       interviewNotes: [
-        { title: "行业专家：量产良率", type: "external", date: "2026-07-20", who: "某大厂工艺专家" },
-        { title: "创始人一访：技术路线", type: "external", date: "2026-07-16", who: "CEO 张某" },
-        { title: "赛道初判会议纪要", type: "internal", date: "2026-07-11", who: "投研组" }
+        { title: "TiD 第二轮讨论（实时转写）", type: "internal", date: "2026-04-24", who: "何琪 / 佟建锋 / 谢年华 / 李锐 等", url: "projects/TID 激增治理/实时转写_TiD第二轮讨论_946214902_1777018945500.txt" },
+        { title: "TID 激增系统压力研讨会（转写）", type: "internal", date: "2026-04-22", who: "投放 / 检索 / 机制各方", url: "projects/TID 激增治理/Tid激增系统压力研讨会_transcript.txt" }
       ],
       todos: {
         us: [
-          { task: "完成星链光子外部专家访谈提纲", owner: "小赵", due: "2026-07-23", done: false }
+          { task: "输出探索路放量后的收益评估结论（消耗 / 耗时对比）", owner: "机制-谢年华", due: "2026-07-31", done: false },
+          { task: "按成本系数口径（新建 0.014 元/条、在线 6.6 元/年）算清扩容 ROI", owner: "架构-佟建锋", due: "2026-08-15", done: false }
         ],
         partner: [
-          { task: "星链光子提供芯片测试报告", owner: "对方 CTO", due: "2026-07-24", done: false }
+          { task: "各行业按消耗 KPI 折算增量索引诉求并确认口径", owner: "行业-何琪", due: "2026-07-25", done: false },
+          { task: "确认降级索引比例与在线量折算方式（乘放量比例）", owner: "投放-杨秀金", due: "2026-04-24", done: true }
         ]
       }
     },
     {
-      id: "maihe",
-      name: "麦禾智造",
-      track: "工业软件",
-      status: "research",
-      updatedAt: "2026-07-20",
-      research: {
-        stage: "screening",
-        interviews: { internal: 2, external: 1 },
-        questions: [
-          "MES 产品在离散制造场景的可复制性"
+      id: "retrieval",
+      name: "检索升级计划",
+      track: "召回架构",
+      status: "established",
+      updatedAt: "2026-04-28",
+      execution: {
+        currentMilestone: "支路「看透」ROI 度量",
+        milestones: [
+          { name: "看清：支路看板", status: "done", date: "2025-12-31" },
+          { name: "看透：ROI 度量", status: "active", date: "2026-08-31" },
+          { name: "准入准出规范", status: "pending", date: "2026-09-30" },
+          { name: "支路收敛", status: "pending", date: "2026-12-31" }
         ],
-        rating: 3,
-        nextAction: "补充 3 家标杆客户访谈后再定评级"
+        health: "yellow",
+        risk: "召回支路已达 66 条、仍以每周约 1 条速度新增；存在资源错配（如 10039 支路成本为视频号主路 2.5 倍、消耗贡献仅 1/50000）",
+        latestActivity: { date: "2026-04-17", text: "输出《检索现状及升级计划》：完成 66 条支路「看清」，启动 ROI「看透」" }
       },
       files: [
-        { name: "麦禾智造-介绍材料.pdf", type: "pdf", addedAt: "2026-07-18", url: "projects/麦禾智造/麦禾智造-介绍材料.pdf" },
-        { name: "工业软件竞品图谱.xlsx", type: "xlsx", addedAt: "2026-07-14", url: "projects/麦禾智造/工业软件竞品图谱.xlsx" }
+        { name: "议题5 - 检索现状及升级计划 (4.17).pdf", type: "pdf", addedAt: "2026-04-28", url: "projects/检索升级计划/议题5 - 检索现状及升级计划 (4.17).pdf" }
       ],
-      interviewNotes: [
-        { title: "创始人一访", type: "external", date: "2026-07-19", who: "CEO 李某" },
-        { title: "立项前初筛讨论", type: "internal", date: "2026-07-14", who: "投研组" }
-      ],
+      interviewNotes: [],
       todos: {
         us: [
-          { task: "麦禾智造竞品图谱更新", owner: "小李", due: "2026-07-25", done: true }
+          { task: "基于 Versa 看板输出各支路成本(I)/价值(R)报表", owner: "检索-李锐", due: "2026-08-29", done: false }
         ],
-        partner: []
+        partner: [
+          { task: "高成本低贡献支路（如 10039）owner 提供价值论证或下线计划", owner: "支路 owner 团队", due: "2026-08-15", done: false }
+        ]
       }
     },
 
-    // ---------- 已立项项目 ----------
+    // ---------- 调研期 ----------
     {
-      id: "yunshu",
-      name: "云枢数据",
-      track: "数据基础设施",
-      status: "established",
-      updatedAt: "2026-07-21",
-      execution: {
-        currentMilestone: "A 轮交割",
-        milestones: [
-          { name: "尽调", status: "done", date: "2026-06-15" },
-          { name: "投委会", status: "done", date: "2026-07-05" },
-          { name: "交割", status: "active", date: "2026-07-25" },
-          { name: "投后", status: "pending", date: "2026-08-20" }
+      id: "zt-refactor",
+      name: "智投 TID 重构",
+      track: "智投 / 创意架构",
+      status: "research",
+      updatedAt: "2026-04-28",
+      research: {
+        stage: "report",
+        interviews: { internal: 3, external: 0 },
+        questions: [
+          "同一项目多广告下相同素材 TID 合并后，检索与竞价链路能否兼容",
+          "重构预计可压降多少日新建 TID（当前智投日新建近 5000 万，指纹数仅为 TID 的 1/4）"
         ],
-        health: "green",
-        risk: "无重大风险，交割文件走签署流程中",
-        latestActivity: { date: "2026-07-21", text: "项目方已回签 SPA 附件三" }
+        rating: 4,
+        nextAction: "评审可行性调研结论，确定试点行业与灰度节奏"
       },
       files: [
-        { name: "交割协议-草案.docx", type: "docx", addedAt: "2026-07-21", url: "projects/云枢数据/交割协议-草案.docx" },
-        { name: "里程碑跟踪表.xlsx", type: "xlsx", addedAt: "2026-07-20", url: "https://docs.qq.com/sheet/示例-云枢数据-里程碑跟踪表" },
-        { name: "云枢数据-立项书.pdf", type: "pdf", addedAt: "2026-07-08", url: "projects/云枢数据/云枢数据-立项书.pdf" }
+        { name: "解法2智投项目TID重构方案可行性调研.pdf", type: "pdf", addedAt: "2026-04-28", url: "projects/智投 TID 重构/解法2智投项目TID重构方案可行性调研.pdf" },
+        { name: "智投项目TID重构方案&&可行性调研.pdf", type: "pdf", addedAt: "2026-04-24", url: "projects/智投 TID 重构/智投项目TID重构方案&&可行性调研.pdf" }
       ],
-      interviewNotes: [
-        { title: "管理层深访：组织架构", type: "external", date: "2026-07-12", who: "COO 王某" },
-        { title: "投委会决议纪要", type: "internal", date: "2026-07-05", who: "投委会", url: "https://docs.qq.com/doc/示例-云枢数据-投委会决议纪要" }
-      ],
+      interviewNotes: [],
       todos: {
         us: [
-          { task: "云枢数据交割文件法务复核", owner: "小钱", due: "2026-07-22", done: false }
+          { task: "组织重构方案评审会并排期", owner: "架构-佟建锋", due: "2026-07-30", done: false }
         ],
         partner: [
-          { task: "云枢数据回签 SPA 主协议", owner: "对方法务", due: "2026-07-22", done: false },
-          { task: "云枢数据确认董事席位安排", owner: "对方 CEO", due: "2026-07-21", done: true }
+          { task: "智投侧确认项目→广告 TID 展开规则的合并边界", owner: "智投-tottizhang", due: "2026-08-08", done: false }
         ]
       }
     },
     {
-      id: "hengxin",
-      name: "恒芯半导",
-      track: "半导体",
-      status: "established",
-      updatedAt: "2026-07-19",
-      execution: {
-        currentMilestone: "投后赋能",
-        milestones: [
-          { name: "尽调", status: "done", date: "2026-05-20" },
-          { name: "投委会", status: "done", date: "2026-06-10" },
-          { name: "交割", status: "done", date: "2026-06-28" },
-          { name: "投后", status: "active", date: "2026-09-30" }
+      id: "explore-path",
+      name: "探索路收益验证",
+      track: "召回 / 成本优化",
+      status: "research",
+      updatedAt: "2026-07-06",
+      research: {
+        stage: "interview",
+        interviews: { internal: 2, external: 0 },
+        questions: [
+          "扩大在线创意库存能否带来消耗增量（当前实验消耗不显著）",
+          "探索充分标准下（进精排 1 万次）流量放大到 6% 以上能否满足且可控"
         ],
-        health: "yellow",
-        risk: "核心客户订单延期，需关注 Q3 营收兑现",
-        latestActivity: { date: "2026-07-19", text: "6 月营收未达预期，管理层说明中" }
+        rating: 3,
+        nextAction: "放量至 1.2 亿后跟踪收益，评估是否放大流量或回收探索路"
       },
       files: [
-        { name: "董事会材料.pptx", type: "pptx", addedAt: "2026-07-18", url: "projects/恒芯半导/董事会材料.pptx" },
-        { name: "投后经营月报-6月.pdf", type: "pdf", addedAt: "2026-07-10", url: "projects/恒芯半导/投后经营月报-6月.pdf" },
-        { name: "恒芯半导-立项书.pdf", type: "pdf", addedAt: "2026-06-20", url: "projects/恒芯半导/恒芯半导-立项书.pdf" }
+        { name: "创意冷启定义说明.pdf（2026.6）", type: "pdf", addedAt: "2026-07-06", url: "projects/探索路收益验证/创意冷启定义说明.pdf" },
+        { name: "红线兜底规则截图（7 张）", type: "png", addedAt: "2026-07-06", url: "projects/探索路收益验证/红线兜底/" },
+        { name: "解法1-创意数不断增长的应对V2.pdf", type: "pdf", addedAt: "2026-04-28", url: "projects/探索路收益验证/解法1-创意数不断增长的应对V2.pdf" }
       ],
-      interviewNotes: [
-        { title: "CEO 沟通：订单节奏", type: "external", date: "2026-07-18", who: "CEO 陈某" },
-        { title: "投后风险预警会", type: "internal", date: "2026-07-15", who: "投后组" }
-      ],
+      interviewNotes: [],
       todos: {
         us: [
-          { task: "恒芯半导投后月报分析", owner: "小孙", due: "2026-07-24", done: false }
+          { task: "输出探索路 ROI 测算（约 900 万/年成本 vs 增量消耗）", owner: "机制-谢年华", due: "2026-08-08", done: false }
         ],
         partner: [
-          { task: "恒芯半导补充 Q3 订单明细", owner: "对方 CFO", due: "2026-07-23", done: false }
+          { task: "确认冷启 40 元阈值在重点行业的适配情况", owner: "策略-何琪", due: "2026-08-01", done: false }
         ]
       }
     }
   ],
 
   qa: {
-    greeting: "你好，我可以基于看板数据回答项目相关问题。试试下面的示例 👇",
-    fallback: "这是一个演示助手，暂未接入真实模型。你可以点击下方示例问题查看内置回答，接入知识库后即可自由提问。",
+    greeting: "你好，我可以基于 TID 专项的看板数据回答问题。试试下面的示例 👇",
+    fallback: "这是一个演示助手，暂未接入知识库。你可以点击下方示例问题查看内置回答，接入后即可基于全部项目文件自由提问。",
     examples: [
       {
-        q: "哪些项目有风险？",
-        a: "当前「恒芯半导」健康度为黄灯：核心客户订单延期，需关注 Q3 营收兑现。其余立项项目暂无重大风险。"
+        q: "TID 现在的压力有多大？",
+        a: "日新建 TID 峰值约 1.15 亿，较去年双11再涨 50%；4 月日均新建约 9651 万，其中智投约 5300 万（占 54%）。创意相关成本约 9 亿/年，系统容量红线 8000 万，投放 DB 磁盘占用已超 80%、硬件升无可升。"
       },
       {
-        q: "云枢数据进展到哪了？",
-        a: "云枢数据处于「A 轮交割」阶段，尽调与投委会已完成，交割进行中。最新动态：07-21 项目方已回签 SPA 附件三。"
+        q: "探索路进展如何？",
+        a: "探索路已上线：共 707 台标准设备、约 900 万/年，按 1.2 亿 TID 容量计单 TID 成本约 0.075 元/年（普通路的 1%）。已按计划于 6.30 放量至 1.2 亿，目前实验消耗不显著、耗时基本一致，正在跟踪收益以决定是否放大流量。"
       },
       {
-        q: "调研期项目下一步？",
-        a: "星链光子：本周完成 2 位外部技术专家访谈；麦禾智造：补充 3 家标杆客户访谈后再定评级。"
+        q: "检索侧有什么问题？",
+        a: "信息流召回支路已达 66 条、以每周约 1 条的速度增长，存在资源错配（如 10039 支路成本是视频号主路的 2.5 倍、消耗贡献仅 1/50000）。已完成支路「看清」统一看板，正在推进「看透」ROI 度量与准入准出规范。"
       }
     ]
   }

@@ -443,6 +443,11 @@
   function openTodos(p, side) {
     return ((p.todos || {})[side] || []).filter(function (t) { return !t.done; }).length;
   }
+  /* 双栏待办的栏目名，可在 meta.todoLabels 中自定义（默认 我们/项目方） */
+  function sideLabel(side) {
+    var L = (DATA.meta || {}).todoLabels || {};
+    return side === "us" ? (L.us || "我们") : (L.partner || "项目方");
+  }
   var warnSvg = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 9v4m0 4h.01M10.3 3.9 2 18a2 2 0 0 0 1.7 3h16.6a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
 
   /* ================= 状态（内存） ================= */
@@ -532,7 +537,7 @@
       '<div class="msteps">' + steps + "</div>" +
       '<div class="risk-box ' + (h === "green" ? "" : esc(h)) + '">' + warnSvg + "<span>" + esc(e.risk || "暂无") + "</span></div>" +
       '<div style="display:flex;gap:8px;margin-top:14px">' +
-        '<div class="infobox"><div class="lb">待办</div><div class="v" style="font-size:13.5px">我们 <span data-roll>' + openTodos(p, "us") + "</span> · 项目方 <span data-roll>" + openTodos(p, "partner") + "</span></div></div>" +
+        '<div class="infobox"><div class="lb">待办</div><div class="v" style="font-size:13.5px">' + sideLabel("us") + ' <span data-roll>' + openTodos(p, "us") + "</span> · " + sideLabel("partner") + ' <span data-roll>' + openTodos(p, "partner") + "</span></div></div>" +
         '<div class="infobox"><div class="lb" style="margin-bottom:3px">关键文件</div><div style="display:flex;gap:7px">' + icons + "</div></div>" +
       "</div>" +
       '<div class="card-foot"><span class="dot-live"></span>' +
@@ -638,7 +643,7 @@
     return '<section class="sec">' +
       '<div class="sec-head"><h2>当前进度 · 双方待办</h2></div>' +
       '<div class="grid2" style="margin-top:14px">' +
-        col("us", "我们", usOpen, us) + col("them", "项目方", themOpen, them) +
+        col("us", sideLabel("us"), usOpen, us) + col("them", sideLabel("partner"), themOpen, them) +
       "</div></section>";
   }
 
@@ -666,7 +671,7 @@
         h += box(label("当前里程碑") + '<div style="font-size:14px;font-weight:700">' + esc(e.currentMilestone) + "</div>");
         h += box(label("健康度") + '<div style="font-size:14px;font-weight:700;color:' + hcol + '">● ' + (HEALTH[e.health] || esc(e.health)) + "</div>");
         h += box(label("风险 / 阻塞") + '<div style="font-size:13px;line-height:1.5">' + esc(e.risk || "暂无") + "</div>");
-        h += box(label("双方待办") + '<div style="font-size:14px;font-weight:700">我们 ' + openTodos(p, "us") + " · 项目方 " + openTodos(p, "partner") + "</div>");
+        h += box(label("双方待办") + '<div style="font-size:14px;font-weight:700">' + sideLabel("us") + " " + openTodos(p, "us") + " · " + sideLabel("partner") + " " + openTodos(p, "partner") + "</div>");
         h += box(label("最近动态") + '<div style="font-size:13px"><span style="color:var(--muted)">' + fmt(act.date) + "</span> " + esc(act.text) + "</div>");
       }
     } else if (tab === "milestone") {
@@ -725,7 +730,7 @@
             return todoRow({ p: p.name, t: t, ref: p.id + ":" + side + ":" + i });
           }).join("") + '<div style="height:14px"></div>';
       }
-      var g = group("us", "我们", "us") + group("partner", "项目方", "them");
+      var g = group("us", sideLabel("us"), "us") + group("partner", sideLabel("partner"), "them");
       h += g || '<div class="empty" style="border:none">该项目暂无关联待办</div>';
     }
     return h;
