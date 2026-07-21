@@ -121,8 +121,9 @@ window.DASHBOARD_DATA = {
 | `examples[].q` | string | 示例问题（点击 chip 或原样输入时触发） |
 | `examples[].a` | string | 对应的内置回答 |
 
-> `index.html` 中预留了空函数 `sendToBot(question)`，未来在此接入知识库问答
-> 服务并将答案追加到对话流。
+> 接入真实知识库问答：在 `config.js` 的 `bot.endpoint` 填入接口地址即自动
+> 切换为真实调用（内置示例问答仅在未配置时生效），接口契约与跨域说明见
+> INTEGRATION.md。
 
 ## 开发说明
 
@@ -134,5 +135,7 @@ window.DASHBOARD_DATA = {
   （概览/里程碑/文件/访谈/待办 5 个 Tab，Esc 或点遮罩关闭）、待办复选框
   勾选（状态存内存，卡片与进度区计数联动）、分组空状态占位、问答助手
   （建议 chips + 内置示例问答）。
-- 部署：纯静态产物（`index.html` + `data.js`），双击本地打开、放任意静态
-  托管或嵌入其他平台均可；更新数据只需重新生成 `data.js`。
+- 部署：纯静态产物（`index.html` + `data.js` + `config.js`），双击本地打开、
+  放任意静态托管或嵌入其他平台均可；更新数据只需重新生成 `data.js`。
+- 平台对接（Workbuddy 等）：问答接口配置、`window.Dashboard` 运行时 API、
+  迁移方式对比见 INTEGRATION.md。

@@ -398,6 +398,7 @@
 </div>
 
 <script src="data.js"></script>
+<script src="config.js"></script>
 <script>
 (function () {
   "use strict";
@@ -743,29 +744,72 @@
   function renderChat() {
     var msgs = document.getElementById("chat-msgs");
     msgs.innerHTML = state.chat.map(function (c) {
-      return '<div class="crow ' + (c.role === "user" ? "me" : "") + '"><div class="bubble">' + esc(c.text) + "</div></div>";
+      return '<div class="crow ' + (c.role === "user" ? "me" : "") + '">' +
+        '<div class="bubble"' + (c.pending ? ' style="opacity:.65"' : "") + '>' + esc(c.text) + "</div></div>";
     }).join("");
     msgs.scrollTop = msgs.scrollHeight;
   }
 
+  function botConfig() {
+    var c = (window.DASHBOARD_CONFIG || {}).bot;
+    return c && c.endpoint ? c : null;
+  }
+
   function ask(q) {
     state.chat.push({ role: "user", text: q });
-    var hit = ((DATA.qa || {}).examples || []).filter(function (x) { return x.q === q; })[0];
-    var fallback = (DATA.qa || {}).fallback ||
-      "这是一个演示助手，暂未接入真实模型。你可以点击下方示例问题查看内置回答，接入知识库后即可自由提问。";
-    state.chat.push({ role: "bot", text: hit ? hit.a : fallback });
+    if (!botConfig()) {
+      // 未配置问答服务端点：使用 data.js 内置示例问答
+      var hit = ((DATA.qa || {}).examples || []).filter(function (x) { return x.q === q; })[0];
+      var fallback = (DATA.qa || {}).fallback ||
+        "这是一个演示助手，暂未接入真实模型。你可以点击下方示例问题查看内置回答，接入知识库后即可自由提问。";
+      state.chat.push({ role: "bot", text: hit ? hit.a : fallback });
+      renderChat();
+      return;
+    }
+    var idx = state.chat.push({ role: "bot", text: "正在思考…", pending: true }) - 1;
     renderChat();
-    sendToBot(q);
+    sendToBot(q).then(function (ans) {
+      state.chat[idx] = { role: "bot", text: ans || "（服务返回了空回复）" };
+      renderChat();
+    }).catch(function (err) {
+      state.chat[idx] = { role: "bot", text: "问答服务暂时不可用：" + (err && err.message ? err.message : err) };
+      renderChat();
+    });
   }
 
   /**
-   * 预留：知识库问答接口。
-   * 未来在此处将 question 发送至后端知识库问答服务（替换上面 ask() 里的
-   * 内置匹配逻辑），并把返回的答案追加到 state.chat 后调用 renderChat()。
-   * 当前为空实现，仅占位。
+   * 知识库问答对接点（Workbuddy 等平台在此接入，契约详见 INTEGRATION.md）。
+   * 在 config.js 的 bot.endpoint 填入接口地址后自动生效：
+   *   请求  POST {endpoint}
+   *         JSON: { question: "用户问题", history: [{role:"user"|"bot", text:"..."}] }
+   *   响应  JSON: { answer: "回答文本" }（兼容 {text}/{reply}/纯文本响应）
+   * 未配置 endpoint 时页面走 data.js 内置示例问答，不会调用本函数。
+   * 返回 Promise<string>。
    */
   function sendToBot(question) {
-    // TODO: 接入知识库问答
+    var cfg = botConfig();
+    if (!cfg) return Promise.reject(new Error("未配置问答服务端点（config.js → bot.endpoint）"));
+    var ctrl = typeof AbortController !== "undefined" ? new AbortController() : null;
+    var timer = ctrl ? setTimeout(function () { ctrl.abort(); }, cfg.timeoutMs || 30000) : null;
+    var history = state.chat.filter(function (m) { return !m.pending; }).slice(-10)
+      .map(function (m) { return { role: m.role, text: m.text }; });
+    return fetch(cfg.endpoint, {
+      method: cfg.method || "POST",
+      headers: cfg.headers || { "Content-Type": "application/json" },
+      body: JSON.stringify({ question: question, history: history }),
+      signal: ctrl ? ctrl.signal : undefined
+    }).then(function (res) {
+      if (timer) clearTimeout(timer);
+      if (!res.ok) throw new Error("HTTP " + res.status);
+      var ct = res.headers.get("content-type") || "";
+      return ct.indexOf("json") >= 0 ? res.json() : res.text();
+    }).then(function (body) {
+      if (typeof body === "string") return body;
+      return body.answer || body.text || body.reply || JSON.stringify(body);
+    }).catch(function (e) {
+      if (timer) clearTimeout(timer);
+      throw e;
+    });
   }
 
   function initChat() {
@@ -891,20 +935,47 @@
     fatal("数据格式不正确：缺少 meta 或 projects 字段。");
     return;
   }
-  DATA = data;
-  try {
+  function renderMeta() {
     document.getElementById("topbar").hidden = false;
     document.getElementById("board-title").textContent = DATA.meta.title || "项目投研看板";
     document.getElementById("board-sub").textContent = DATA.meta.subtitle || "";
     document.getElementById("board-updated").textContent = String(DATA.meta.updatedAt || "—").replace(/^\d{4}-/, "");
     document.title = DATA.meta.title || "项目投研看板";
+  }
+
+  DATA = data;
+  try {
+    renderMeta();
     renderFilterSeg();
     renderMain();
     initChat();
     bindEvents();
   } catch (err) {
     fatal("渲染出错：" + (err && err.message ? err.message : err));
+    return;
   }
+
+  /**
+   * 页面运行时 API（供宿主平台调用，详见 INTEGRATION.md）。
+   * - Dashboard.refresh(newData)：整体替换看板数据并重渲染，
+   *   newData 结构与 window.DASHBOARD_DATA 相同（见 README.md）。
+   *   适合宿主（如 Workbuddy 内嵌场景）通过 JS 推送新数据，无需刷新页面。
+   * - Dashboard.ask(question)：以编程方式向问答助手提问（等同用户输入）。
+   */
+  window.Dashboard = {
+    refresh: function (newData) {
+      if (!newData || !newData.meta || !Array.isArray(newData.projects)) {
+        throw new Error("refresh(newData)：数据格式不正确，需包含 meta 与 projects");
+      }
+      DATA = newData;
+      window.DASHBOARD_DATA = newData;
+      renderMeta();
+      renderFilterSeg();
+      renderMain();
+      if (state.drawerId) renderDrawer();
+    },
+    ask: ask
+  };
 })();
 </script>
 </body>
