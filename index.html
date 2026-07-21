@@ -204,6 +204,7 @@
   .ptitle { font-size: 13px; font-weight: 800; margin-bottom: 14px; display: flex; align-items: center; gap: 7px; }
   .frow { display: flex; align-items: center; gap: 12px; padding: 10px 4px; border-bottom: 1px solid var(--border-2); transition: background .18s; }
   .frow:hover { background: #F7F9FC; }
+  a.frow { color: inherit; }
   .frow .fi { flex: 1; min-width: 0; }
   .frow .fn { font-size: 13px; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .frow .fp { font-size: 11px; color: var(--muted); }
@@ -512,7 +513,10 @@
     var h = e.health;
     var act = e.latestActivity || {};
     var icons = (p.files || []).slice(0, 3).map(function (f) {
-      return '<span title="' + esc(f.name) + '">' + fico(f.type, true) + "</span>";
+      var badge = fico(f.type, true);
+      return f.url
+        ? '<a href="' + esc(f.url) + '" target="_blank" rel="noopener" title="' + esc(f.name) + '">' + badge + "</a>"
+        : '<span title="' + esc(f.name) + '">' + badge + "</span>";
     }).join("");
     return '<div class="pcard" data-open="' + esc(p.id) + '">' +
       '<div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px">' +
@@ -570,18 +574,24 @@
     notes.sort(function (a, b) { return b.n.date < a.n.date ? -1 : 1; });
 
     var fHtml = files.map(function (x) {
-      return '<div class="frow">' + fico(x.f.type) +
+      var inner = fico(x.f.type) +
         '<div class="fi"><div class="fn" title="' + esc(x.f.name) + '">' + esc(x.f.name) + "</div>" +
         '<div class="fp">' + esc(x.p) + "</div></div>" +
-        '<span class="date-sm">' + fmt(x.f.addedAt) + "</span></div>";
+        '<span class="date-sm">' + fmt(x.f.addedAt) + "</span>";
+      return x.f.url
+        ? '<a class="frow" href="' + esc(x.f.url) + '" target="_blank" rel="noopener">' + inner + "</a>"
+        : '<div class="frow">' + inner + "</div>";
     }).join("");
     var nHtml = notes.map(function (x) {
       var ext = x.n.type === "external";
+      var title = x.n.url
+        ? '<a href="' + esc(x.n.url) + '" target="_blank" rel="noopener">' + esc(x.n.title) + "</a>"
+        : esc(x.n.title);
       return '<div class="ivrow ' + (ext ? "external" : "internal") + '"><span class="nd"></span>' +
         '<div style="display:flex;align-items:center;gap:8px;margin-bottom:3px">' +
           '<span class="ivtag ' + (ext ? "external" : "") + '">' + (ext ? "外部" : "内部") + "</span>" +
           '<span class="date-sm">' + fmt(x.n.date) + "</span></div>" +
-        '<div class="tt">' + esc(x.n.title) + "</div>" +
+        '<div class="tt">' + title + "</div>" +
         '<div class="who">' + esc(x.p) + (x.n.who ? " · " + esc(x.n.who) : "") + "</div></div>";
     }).join("");
 
@@ -685,18 +695,24 @@
       }).join("");
     } else if (tab === "files") {
       h += (p.files || []).map(function (f) {
+        var open = f.url
+          ? '<a href="' + esc(f.url) + '" target="_blank" rel="noopener" style="font-size:12px">打开</a>'
+          : '<span class="date-sm">未关联</span>';
         return '<div class="frow">' + fico(f.type) +
           '<div class="fi"><div class="fn">' + esc(f.name) + '</div><div class="fp">入库 ' + fmt(f.addedAt) + "</div></div>" +
-          '<a href="javascript:void(0)" style="font-size:12px">查看</a></div>';
+          open + "</div>";
       }).join("") || '<div class="empty" style="border:none">暂无文件</div>';
     } else if (tab === "interview") {
       h += (p.interviewNotes || []).map(function (n) {
         var ext = n.type === "external";
+        var title = n.url
+          ? '<a href="' + esc(n.url) + '" target="_blank" rel="noopener">' + esc(n.title) + "</a>"
+          : esc(n.title);
         return '<div style="padding:11px 4px;border-bottom:1px solid var(--border-2)">' +
           '<div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">' +
             '<span class="ivtag ' + (ext ? "external" : "") + '">' + (ext ? "外部" : "内部") + "</span>" +
             '<span class="date-sm">' + fmt(n.date) + "</span></div>" +
-          '<div style="font-size:13px;font-weight:600">' + esc(n.title) + "</div>" +
+          '<div style="font-size:13px;font-weight:600">' + title + "</div>" +
           (n.who ? '<div style="font-size:12px;color:var(--muted)">' + esc(n.who) + "</div>" : "") +
         "</div>";
       }).join("") || '<div class="empty" style="border:none">暂无访谈纪要</div>';
@@ -889,6 +905,7 @@
 
   function bindEvents() {
     document.getElementById("app").addEventListener("click", function (ev) {
+      if (ev.target.closest("a")) return; // 文件/纪要链接：直接跳转，不触发抽屉
       var todo = ev.target.closest("[data-todo]");
       if (todo) { toggleTodo(todo.getAttribute("data-todo")); return; }
       var card = ev.target.closest("[data-open]");

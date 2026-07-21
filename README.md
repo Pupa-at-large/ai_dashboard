@@ -82,9 +82,10 @@ window.DASHBOARD_DATA = {
 
 | 字段 | 类型 | 说明 |
 | --- | --- | --- |
-| `name` | string | 文件名（含扩展名），如 `"九章流形-立项书 v2.pdf"` |
+| `name` | string | 文件名（含扩展名），如 `"云枢数据-立项书.pdf"` |
 | `type` | string | 文件类型：`"pdf"` / `"xlsx"` / `"docx"` / `"pptx"`，决定类型徽标样式；其他值降级为灰色徽标 |
 | `addedAt` | string | 入库日期，格式 `YYYY-MM-DD` |
+| `url` | string | 打开链接（可选）。本地文件填相对路径 `"projects/<项目名>/<文件名>"`，在线文档填完整 `https://` 链接；留空则条目不可点击。文件夹约定见 `projects/README.md` |
 
 #### `interviewNotes[]` — 访谈纪要
 
@@ -96,6 +97,7 @@ window.DASHBOARD_DATA = {
 | `type` | string | `"internal"`（内部）或 `"external"`（外部），决定条目标签与节点颜色 |
 | `date` | string | 访谈日期，格式 `YYYY-MM-DD` |
 | `who` | string | 访谈对象/参与方（可选），如 `"CEO 张某"`、`"投研组"` |
+| `url` | string | 纪要文档链接（可选），规则同 `files[].url`：本地相对路径或在线文档 `https://` 链接 |
 
 #### `todos` — 双方待办
 

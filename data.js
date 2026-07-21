@@ -4,6 +4,8 @@
 // 使用 .js 而非 .json：可直接以 file:// 双击打开 index.html，
 // 不受浏览器跨域限制。
 // 字段含义详见 README.md。日期统一存 YYYY-MM-DD，页面展示 MM-DD。
+// 文件/纪要的 url：本地文件填相对路径（projects/<项目名>/<文件名>），
+// 在线文档填完整 https 链接；留空则条目不可点击。
 // =============================================================
 window.DASHBOARD_DATA = {
   meta: {
@@ -31,9 +33,9 @@ window.DASHBOARD_DATA = {
         nextAction: "本周完成 2 位外部技术专家访谈"
       },
       files: [
-        { name: "星链光子-BP-v3.pdf", type: "pdf", addedAt: "2026-07-19" },
-        { name: "光通信赛道扫描.xlsx", type: "xlsx", addedAt: "2026-07-15" },
-        { name: "初筛评分表.docx", type: "docx", addedAt: "2026-07-11" }
+        { name: "星链光子-BP-v3.pdf", type: "pdf", addedAt: "2026-07-19", url: "projects/星链光子/星链光子-BP-v3.pdf" },
+        { name: "光通信赛道扫描.xlsx", type: "xlsx", addedAt: "2026-07-15", url: "projects/星链光子/光通信赛道扫描.xlsx" },
+        { name: "初筛评分表.docx", type: "docx", addedAt: "2026-07-11", url: "projects/星链光子/初筛评分表.docx" }
       ],
       interviewNotes: [
         { title: "行业专家：量产良率", type: "external", date: "2026-07-20", who: "某大厂工艺专家" },
@@ -65,8 +67,8 @@ window.DASHBOARD_DATA = {
         nextAction: "补充 3 家标杆客户访谈后再定评级"
       },
       files: [
-        { name: "麦禾智造-介绍材料.pdf", type: "pdf", addedAt: "2026-07-18" },
-        { name: "工业软件竞品图谱.xlsx", type: "xlsx", addedAt: "2026-07-14" }
+        { name: "麦禾智造-介绍材料.pdf", type: "pdf", addedAt: "2026-07-18", url: "projects/麦禾智造/麦禾智造-介绍材料.pdf" },
+        { name: "工业软件竞品图谱.xlsx", type: "xlsx", addedAt: "2026-07-14", url: "projects/麦禾智造/工业软件竞品图谱.xlsx" }
       ],
       interviewNotes: [
         { title: "创始人一访", type: "external", date: "2026-07-19", who: "CEO 李某" },
@@ -100,13 +102,13 @@ window.DASHBOARD_DATA = {
         latestActivity: { date: "2026-07-21", text: "项目方已回签 SPA 附件三" }
       },
       files: [
-        { name: "交割协议-草案.docx", type: "docx", addedAt: "2026-07-21" },
-        { name: "里程碑跟踪表.xlsx", type: "xlsx", addedAt: "2026-07-20" },
-        { name: "云枢数据-立项书.pdf", type: "pdf", addedAt: "2026-07-08" }
+        { name: "交割协议-草案.docx", type: "docx", addedAt: "2026-07-21", url: "projects/云枢数据/交割协议-草案.docx" },
+        { name: "里程碑跟踪表.xlsx", type: "xlsx", addedAt: "2026-07-20", url: "https://docs.qq.com/sheet/示例-云枢数据-里程碑跟踪表" },
+        { name: "云枢数据-立项书.pdf", type: "pdf", addedAt: "2026-07-08", url: "projects/云枢数据/云枢数据-立项书.pdf" }
       ],
       interviewNotes: [
         { title: "管理层深访：组织架构", type: "external", date: "2026-07-12", who: "COO 王某" },
-        { title: "投委会决议纪要", type: "internal", date: "2026-07-05", who: "投委会" }
+        { title: "投委会决议纪要", type: "internal", date: "2026-07-05", who: "投委会", url: "https://docs.qq.com/doc/示例-云枢数据-投委会决议纪要" }
       ],
       todos: {
         us: [
@@ -137,9 +139,9 @@ window.DASHBOARD_DATA = {
         latestActivity: { date: "2026-07-19", text: "6 月营收未达预期，管理层说明中" }
       },
       files: [
-        { name: "董事会材料.pptx", type: "pptx", addedAt: "2026-07-18" },
-        { name: "投后经营月报-6月.pdf", type: "pdf", addedAt: "2026-07-10" },
-        { name: "恒芯半导-立项书.pdf", type: "pdf", addedAt: "2026-06-20" }
+        { name: "董事会材料.pptx", type: "pptx", addedAt: "2026-07-18", url: "projects/恒芯半导/董事会材料.pptx" },
+        { name: "投后经营月报-6月.pdf", type: "pdf", addedAt: "2026-07-10", url: "projects/恒芯半导/投后经营月报-6月.pdf" },
+        { name: "恒芯半导-立项书.pdf", type: "pdf", addedAt: "2026-06-20", url: "projects/恒芯半导/恒芯半导-立项书.pdf" }
       ],
       interviewNotes: [
         { title: "CEO 沟通：订单节奏", type: "external", date: "2026-07-18", who: "CEO 陈某" },
