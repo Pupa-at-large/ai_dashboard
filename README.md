@@ -1,4 +1,4 @@
-# 项目 AI 看板
+# 项目投研看板
 
 纯前端的项目跟踪看板：`index.html` 单页面（内联 CSS/JS，无框架、无 CDN 依赖），
 全部展示数据来自 `data.js`。双击 `index.html` 即可在浏览器中直接打开使用。
@@ -27,7 +27,10 @@ window.DASHBOARD_DATA = {
 | 字段 | 类型 | 说明 |
 | --- | --- | --- |
 | `title` | string | 看板标题，显示在顶栏 |
+| `subtitle` | string | 顶栏英文副标题（可选），如 `"Project Research & Portfolio Monitor"` |
 | `updatedAt` | string | 数据最后生成/更新时间，格式 `YYYY-MM-DD HH:mm`，显示在顶栏 |
+
+> 所有日期字段统一存完整格式（`YYYY-MM-DD`），页面展示时自动去掉年份、只显示 `MM-DD`。
 
 ### `projects[]` — 项目列表
 
@@ -89,9 +92,10 @@ window.DASHBOARD_DATA = {
 
 | 字段 | 类型 | 说明 |
 | --- | --- | --- |
-| `title` | string | 纪要标题，建议格式 `"外部访谈｜对象：主题"` |
-| `type` | string | `"internal"`（内部）或 `"external"`（外部），决定条目标签 |
+| `title` | string | 纪要标题，如 `"创始人一访：技术路线"` |
+| `type` | string | `"internal"`（内部）或 `"external"`（外部），决定条目标签与节点颜色 |
 | `date` | string | 访谈日期，格式 `YYYY-MM-DD` |
+| `who` | string | 访谈对象/参与方（可选），如 `"CEO 张某"`、`"投研组"` |
 
 #### `todos` — 双方待办
 
@@ -111,17 +115,24 @@ window.DASHBOARD_DATA = {
 
 | 字段 | 类型 | 说明 |
 | --- | --- | --- |
-| `examples` | array | 写死的示例问答，建议 2–3 条 |
-| `examples[].q` | string | 示例问题（渲染为用户气泡） |
-| `examples[].a` | string | 示例回答（渲染为机器人气泡） |
+| `greeting` | string | 打开对话框时机器人的开场白（可选） |
+| `fallback` | string | 输入的问题无内置答案时的兜底回复（可选，缺省有默认文案） |
+| `examples` | array | 内置示例问答，建议 2–3 条；问题渲染为输入框上方的建议 chips |
+| `examples[].q` | string | 示例问题（点击 chip 或原样输入时触发） |
+| `examples[].a` | string | 对应的内置回答 |
 
 > `index.html` 中预留了空函数 `sendToBot(question)`，未来在此接入知识库问答
 > 服务并将答案追加到对话流。
 
 ## 开发说明
 
-- 视觉：浅色底，灰阶 + 品牌蓝（`#0052D9`）+ 红黄绿状态色；正文 13–14px，
-  system-ui 中文字体栈；动效统一 200ms ease。
-- 布局：桌面端 1280px 最佳，`≤960px` 降级为单列。
-- 第一步已完成静态结构与数据渲染；筛选/搜索、卡片详情抽屉、待办勾选、
-  空状态等交互属于第二步。
+- 视觉：对齐 Claude Design 设计稿；浅色底，灰阶 + 品牌蓝（`#0052D9`）+
+  红黄绿状态色；正文 13px，system-ui 中文字体栈；无框架、无 CDN、无外部字体，
+  完全离线可用。
+- 布局：桌面端 1280–1440px 最佳，`≤1024px` 降级为单列。
+- 已实现交互：状态筛选与搜索（前端过滤）、点击卡片右滑详情抽屉
+  （概览/里程碑/文件/访谈/待办 5 个 Tab，Esc 或点遮罩关闭）、待办复选框
+  勾选（状态存内存，卡片与进度区计数联动）、分组空状态占位、问答助手
+  （建议 chips + 内置示例问答）。
+- 部署：纯静态产物（`index.html` + `data.js`），双击本地打开、放任意静态
+  托管或嵌入其他平台均可；更新数据只需重新生成 `data.js`。

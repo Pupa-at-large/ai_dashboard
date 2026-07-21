@@ -1,178 +1,176 @@
 // =============================================================
-// 项目 AI 看板 · 数据文件
+// 项目投研看板 · 数据文件
 // 本文件由脚本自动生成/更新（当前为手工示例数据）。
 // 使用 .js 而非 .json：可直接以 file:// 双击打开 index.html，
 // 不受浏览器跨域限制。
-// 字段含义详见 README.md。
+// 字段含义详见 README.md。日期统一存 YYYY-MM-DD，页面展示 MM-DD。
 // =============================================================
 window.DASHBOARD_DATA = {
   meta: {
-    title: "项目 AI 看板",
-    updatedAt: "2026-07-20 09:30"
+    title: "项目投研看板",
+    subtitle: "Project Research & Portfolio Monitor",
+    updatedAt: "2026-07-21 14:32"
   },
 
   projects: [
     // ---------- 调研期项目 ----------
     {
-      id: "yaoxi",
-      name: "曜析智能",
-      track: "开发者工具 / AI Coding",
+      id: "xinglian",
+      name: "星链光子",
+      track: "光通信",
       status: "research",
-      updatedAt: "2026-07-18",
+      updatedAt: "2026-07-21",
       research: {
         stage: "interview",
-        interviews: { internal: 3, external: 5 },
+        interviews: { internal: 6, external: 3 },
         questions: [
-          "企业客户是否愿意为 AI 代码审查单独付费，还是期望捆绑在 IDE 订阅内",
-          "私有化部署的交付成本能否压到毛利 60% 以内"
+          "核心团队光芯片量产良率能否达到 80%？",
+          "下游数据中心客户的真实付费意愿"
         ],
         rating: 4,
-        nextAction: "7 月底前完成 3 家付费意向客户访谈，产出访谈汇总报告"
+        nextAction: "本周完成 2 位外部技术专家访谈"
       },
       files: [
-        { name: "曜析智能-初筛评估表.xlsx", type: "xlsx", addedAt: "2026-06-28" },
-        { name: "曜析智能-竞品对比（AI Code Review）.pptx", type: "pptx", addedAt: "2026-07-10" }
+        { name: "星链光子-BP-v3.pdf", type: "pdf", addedAt: "2026-07-19" },
+        { name: "光通信赛道扫描.xlsx", type: "xlsx", addedAt: "2026-07-15" },
+        { name: "初筛评分表.docx", type: "docx", addedAt: "2026-07-11" }
       ],
       interviewNotes: [
-        { title: "外部访谈｜某头部券商研发效能负责人：代码审查工具采购决策链", type: "external", date: "2026-07-16" },
-        { title: "外部访谈｜曜析智能 CTO：私有化交付成本拆解", type: "external", date: "2026-07-11" },
-        { title: "内部讨论｜AI Coding 赛道收敛：审查 vs 生成的切入点选择", type: "internal", date: "2026-07-04" }
+        { title: "行业专家：量产良率", type: "external", date: "2026-07-20", who: "某大厂工艺专家" },
+        { title: "创始人一访：技术路线", type: "external", date: "2026-07-16", who: "CEO 张某" },
+        { title: "赛道初判会议纪要", type: "internal", date: "2026-07-11", who: "投研组" }
       ],
       todos: {
         us: [
-          { task: "约访 2 家银行科技子公司研发负责人", owner: "陈默", due: "2026-07-24", done: false },
-          { task: "整理 5 次外部访谈的付费意愿交叉对比", owner: "林一苇", due: "2026-07-28", done: false }
+          { task: "完成星链光子外部专家访谈提纲", owner: "小赵", due: "2026-07-23", done: false }
         ],
         partner: [
-          { task: "提供最近 3 个 POC 的交付人天明细", owner: "曜析-王川", due: "2026-07-25", done: false }
+          { task: "星链光子提供芯片测试报告", owner: "对方 CTO", due: "2026-07-24", done: false }
         ]
       }
     },
     {
-      id: "baize",
-      name: "白泽感知",
-      track: "工业视觉 / 质检",
+      id: "maihe",
+      name: "麦禾智造",
+      track: "工业软件",
       status: "research",
-      updatedAt: "2026-07-15",
+      updatedAt: "2026-07-20",
       research: {
         stage: "screening",
         interviews: { internal: 2, external: 1 },
         questions: [
-          "3C 产线质检的存量替换市场是否足以支撑一家独立公司"
+          "MES 产品在离散制造场景的可复制性"
         ],
         rating: 3,
-        nextAction: "补充 2 家竞品拆解，安排一次产线实地走访"
+        nextAction: "补充 3 家标杆客户访谈后再定评级"
       },
       files: [
-        { name: "白泽感知-赛道初筛笔记.docx", type: "docx", addedAt: "2026-07-08" }
+        { name: "麦禾智造-介绍材料.pdf", type: "pdf", addedAt: "2026-07-18" },
+        { name: "工业软件竞品图谱.xlsx", type: "xlsx", addedAt: "2026-07-14" }
       ],
       interviewNotes: [
-        { title: "外部访谈｜某代工厂品质总监：视觉质检替换人工的真实节拍要求", type: "external", date: "2026-07-14" },
-        { title: "内部讨论｜工业视觉初筛：与既有 portfolio 的协同判断", type: "internal", date: "2026-07-09" }
+        { title: "创始人一访", type: "external", date: "2026-07-19", who: "CEO 李某" },
+        { title: "立项前初筛讨论", type: "internal", date: "2026-07-14", who: "投研组" }
       ],
       todos: {
         us: [
-          { task: "完成凌云光、阿丘科技两家竞品拆解", owner: "林一苇", due: "2026-07-30", done: false }
+          { task: "麦禾智造竞品图谱更新", owner: "小李", due: "2026-07-25", done: true }
         ],
-        partner: [
-          { task: "开放一条试点产线供实地走访", owner: "白泽-郑楠", due: "2026-08-05", done: false }
-        ]
+        partner: []
       }
     },
 
     // ---------- 已立项项目 ----------
     {
-      id: "jiuzhang",
-      name: "九章流形",
-      track: "大模型推理加速",
+      id: "yunshu",
+      name: "云枢数据",
+      track: "数据基础设施",
       status: "established",
-      updatedAt: "2026-07-19",
+      updatedAt: "2026-07-21",
       execution: {
-        currentMilestone: "推理引擎 v0.9 内测",
+        currentMilestone: "A 轮交割",
         milestones: [
-          { name: "立项评审", status: "done", date: "2026-03-20" },
-          { name: "技术验证", status: "done", date: "2026-05-10" },
-          { name: "v0.9 内测", status: "active", date: "2026-07-31" },
-          { name: "首批商用", status: "pending", date: "2026-09-30" },
-          { name: "A 轮启动", status: "pending", date: "2026-11-15" }
+          { name: "尽调", status: "done", date: "2026-06-15" },
+          { name: "投委会", status: "done", date: "2026-07-05" },
+          { name: "交割", status: "active", date: "2026-07-25" },
+          { name: "投后", status: "pending", date: "2026-08-20" }
         ],
         health: "green",
-        risk: "算力租赁价格上涨，内测阶段测试成本超预算约 12%",
-        latestActivity: { date: "2026-07-19", text: "内测客户「云衡科技」完成部署，首批推理延迟数据达标" }
+        risk: "无重大风险，交割文件走签署流程中",
+        latestActivity: { date: "2026-07-21", text: "项目方已回签 SPA 附件三" }
       },
       files: [
-        { name: "九章流形-立项书 v2.pdf", type: "pdf", addedAt: "2026-03-18" },
-        { name: "九章流形-里程碑计划表.xlsx", type: "xlsx", addedAt: "2026-05-12" },
-        { name: "九章流形-内测客户名单及进度.xlsx", type: "xlsx", addedAt: "2026-07-19" }
+        { name: "交割协议-草案.docx", type: "docx", addedAt: "2026-07-21" },
+        { name: "里程碑跟踪表.xlsx", type: "xlsx", addedAt: "2026-07-20" },
+        { name: "云枢数据-立项书.pdf", type: "pdf", addedAt: "2026-07-08" }
       ],
       interviewNotes: [
-        { title: "外部访谈｜内测客户云衡科技：部署过程问题清单复盘", type: "external", date: "2026-07-19" },
-        { title: "内部讨论｜v0.9 内测目标口径对齐（延迟/吞吐/成本三指标）", type: "internal", date: "2026-06-30" }
+        { title: "管理层深访：组织架构", type: "external", date: "2026-07-12", who: "COO 王某" },
+        { title: "投委会决议纪要", type: "internal", date: "2026-07-05", who: "投委会" }
       ],
       todos: {
         us: [
-          { task: "对接两家备选算力供应商，压降测试成本", owner: "陈默", due: "2026-07-31", done: false },
-          { task: "起草 A 轮融资材料大纲", owner: "苏晚晴", due: "2026-08-15", done: false }
+          { task: "云枢数据交割文件法务复核", owner: "小钱", due: "2026-07-22", done: false }
         ],
         partner: [
-          { task: "提交 7 月内测周报（延迟/吞吐数据）", owner: "九章-何律", due: "2026-07-27", done: false },
-          { task: "确认第二家内测客户接入排期", owner: "九章-何律", due: "2026-08-01", done: false },
-          { task: "补齐核心算法专利申请材料", owner: "九章-顾拾遗", due: "2026-08-10", done: false }
+          { task: "云枢数据回签 SPA 主协议", owner: "对方法务", due: "2026-07-22", done: false },
+          { task: "云枢数据确认董事席位安排", owner: "对方 CEO", due: "2026-07-21", done: true }
         ]
       }
     },
     {
-      id: "qiyun",
-      name: "栖云智能体",
-      track: "企业级 Agent 平台",
+      id: "hengxin",
+      name: "恒芯半导",
+      track: "半导体",
       status: "established",
-      updatedAt: "2026-07-17",
+      updatedAt: "2026-07-19",
       execution: {
-        currentMilestone: "企业版 POC 交付",
+        currentMilestone: "投后赋能",
         milestones: [
-          { name: "立项评审", status: "done", date: "2026-04-08" },
-          { name: "产品定义", status: "done", date: "2026-05-30" },
-          { name: "POC 交付", status: "active", date: "2026-08-15" },
-          { name: "正式签约", status: "pending", date: "2026-10-01" }
+          { name: "尽调", status: "done", date: "2026-05-20" },
+          { name: "投委会", status: "done", date: "2026-06-10" },
+          { name: "交割", status: "done", date: "2026-06-28" },
+          { name: "投后", status: "active", date: "2026-09-30" }
         ],
         health: "yellow",
-        risk: "客户 IT 安全评审进度滞后，POC 交付存在延期约 2 周的风险",
-        latestActivity: { date: "2026-07-17", text: "与客户安全团队对齐数据隔离方案，等待其书面确认" }
+        risk: "核心客户订单延期，需关注 Q3 营收兑现",
+        latestActivity: { date: "2026-07-19", text: "6 月营收未达预期，管理层说明中" }
       },
       files: [
-        { name: "栖云智能体-立项书 v1.pdf", type: "pdf", addedAt: "2026-04-06" },
-        { name: "栖云智能体-POC 需求说明书.docx", type: "docx", addedAt: "2026-06-12" },
-        { name: "栖云智能体-数据隔离方案（对客户版）.pptx", type: "pptx", addedAt: "2026-07-17" }
+        { name: "董事会材料.pptx", type: "pptx", addedAt: "2026-07-18" },
+        { name: "投后经营月报-6月.pdf", type: "pdf", addedAt: "2026-07-10" },
+        { name: "恒芯半导-立项书.pdf", type: "pdf", addedAt: "2026-06-20" }
       ],
       interviewNotes: [
-        { title: "外部访谈｜POC 客户 IT 负责人：安全评审卡点与放行条件", type: "external", date: "2026-07-15" },
-        { title: "内部讨论｜POC 范围控制：先交付流程编排还是知识问答", type: "internal", date: "2026-07-02" }
+        { title: "CEO 沟通：订单节奏", type: "external", date: "2026-07-18", who: "CEO 陈某" },
+        { title: "投后风险预警会", type: "internal", date: "2026-07-15", who: "投后组" }
       ],
       todos: {
         us: [
-          { task: "跟进客户安全评审书面结论", owner: "苏晚晴", due: "2026-07-23", done: false }
+          { task: "恒芯半导投后月报分析", owner: "小孙", due: "2026-07-24", done: false }
         ],
         partner: [
-          { task: "提交数据隔离方案的渗透测试报告", owner: "栖云-赵屹", due: "2026-07-29", done: false },
-          { task: "更新 POC 验收指标清单并同步双方", owner: "栖云-赵屹", due: "2026-08-03", done: false }
+          { task: "恒芯半导补充 Q3 订单明细", owner: "对方 CFO", due: "2026-07-23", done: false }
         ]
       }
     }
   ],
 
   qa: {
+    greeting: "你好，我可以基于看板数据回答项目相关问题。试试下面的示例 👇",
+    fallback: "这是一个演示助手，暂未接入真实模型。你可以点击下方示例问题查看内置回答，接入知识库后即可自由提问。",
     examples: [
       {
-        q: "九章流形现在的健康度怎么样？",
-        a: "九章流形当前健康度为绿色（正常）。正处于「推理引擎 v0.9 内测」里程碑，首批内测客户延迟数据已达标；需关注的风险是算力租赁涨价导致测试成本超预算约 12%。"
+        q: "哪些项目有风险？",
+        a: "当前「恒芯半导」健康度为黄灯：核心客户订单延期，需关注 Q3 营收兑现。其余立项项目暂无重大风险。"
       },
       {
-        q: "曜析智能下一步要做什么？",
-        a: "曜析智能处于调研期的访谈阶段，下一步动作：7 月底前完成 3 家付费意向客户访谈，产出访谈汇总报告。我方近期待办包括约访 2 家银行科技子公司研发负责人（7/24 前）。"
+        q: "云枢数据进展到哪了？",
+        a: "云枢数据处于「A 轮交割」阶段，尽调与投委会已完成，交割进行中。最新动态：07-21 项目方已回签 SPA 附件三。"
       },
       {
-        q: "最近一周有哪些新文件入库？",
-        a: "最近入库：7/19「九章流形-内测客户名单及进度.xlsx」、7/17「栖云智能体-数据隔离方案（对客户版）.pptx」。"
+        q: "调研期项目下一步？",
+        a: "星链光子：本周完成 2 位外部技术专家访谈；麦禾智造：补充 3 家标杆客户访谈后再定评级。"
       }
     ]
   }
