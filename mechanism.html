@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>一个思路：让 AI 承担项目的 PM 职能</title>
+<title>一个思路：给项目管理配一个 AI 助手</title>
 <style>
   :root{
     --bg:#f5f7fb; --panel:#ffffff; --ink:#1a2030; --ink2:#5b6478; --ink3:#8a92a6;
@@ -34,16 +34,6 @@
     font-size:14px;font-weight:800;display:inline-flex;align-items:center;justify-content:center}
   .hint{font-size:12.5px;color:var(--ink2);margin:0 0 18px}
 
-  /* 现状 */
-  .pains{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:14px}
-  @media(max-width:760px){.pains{grid-template-columns:1fr}}
-  .pain{border:1px solid var(--line);border-radius:12px;padding:15px 17px;background:#fcfdff}
-  .pain b{display:block;font-size:13.5px;color:var(--ink);margin-bottom:5px}
-  .pain{font-size:12.5px;color:var(--ink2);line-height:1.7}
-  .painfoot{margin-top:14px;font-size:12.5px;color:var(--ink2);background:#fffdf5;
-    border:1px solid #f3e0bd;border-radius:10px;padding:11px 16px}
-  .painfoot b{color:#a8660a}
-
   /* 核心想法 */
   .insight{background:linear-gradient(90deg,#0a2a6b,#0052d9);border-radius:16px;color:#fff;
     padding:26px 32px;margin-top:20px;box-shadow:0 10px 30px rgba(0,60,166,.25)}
@@ -54,6 +44,15 @@
   .insight .role{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);
     border-radius:10px;padding:8px 14px;font-size:12px;color:#e6efff}
   .insight .role b{color:#fff}
+
+  /* 价值 */
+  .vals{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:14px}
+  @media(max-width:860px){.vals{grid-template-columns:1fr}}
+  .val{border:1.5px solid #d4e3ff;background:#f8fbff;border-radius:13px;padding:16px 18px}
+  .val .vk{font-size:11px;font-weight:800;letter-spacing:1px;color:var(--blue)}
+  .val .vt{font-size:14.5px;font-weight:800;margin:4px 0 6px}
+  .val .vd{font-size:12.5px;color:var(--ink2);line-height:1.7}
+  .val .vd b{color:var(--ink)}
 
   /* 机制 */
   .mrow{display:flex;gap:12px;align-items:stretch;flex-wrap:wrap;margin-top:16px}
@@ -78,14 +77,18 @@
   .pill.amber{background:var(--amber-soft);color:var(--amber)}
   .pill.grey{background:var(--grey-soft);color:#6b7488}
 
-  /* 意义 */
-  .vals{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:14px}
-  @media(max-width:860px){.vals{grid-template-columns:1fr}}
-  .val{border:1.5px solid #d4e3ff;background:#f8fbff;border-radius:13px;padding:16px 18px}
-  .val .vk{font-size:11px;font-weight:800;letter-spacing:1px;color:var(--blue)}
-  .val .vt{font-size:14.5px;font-weight:800;margin:4px 0 6px}
-  .val .vd{font-size:12.5px;color:var(--ink2);line-height:1.7}
-  .val .vd b{color:var(--ink)}
+  /* 讨论点 */
+  .topics{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px}
+  @media(max-width:860px){.topics{grid-template-columns:1fr}}
+  .topic{border:1.5px dashed #c5d6f7;background:#f8fbff;border-radius:14px;padding:18px 20px}
+  .topic .tk{display:flex;align-items:center;gap:10px}
+  .topic .tnum{width:26px;height:26px;border-radius:50%;background:var(--blue);color:#fff;flex-shrink:0;
+    font-size:13px;font-weight:800;display:inline-flex;align-items:center;justify-content:center}
+  .topic .tt{font-size:15px;font-weight:800}
+  .topic .td{font-size:12.5px;color:var(--ink2);line-height:1.75;margin-top:9px}
+  .topic .td b{color:var(--ink)}
+  .topic .tact{margin-top:10px;font-size:12px;font-weight:700;color:var(--blue-deep);
+    background:var(--blue-soft);border-radius:8px;padding:7px 12px;display:inline-block}
 
   .close{margin-top:20px;background:var(--panel);border-radius:16px;box-shadow:var(--shadow);
     padding:20px 30px;font-size:13px;color:var(--ink2);line-height:1.8}
@@ -102,41 +105,51 @@
   <!-- ============ HERO ============ -->
   <div class="hero">
     <div class="k">一个供讨论的思路</div>
-    <h1>让 AI 承担项目的 PM 职能</h1>
-    <div class="sub">我们的项目大多没有专职 PM —— 收集信息、维护全貌、上下沟通、盯办提醒这些事，
-    散落在每个同学身上，做得又累又不全。AI 让「每个项目都配一个 PM」第一次变得可行。
+    <h1>给项目管理配一个 AI 助手</h1>
+    <div class="sub">我们每个人都在承担 PM 的工作 —— 收集信息、维护文档、沟通汇报、盯办跟进。
+    AI 可以把其中大量执行性的工作接走，让我们把时间花在判断、拉通和推进上。
     这里把这个想法摊开，供大家讨论。</div>
   </div>
 
-  <!-- ============ 1 现状 ============ -->
-  <div class="section">
-    <h2><span class="num">1</span>现状：PM 的活儿一直有，只是没人有精力做全</h2>
-    <p class="hint">这些事今天都在发生，只是由每个同学用碎片时间兼着做 ——</p>
-    <div class="pains">
-      <div class="pain"><b>信息散落，没有沉淀</b>项目状态存在几个人的脑子里和碎片记录中；会议、访谈的结论随做随丢，人一走信息就断。</div>
-      <div class="pain"><b>沟通靠会、靠问</b>老板想了解某个同学的工作或某个项目的进展，只能开会或逐个问；同学则被反复问同样的问题。</div>
-      <div class="pain"><b>汇报靠临时拼凑</b>文档往往一个月才更新一次，而汇报每周都有 —— 中间的缺口只能靠一次次突击攒材料，用完即弃。</div>
-      <div class="pain"><b>跟进靠人肉盯</b>to-do 记在各自的本子上，到期没人提醒、停滞没人发现，推进全凭自觉和记性。</div>
-    </div>
-    <div class="painfoot"><b>共同点：</b>这四件事 —— 信息枢纽、状态维护、沟通界面、盯办提醒 —— 正是一个 PM 的核心职能。不是大家不想做，是每个人都没有精力把它做全。</div>
-  </div>
-
-  <!-- ============ 2 核心想法 ============ -->
+  <!-- ============ 核心想法 ============ -->
   <div class="insight">
     <div class="k">核心想法</div>
-    <div class="v">把 PM 的职能交给 AI：<em>同学们只管干活和把信息丢进来，AI 负责整理、维护、呈现和提醒，人只在关键处做判断和确认</em>。相当于给每个项目配了一个不知疲倦的 PM。</div>
+    <div class="v">把 PM 工作中执行性的部分交给 AI：<em>信息由大家随手投进来，AI 负责整理、维护、呈现和提醒，人专注做判断和确认</em> —— 相当于给每位 PM 配了一个不知疲倦的助手。</div>
     <div class="roles">
       <span class="role"><b>同学</b>：正常干活 + 随手投喂信息</span>
-      <span class="role"><b>AI</b>：整理信息 · 维护全貌 · 生成汇报 · 提醒跟进</span>
-      <span class="role"><b>Owner</b>：审定 AI 的整理，做关键判断</span>
+      <span class="role"><b>AI 助手</b>：整理信息 · 维护全貌 · 生成汇报 · 提醒跟进</span>
+      <span class="role"><b>PM / Owner</b>：审定 AI 的整理，专注判断与拉通</span>
       <span class="role"><b>老板</b>：随时看全貌，随时追问细节</span>
     </div>
   </div>
 
-  <!-- ============ 3 机制 ============ -->
+  <!-- ============ 1 价值 ============ -->
+  <div class="section">
+    <h2><span class="num">1</span>它能帮我们提效什么</h2>
+    <p class="hint">这些工作我们今天都在做、也做得不错 —— AI 助手的价值在于把它们变得更省力、更实时、更可积累。</p>
+    <div class="vals">
+      <div class="val">
+        <div class="vk">管理角度</div>
+        <div class="vt">沟通界面更高效</div>
+        <div class="vd">老板通过看板与对话<b>随时了解每个同学的工作和每个项目的状态</b>，减少专门的同步会和逐个问询；同学也不用反复回答同样的问题 —— 整个团队的沟通成本降下来。</div>
+      </div>
+      <div class="val">
+        <div class="vk">工作推进角度</div>
+        <div class="vt">投喂即沉淀，跟进有抓手</div>
+        <div class="vd">同学把文档、纪要<b>直接投进来就完成了记录</b>，文档内容自然积累、知识不流失；项目跟进有了统一抓手，写文档、拼汇报材料的时间省下来给真正的工作。</div>
+      </div>
+      <div class="val">
+        <div class="vk">机制效果角度</div>
+        <div class="vt">从记录到主动推进</div>
+        <div class="vd">它不只是记录 —— 会<b>形成提醒</b>：提示同学当下该跟进哪个 to-do、哪里停滞了、哪个节点要到期，甚至可以代为跟进。项目被系统「盯着」往前走。</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ 2 机制 ============ -->
   <div class="section">
     <h2><span class="num">2</span>它长什么样：信息池 → 活的主文档 → 自带看板</h2>
-    <p class="hint">同学的日常动作只有一个：把项目推进中自然产生的信息丢进池子。剩下的都是 AI 的事。</p>
+    <p class="hint">同学的日常动作只有一个：把项目推进中自然产生的信息丢进池子。剩下的都是 AI 助手的事。</p>
     <div class="mrow">
       <div class="mcard">
         <div class="mk">① 信息池</div>
@@ -177,37 +190,32 @@
         <div class="od">对任何结论可直接追问细节，AI 基于池内信息回答并给出处；没有依据就明说没有。</div>
       </div>
       <div class="outcard">
-        <div class="ot">主动提醒 <span class="pill grey">像 PM 一样盯</span></div>
+        <div class="ot">主动提醒 <span class="pill grey">帮 PM 盯</span></div>
         <div class="od">到期的 to-do 提醒负责同学、停滞的项目主动暴露，进一步可以自动跟进：替你去问进展、把回复收回池子。</div>
       </div>
     </div>
   </div>
 
-  <!-- ============ 4 意义 ============ -->
+  <!-- ============ 3 关键讨论点 ============ -->
   <div class="section">
-    <h2><span class="num">3</span>它带来什么</h2>
-    <div class="vals">
-      <div class="val">
-        <div class="vk">管理角度</div>
-        <div class="vt">沟通界面被优化</div>
-        <div class="vd">老板通过看板与对话<b>直接了解每个同学的工作和每个项目的状态</b>，不必依赖会议和逐个问询；同学不再被反复问同样的问题 —— 整个团队的沟通成本和工作量都降下来。</div>
+    <h2><span class="num">3</span>两个需要一起讨论的关键点</h2>
+    <div class="topics">
+      <div class="topic">
+        <div class="tk"><span class="tnum">1</span><span class="tt">主看板如何展示</span></div>
+        <div class="td">每个项目的<b>阶段和重点都不同</b>，展示方式自然也不同 —— 调研期的项目和推进期的项目，看板长得就不该一样。这次大家各自做了自己的 Dashboard，形式各异。<br>那么到底用什么样的框架来展示，<b>老板看起来才觉得合理、团队之间才可对比</b>？</div>
+        <div class="tact">→ 建议例会上大家一起对齐一个展示框架</div>
       </div>
-      <div class="val">
-        <div class="vk">工作推进角度</div>
-        <div class="vt">投喂即沉淀，跟进有抓手</div>
-        <div class="vd">同学把文档、纪要直接投进来就完成了「记录」这件事，<b>文档内容自然积累</b>；项目跟进有了统一的抓手，交接、协作、追溯都基于同一份活的全貌。</div>
-      </div>
-      <div class="val">
-        <div class="vk">机制效果角度</div>
-        <div class="vt">从被动记录到主动推进</div>
-        <div class="vd">它不只是记录 —— 会<b>形成提醒</b>：提示同学当下该跟进哪个 to-do、哪里停滞了、哪个依赖要到期，甚至代为跟进。项目被系统「盯着」往前走。</div>
+      <div class="topic">
+        <div class="tk"><span class="tnum">2</span><span class="tt">信息的获取与分享模式</span></div>
+        <div class="td">目前的看板是<b>本地 HTML 文件</b>，分享出去就是一份静态快照。能否搞成在线的 —— 找一个公共空间，<b>大家随时往里投递文档</b>，项目分享后，老板想看时打开的永远是实时状态，而不是过期的本地文件？</div>
+        <div class="tact">→ 需要调研工程实现方案（平台 / 权限 / 部署方式）</div>
       </div>
     </div>
   </div>
 
   <!-- ============ 收尾 ============ -->
   <div class="close">
-    <b>这是一个初步思路，想先和大家讨论：</b>这样的方式是否符合我们团队的工作习惯？哪些职能希望 AI 承担、哪些必须留在人手里？如果方向认同，具体怎么落、从哪个项目开始试，我们再一起商量。
+    <b>这是一个初步思路，想先和大家讨论：</b>这样的方式是否符合我们团队的工作习惯？哪些工作希望 AI 接走、哪些必须留在人手里？以及上面两个关键点 —— 展示框架怎么定、在线化怎么做 —— 期待大家的输入。
   </div>
 
   <footer>
