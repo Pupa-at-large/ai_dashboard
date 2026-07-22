@@ -5,20 +5,29 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>重点项目看板 · Track &amp; Focus</title>
 <style>
-  /* ---------- 顶层：项目 Tab ---------- */
-  .gtop{display:flex;align-items:baseline;gap:12px;margin-bottom:14px;flex-wrap:wrap}
-  .gtop h0{font-size:20px;font-weight:900;letter-spacing:.5px;color:#1a2030}
-  .gtop .gs{font-size:12px;color:#8a92a6}
-  .ptabs{display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap}
-  .ptab{flex:1;min-width:230px;background:#fff;border:1.5px solid #e6e9f0;border-radius:14px;
-    padding:14px 18px;cursor:pointer;transition:.18s;box-shadow:0 1px 3px rgba(20,30,60,.06)}
-  .ptab:hover{border-color:#c5d6f7}
-  .ptab.on{border-color:#0052d9;box-shadow:0 0 0 3px #e8f0ff}
-  .ptab .pk{font-size:11px;font-weight:700;color:#8a92a6;letter-spacing:1px}
-  .ptab .pt{font-size:15.5px;font-weight:800;margin-top:2px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
-  .ptab .pd{font-size:11.5px;color:#8a92a6;margin-top:3px}
+  /* ---------- 封面 / 导航 ---------- */
   .proj{display:none}
   .proj.on{display:block;animation:fade .3s}
+  .cover{background:linear-gradient(150deg,#0a2a6b,#0052d9 70%,#2f7bff);border-radius:20px;
+    padding:56px 54px 50px;color:#fff;box-shadow:0 16px 44px rgba(0,60,166,.3);min-height:60vh}
+  .cv-title{font-size:34px;font-weight:900;letter-spacing:1px}
+  .cv-sub{font-size:13px;color:#cfe0ff;margin-top:8px}
+  .cv-list{margin-top:38px;display:flex;flex-direction:column;gap:14px}
+  .cv-item{display:flex;align-items:center;gap:18px;background:rgba(255,255,255,.1);
+    border:1px solid rgba(255,255,255,.2);border-radius:14px;padding:20px 24px;cursor:pointer;
+    transition:.18s;backdrop-filter:blur(4px)}
+  .cv-item:hover{background:rgba(255,255,255,.18);transform:translateX(6px)}
+  .cv-idx{font-size:22px;font-weight:900;color:#9cc0ff;flex-shrink:0}
+  .cv-body{flex:1;min-width:0}
+  .cv-name{font-size:19px;font-weight:800}
+  .cv-desc{font-size:12px;color:#cfe0ff;margin-top:3px}
+  .cv-arrow{font-size:20px;color:#9cc0ff;flex-shrink:0}
+  .cv-item .pill{flex-shrink:0}
+  .backbar{display:flex;align-items:center;gap:12px;margin-bottom:14px}
+  .backbtn{border:1px solid #e6e9f0;background:#fff;color:#5b6478;font:inherit;font-size:12.5px;
+    font-weight:600;padding:7px 14px;border-radius:9px;cursor:pointer;transition:.15s}
+  .backbtn:hover{border-color:#0052d9;color:#0052d9}
+  .bc{font-size:12.5px;font-weight:700;color:#8a92a6;letter-spacing:.5px}
   /* 最重要的事 / 思考块 */
   .focusbox{background:linear-gradient(90deg,#0a2a6b,#0052d9);border-radius:14px;color:#fff;
     padding:16px 20px;margin-bottom:14px;box-shadow:0 8px 24px rgba(0,60,166,.22)}
@@ -273,36 +282,59 @@
 <body>
 <div class="wrap">
 
-  <!-- ============ 顶层：看板标题 + 项目切换 ============ -->
-  <div class="gtop">
-    <h0 style="display:inline">重点项目看板</h0>
-    <span class="gs">Track &amp; Focus · 每个项目一句话讲清「当前最重要的事」 · 更新 07-21</span>
-  </div>
-  <div class="ptabs" id="ptabs">
-    <div class="ptab on" data-proj="cid">
-      <div class="pk">项目一</div>
-      <div class="pt">CID 升级项目 <span class="pill amber">● 进行中</span></div>
-      <div class="pd">TID 激增治理 · 召粗 AID_CID 局部升级 · 阶段一基建（830）</div>
-    </div>
-    <div class="ptab" data-proj="redline">
-      <div class="pk">项目二</div>
-      <div class="pt">红线扩容收益验证 <span class="pill blue">◐ 验证中</span></div>
-      <div class="pd">视频号 TID 红线 4000w→6000w · hold-out 反向实验方案收敛中</div>
-    </div>
-    <div class="ptab" data-proj="agent">
-      <div class="pk">项目三</div>
-      <div class="pt">商分调研 Agent 评测 <span class="pill grey">◌ 方案设计中</span></div>
-      <div class="pd">深度调研 Agent 评测体系 · 第 0 轮（10 题长报告 × 3 candidate）</div>
+  <!-- ================================================================
+       封面页
+       ================================================================ -->
+  <div class="proj on" id="proj-cover">
+    <div class="cover">
+      <div class="cv-title">重点项目看板</div>
+      <div class="cv-sub">Track &amp; Focus · 点击进入各项目 · 更新 07-21</div>
+      <div class="cv-list">
+        <div class="cv-item" data-go="cid">
+          <span class="cv-idx">01</span>
+          <div class="cv-body">
+            <div class="cv-name">CID 升级项目</div>
+            <div class="cv-desc">TID 激增治理 · 我的角色：跟进拉通 / 例会与拆解推动</div>
+          </div>
+          <span class="pill amber">● 进行中 · 阶段一基建</span>
+          <span class="cv-arrow">→</span>
+        </div>
+        <div class="cv-item" data-go="redline">
+          <span class="cv-idx">02</span>
+          <div class="cv-body">
+            <div class="cv-name">红线扩容收益验证</div>
+            <div class="cv-desc">扩容值不值得，用干净的实验回答 · 我的角色：跟进拉通 / 方案收敛</div>
+          </div>
+          <span class="pill blue">◐ 验证中 · 方案收敛</span>
+          <span class="cv-arrow">→</span>
+        </div>
+        <div class="cv-item" data-go="agent">
+          <span class="cv-idx">03</span>
+          <div class="cv-body">
+            <div class="cv-name">商分调研 Agent 评测</div>
+            <div class="cv-desc">我们的自有项目 · 评测体系设计与第 0 轮落地</div>
+          </div>
+          <span class="pill grey">◌ 设计完成初稿</span>
+          <span class="cv-arrow">→</span>
+        </div>
+      </div>
     </div>
   </div>
 
   <!-- ================================================================
        项目一 · CID 升级项目
        ================================================================ -->
-  <div class="proj on" id="proj-cid">
+  <div class="proj" id="proj-cid">
+  <div class="backbar"><button class="backbtn" data-go="cover">← 返回封面</button><span class="bc">01 · CID 升级项目</span></div>
   <div class="focusbox">
     <div class="fk">当前最重要的事</div>
-    <div class="fv">保住 8.30 阶段一节点：7 月内把 CID 生产链路方案（RPC 改 DB+队列后的投放生产流程与 schema）和指纹生产协议全部定稿 —— 这是二A 模型与工程所有依赖的起点，晚一天，10.15 的 5% 实验就晚一天。</div>
+    <div class="fv">保住 8.30 阶段一节点：7 月内把 CID 生产链路方案和指纹生产协议全部定稿 —— 这是阶段二所有模型与工程依赖的起点，晚一天，10.15 的 5% 实验就晚一天。</div>
+  </div>
+  <div class="thinkbox">
+    <div class="tk">我在做的事（跟进拉通）</div>
+    <div class="ti"><span class="n">1</span><div><b>推动方案收敛并形成决策记录</b>：组织并跟进 0703 / 0710 两轮方案评审，方案从「全链路下线 TID」收敛为「一期简化版（保留 TID）」，各方按新边界重新对齐。</div></div>
+    <div class="ti"><span class="n">2</span><div><b>推动项目化拆解落地</b>：协调各牵头方按统一模板输出模块拆解、依赖与排期（0716 完成），并以项目表为准持续 track 进展、暴露风险。</div></div>
+    <div class="ti"><span class="n">3</span><div><b>搭建本看板</b>，聚焦关键节点与依赖做双周向上同步；当前盯住 7 月两项关键依赖（生产链路方案、指纹协议）不滑期。</div></div>
   </div>
 
   <!-- ============ HEADER ============ -->
@@ -476,60 +508,30 @@
        项目二 · 红线扩容收益验证
        ================================================================ -->
   <div class="proj" id="proj-redline">
+    <div class="backbar"><button class="backbtn" data-go="cover">← 返回封面</button><span class="bc">02 · 红线扩容收益验证</span></div>
     <div class="focusbox">
       <div class="fk">当前最重要的事</div>
-      <div class="fv">先用数据避免无用功：跑出 4000w vs 6000w 候选集选出的「优质创意」重合度 —— 重合度足够高（~99%），创意主路与级联支路就都不需要部署实验集群；同时定稿打标方案（不复用 strategy_tag、创意进来即打标），让 hold-out 实验方案收敛到可开发。</div>
-    </div>
-
-    <div class="thinkbox">
-      <div class="tk">我们的思考</div>
-      <div class="ti"><span class="n">1</span><div><b>问题：扩容的收益从来没被干净地证明过。</b>红线 8000w 长期截断，业务持续要求扩容；但此前全盘实验扩到 8500w，跑量无明显差别（疑似只是摊平冷启动），没有团队敢提单。</div></div>
-      <div class="ti"><span class="n">2</span><div><b>判断：不是「扩容没用」，而是「实验不干净」。</b>全盘扩容时各支路互相污染，看不出增量创意的真实贡献。所以要做 hold-out 反向实验：给扩容增量创意打标，实验组流量反向定向过滤打标创意来模拟「未扩容」，对比消耗差 —— 这才是能回答「扩容值不值」的实验。</div></div>
-      <div class="ti"><span class="n">3</span><div><b>验证外部情况来校准预期：</b>看别的流量/团队容量水位在哪、怎么改造的、扩容后拿没拿到效果、靠什么机制承接更多新创意。已知参照：百工在做创意候选 200w→300w 实验，单独扩量无明显收益、叠加模型优化才可能放量 —— 印证「纯扩容量不等于收益」。</div></div>
-      <div class="ti"><span class="n">4</span><div><b>结论会反哺 CID 项目：</b>如果扩容被证明有增量收益，CID 二期的容量目标口径、探索路的去留都要按这个结论校准。</div></div>
-    </div>
-
-    <div class="anchor">
-      <a class="adoc main" href="projects/红线扩容收益验证/视频号TID红线扩容收益验证-检索改造方案.pdf" target="_blank" rel="noopener">
-        <div class="ic">主</div>
-        <div>
-          <div class="tt">《视频号 TID 红线扩容收益验证 · 检索改造方案》<span class="role">主文档</span></div>
-          <div class="dd">0714 / 0716 两轮讨论后的实验与改造方案：分支路处理方案、打标机制、部署清单与排期依赖。点击打开原文。</div>
-        </div>
-      </a>
-      <a class="adoc" href="projects/红线扩容收益验证/20260714-扩容实验方案讨论_转写.txt" target="_blank" rel="noopener">
-        <div class="ic">纪</div>
-        <div>
-          <div class="tt">0714 实验方案讨论（实时转写）<span class="role">纪要</span></div>
-          <div class="dd">刘德超 / 郭正鑫 / 佟建锋 / 陈琼 等：支路隔离难点、独立部署成本、重点支路取舍结论。</div>
-        </div>
-      </a>
+      <div class="fv">推动实验方案收敛：先跑一组前置数据判断哪些链路真正需要建实验环境（避免直接投入大规模部署），让「扩容到底值不值」尽快进入可实验、可回答的状态。</div>
     </div>
 
     <div class="section">
-      <h2><span class="num">1</span>实验方案现状（按支路拆解）</h2>
-      <p class="hint">核心难点：级联链路强约定「同一广告在不同支路召回的创意严格一致」，无法按支路隔离过滤 —— 因此按支路分别定处理方案（0714 会议 + 主文档 2.4 节结论）。</p>
-      <table class="cmp">
-        <thead><tr><th style="width:150px">支路</th><th style="width:90px">消耗占比</th><th>处理方案</th><th style="width:96px">状态</th></tr></thead>
-        <tbody>
-          <tr><td class="metric">创意主路（LTR ×2）</td><td>~50%</td><td>先跑 4000w vs 6000w 候选集重合度：重合度高则无需实验；需要做则独立部署，基于新 300w 候选基线做</td><td><span class="stbar"><span class="stdot amber"></span>数据准备中</span></td></tr>
-          <tr><td class="metric">广告主路（级联 10008）</td><td>~13%</td><td>部署 Exp 集群（CreativeKnn / AnnIndexer / IDM / IDG / IDC / IDT 改造）；广告候选 diff 高则退化为「展开时过滤打标创意」</td><td><span class="stbar"><span class="stdot amber"></span>方案细化中</span></td></tr>
-          <tr><td class="metric">生成式支路（10050）</td><td>高于创意LTR</td><td>架构复杂（20% knn + 80% decoder+kvcreative）且快速迭代中，实验成本巨大 —— 先做创意主路实验，视结果再定</td><td><span class="stbar"><span class="stdot grey"></span>暂缓</span></td></tr>
-          <tr><td class="metric">其他小支路</td><td>~1–4%</td><td>不单独部署：创意召回支路实验组与 base 一致；级联支路在展开时按「aid 有且只被主路召回」过滤（残留误差可接受）</td><td><span class="stbar"><span class="stdot green"></span>已定</span></td></tr>
-          <tr><td class="metric">打标机制</td><td>—</td><td>不复用 creative_strategy_tag（避免与 8kw→8.5kw 老实验的正/反定向冲突）；创意进来即打标、不能后验打标</td><td><span class="stbar"><span class="stdot amber"></span>确认中</span></td></tr>
-        </tbody>
-      </table>
-      <div class="parnote" style="margin-top:12px">排期：方案确定后给出开发周数；外部依赖 —— 机器申请、运维一周内提供新集群服务名、两周内完成集群部署（延期则顺延）。</div>
+      <h2><span class="num">1</span>项目现状</h2>
+      <div class="thinkbox" style="margin-bottom:0;border-style:solid">
+        <div class="ti"><span class="n">1</span><div><b>问题：扩容的收益从来没被干净地证明过。</b>在线容量红线长期截断，业务持续要求扩容；但此前的整体扩容尝试没有看到明显跑量差别，没有团队敢为扩容提单。</div></div>
+        <div class="ti"><span class="n">2</span><div><b>判断：不是「扩容没用」，而是「此前的实验不干净」。</b>整体扩容时各召回链路互相影响，看不出增量创意的真实贡献。技术团队因此在设计一个隔离式的对照实验，把「扩容带来的增量」单独衡量出来。</div></div>
+        <div class="ti"><span class="n">3</span><div><b>进展：实验方案正在收敛。</b>已完成两轮方案讨论，明确了各条召回链路的处理原则和实验打标口径；当前先跑一组前置数据 —— 如果新旧候选集高度重合，多数链路就不需要建设实验环境，成本可以大幅压缩。</div></div>
+        <div class="ti"><span class="n">4</span><div><b>这件事的战略意义：</b>验证结论直接决定容量策略的方向 —— 如果扩容有增量收益，CID 项目二期的容量目标口径要按它校准；如果没有，就坚定走「降 ID 数」的路线。</div></div>
+      </div>
     </div>
 
     <div class="section">
-      <h2><span class="num">2</span>验证型 To-do</h2>
+      <h2><span class="num">2</span>我在做的事（跟进拉通）</h2>
       <div class="upbox" style="margin:0">
-        <div class="up-item"><span class="ud">本周</span><span>跑出 4000w vs 6000w「优质创意」候选集重合度数据（先与曾彪确认打标数据可用性）</span><span class="uo">刘德超 · 曾彪</span></div>
-        <div class="up-item"><span class="ud">两天内</span><span>输出完整实验改造方案（含 10050 生成式链路梳理：是否接 AdTable、embedding 隔离方式）</span><span class="uo">郭正鑫</span></div>
-        <div class="up-item"><span class="ud">本周</span><span>与 Jerry / 赵尔确认打标逻辑：必须「创意进来即打标」，后验打标会导致重合度数据失真</span><span class="uo">佟建锋 · 陈琼</span></div>
-        <div class="up-item"><span class="ud">随方案</span><span>机器申请与运维集群服务名（开发开始一周内），Exp 集群部署（两周内）</span><span class="uo">运维 · SRE</span></div>
-        <div class="up-item"><span class="ud">持续</span><span>外部参照跟踪：百工 200w→300w 实验结论、其他流量容量水位与承接新创意的机制</span><span class="uo">投研跟进</span></div>
+        <div class="up-item"><span class="ud">收敛</span><span>参与并跟进两轮实验方案讨论，把各方分歧收敛成可执行结论、记录并同步各方</span><span class="uo">已完成两轮</span></div>
+        <div class="up-item"><span class="ud">推动</span><span>推动「先跑前置数据、再决定部署范围」的低成本路径，避免一上来就投入大规模实验环境建设</span><span class="uo">进行中</span></div>
+        <div class="up-item"><span class="ud">跟进</span><span>盯实验的两个前置项落地：前置数据产出、打标口径最终确认，之后进入开发排期</span><span class="uo">本周</span></div>
+        <div class="up-item"><span class="ud">外部</span><span>验证外部情况校准预期：其他流量/团队的容量水位、改造方式、扩容后的实际效果、承接更多新创意的机制</span><span class="uo">持续</span></div>
+        <div class="up-item"><span class="ud">拉通</span><span>把验证结论拉通到 CID 项目，作为二期容量目标口径的输入</span><span class="uo">结论产出后</span></div>
       </div>
     </div>
   </div><!-- /proj-redline -->
@@ -538,31 +540,23 @@
        项目三 · 商分调研 Agent 评测
        ================================================================ -->
   <div class="proj" id="proj-agent">
+    <div class="backbar"><button class="backbtn" data-go="cover">← 返回封面</button><span class="bc">03 · 商分调研 Agent 评测（自有项目）</span></div>
     <div class="focusbox">
       <div class="fk">当前最重要的事</div>
-      <div class="fv">把评测流程跑通第 0 轮：10 道长报告题 × 3 个 candidate，盲评（1–5 星 + 自由评语）→ 用 AI 从评语中抽取出结构化评价维度、固化成可复现的标准 —— 第 0 轮同时给出标准和当前水位分。</div>
-    </div>
-
-    <div class="thinkbox">
-      <div class="tk">我们的思考</div>
-      <div class="ti"><span class="n">1</span><div><b>我们拼的不是 Agent 编排，是「更懂商分团队的需求」。</b>所以评测不是为了跟通用产品争高下，核心是回答两个问题：这个 Agent 达到没达到「可以给老板交作业」的水平（跟自己比）；以及 Agent 化的编排+提示词相比「纯 prompt + 商用模型」到底强多少（跟基线比）。</div></div>
-      <div class="ti"><span class="n">2</span><div><b>只评端到端结果，不评中间量。</b>用户只对最终报告做评价。技术指标（稳定性 / 时长 ≤2h / 完整度）是 must-have 门槛，过线即可、不进评分；能力维度（上下文抓取、issue tree、调研充分度）只用于内部归因迭代，不给老板看。</div></div>
-      <div class="ti"><span class="n">3</span><div><b>可复现性是最大的坑。</b>人评天然漂移（老板今天心情好打 4 星、明天打 3 星），所以第 0 轮的真正产出不是分数、而是「标准」：从人评评语中抽取出固定的评价维度和分数含义（spectrum），之后每轮按同一标准评，三个月换题库但权重结构不变，结果才可对比。</div></div>
-      <div class="ti"><span class="n">4</span><div><b>汇报的语言用「绩效打星」：</b>让老板盲评混排的作业，四星就是绩效四星 —— 评测结果直接翻译成老板熟悉的质量语言，而不是解释一套评测方法论。</div></div>
-    </div>
-
-    <div class="anchor">
-      <a class="adoc main" href="projects/商分调研Agent评测/20260721-评测体系设计讨论_转写.txt" target="_blank" rel="noopener">
-        <div class="ic">纪</div>
-        <div>
-          <div class="tt">0721 评测体系设计讨论（实时转写）<span class="role">当前依据</span></div>
-          <div class="dd">吴思欣 × eason：评测对象收敛、控制变量、candidate 设计、第 0 轮流程 —— 本页结论均出自此次讨论。评测流程文档产出后将升级为本项目主文档。</div>
-        </div>
-      </a>
+      <div class="fv">把评测流程跑通第 0 轮：10 道长报告题 × 3 个 candidate 盲评 —— 第 0 轮同时产出两样东西：一套可复现的评价标准，和 Agent 当前的水位分。</div>
     </div>
 
     <div class="section">
-      <h2><span class="num">1</span>评测框架（三层）</h2>
+      <h2><span class="num">1</span>项目现状</h2>
+      <div class="thinkbox" style="margin-bottom:0;border-style:solid">
+        <div class="ti"><span class="n">1</span><div><b>商分深度调研 Agent 已能产出完整长报告</b>，项目进入「用评测证明水平、并驱动迭代」的阶段。</div></div>
+        <div class="ti"><span class="n">2</span><div><b>评测体系设计已完成初稿</b>（下方框架），解决了两个关键问题：评什么 —— 只评用户真正看到的端到端结果，技术指标作门槛、能力维度只用于内部归因；怎么保证可复现 —— 人评天然漂移，所以第 0 轮先用盲评+评语抽取出固定的评价标准，之后每轮按同一标准执行。</div></div>
+        <div class="ti"><span class="n">3</span><div><b>我们的定位判断：</b>这个 Agent 拼的不是通用编排能力，而是「更懂商分团队的需求」。评测因此回答两个问题：有没有达到「可以给老板交作业」的水平（跟自己的标准比）；相比通用工具到底强多少（跟基线比）。</div></div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2><span class="num">2</span>评测框架（我们的设计）</h2>
       <table class="cmp">
         <thead><tr><th style="width:150px">层</th><th>内容</th><th style="width:190px">用途</th></tr></thead>
         <tbody>
@@ -574,14 +568,14 @@
     </div>
 
     <div class="section">
-      <h2><span class="num">2</span>第 0 轮执行方案</h2>
+      <h2><span class="num">3</span>我们在做的事（第 0 轮执行）</h2>
       <div class="upbox" style="margin:0">
-        <div class="up-item"><span class="ud">①</span><span>题库：10 道长报告题（只评长报告、权重 100%），题源用例会天问 / 过往交过的作业，不必找老板出题</span><span class="uo">eason</span></div>
-        <div class="up-item"><span class="ud">②</span><span>控制变量：固定同一模型；统一上下文；issue tree 指点确认后不再调整</span><span class="uo">eason</span></div>
-        <div class="up-item"><span class="ud">③</span><span>3 个 candidate：我们的 Agent（专家团）/ 纯 prompt + 同一商用模型（prompt 需补齐等价的编排指令保证可比）/ Workbuddy 自带调研专家</span><span class="uo">eason · 吴思欣</span></div>
-        <div class="up-item"><span class="ud">④</span><span>跑批与盲评：30 份产出混排，人评打星 + 写好/不好的理由（自由文本）</span><span class="uo">团队 3–5 人</span></div>
-        <div class="up-item"><span class="ud">⑤</span><span>标准抽取：AI 读取人评评语 → 抽出结构化评价维度与分数含义（spectrum）→ 固化为下一轮标准；同时得出当前水位分</span><span class="uo">吴思欣 · eason</span></div>
-        <div class="up-item"><span class="ud">⑥</span><span>沉淀《评测流程文档》（含上线标准：Tech 门槛全过 + Result 达到目标星级），发老板参与定标</span><span class="uo">eason（吴思欣 co-work）</span></div>
+        <div class="up-item"><span class="ud">①</span><span>题库：10 道长报告题（首轮只评长报告、权重 100%），题源用例会天问 / 过往交过的作业</span><span class="uo">本周</span></div>
+        <div class="up-item"><span class="ud">②</span><span>控制变量：固定同一模型、统一上下文，保证三个 candidate 可比</span><span class="uo">本周</span></div>
+        <div class="up-item"><span class="ud">③</span><span>3 个 candidate 跑批：我们的 Agent / 纯 prompt + 同一模型 / 平台自带调研能力</span><span class="uo">下周</span></div>
+        <div class="up-item"><span class="ud">④</span><span>盲评：30 份产出混排，人评 1–5 星 + 好/不好的理由（自由评语）</span><span class="uo">下周</span></div>
+        <div class="up-item"><span class="ud">⑤</span><span>标准抽取：用 AI 从评语中提炼结构化评价维度并固化为标准，同时得出当前水位分</span><span class="uo">评完即做</span></div>
+        <div class="up-item"><span class="ud">⑥</span><span>沉淀《评测流程文档》（含上线标准：门槛全过 + 结果达到目标星级），并请老板参与定标 —— 汇报语言用「绩效打星」：盲评混排的作业打四星，就是绩效四星的水平</span><span class="uo">第 0 轮后</span></div>
       </div>
     </div>
   </div><!-- /proj-agent -->
@@ -601,8 +595,7 @@
   </div>
 
   <footer>
-    重点项目看板 · Track &amp; Focus &nbsp;·&nbsp; 每个项目由其主文档与项目表驱动：
-    CID 升级（主文档《一期简化版》+《【项目化】CID升级项目.xlsx》0716 版）｜红线扩容收益验证（《检索改造方案》）｜商分调研 Agent 评测（0721 评测体系讨论）<br>
+    重点项目看板 · Track &amp; Focus &nbsp;·&nbsp; 更新 07-21<br>
     <span class="conf">内部资料 · 请勿外传</span>
   </footer>
 </div>
@@ -744,8 +737,6 @@ var DATA = {
   files: [
     { ext:"PDF", name:"CID方案·一期简化版（保留TID）.pdf", tag:"主文档", d:"07-10", url:"projects/CID 升级项目/CID方案·一期简化版（保留TID）.pdf" },
     { ext:"XLS", name:"【项目化】CID升级项目.xlsx", tag:"项目表", d:"07-16", url:"projects/CID 升级项目/【项目化】CID升级项目.xlsx" },
-    { ext:"TXT", name:"0710 方案评审会（实时转写）", tag:"纪要", d:"07-10", url:"projects/CID 升级项目/20260710-CID召回粗排局部升级方案评审_转写.txt" },
-    { ext:"TXT", name:"0703 CID 方案二讨论（实时转写）", tag:"纪要", d:"07-03", url:"projects/CID 升级项目/20260703-CID方案二讨论_转写.txt" },
     { ext:"PDF", name:"解法2智投项目TID重构方案可行性调研.pdf", tag:"历史方案", d:"04-28", url:"projects/CID 升级项目/解法2智投项目TID重构方案可行性调研.pdf" },
     { ext:"PDF", name:"智投项目TID重构方案&&可行性调研.pdf", tag:"历史方案", d:"04-24", url:"projects/CID 升级项目/智投项目TID重构方案&&可行性调研.pdf" }
   ],
@@ -759,7 +750,7 @@ var DATA = {
     { q:"谁负责什么？",
       a:"阶段一牵头杨秀金/谢年华（CID 生成：杨秀金·裴星鑫；数据挖掘：许蕾蕾·陈功；发布订阅：郑杰·rli；播放透传：冯玉琢·许熳锋）。二A 牵头朱张斌/许熳锋（特征：汤煌·林立伟；模型：deandnwang·jeffjwzhang；链路：黄丽娜·毛镭等）。二B 牵头杨秀金。详见「③ 拆解与进度」。" },
     { q:"红线扩容验证进展如何？",
-      a:"实验方案收敛中：其他小支路处理方案已定（不单独部署，级联展开时按「有且只被主路召回」过滤）；当前最重要的是先跑 4000w vs 6000w 候选集重合度——重合度高则创意主路与级联支路都不需要部署实验集群。打标机制选定不复用 strategy_tag、进来即打标（确认中）；生成式 10050 暂缓、视创意主路实验结果再定。郭正鑫两天内出完整方案。" },
+      a:"实验方案收敛中：已完成两轮方案讨论，明确了各召回链路的处理原则与实验打标口径。当前最重要的是先跑一组前置数据（新旧候选集重合度）——重合度高则大部分链路无需建设实验环境，成本可大幅压缩。前置数据与打标口径确认后进入开发排期。验证结论将作为 CID 项目二期容量目标口径的输入。" },
     { q:"Agent 评测怎么做？",
       a:"三层框架：Tech 门槛（稳定/时长/完整度，must-have 不计分）→ Result 评分（唯一计分：长报告人评 1–5 星盲评）→ Capability 归因（内部迭代用）。第 0 轮：10 道长报告题 × 3 个 candidate（我们的 Agent / 纯 prompt+同模型 / Workbuddy 调研专家），人评打星+评语，AI 抽取评价维度固化标准，同时得出当前水位。" }
   ],
@@ -782,21 +773,21 @@ var DATA = {
   ]
 };
 
-/* ---------- 顶层项目切换 ---------- */
-document.querySelectorAll("#ptabs .ptab").forEach(function(t){
-  t.addEventListener("click",function(){
-    document.querySelectorAll("#ptabs .ptab").forEach(function(x){x.classList.remove("on");});
-    t.classList.add("on");
-    document.querySelectorAll(".proj").forEach(function(p){p.classList.remove("on");});
-    document.getElementById("proj-"+t.getAttribute("data-proj")).classList.add("on");
-    try{history.replaceState(null,"","#"+t.getAttribute("data-proj"));}catch(e){}
-    window.scrollTo({top:0,behavior:"smooth"});
-  });
+/* ---------- 封面 ⇄ 项目页导航 ---------- */
+function goProj(id){
+  if(!document.getElementById("proj-"+id)) id="cover";
+  document.querySelectorAll(".proj").forEach(function(p){p.classList.remove("on");});
+  document.getElementById("proj-"+id).classList.add("on");
+  try{history.replaceState(null,"", id==="cover" ? location.pathname : "#"+id);}catch(e){}
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+document.addEventListener("click",function(ev){
+  var g=ev.target.closest("[data-go]");
+  if(g) goProj(g.getAttribute("data-go"));
 });
-(function(){ /* 打开时按 URL hash 定位项目 */
+(function(){ /* 打开时按 URL hash 定位项目，默认封面 */
   var h=(location.hash||"").replace("#","");
-  var t=document.querySelector('#ptabs .ptab[data-proj="'+h+'"]');
-  if(t) t.click();
+  if(h) goProj(h);
 })();
 
 /* ---------- 项目内子 tab 切换（CID） ---------- */
