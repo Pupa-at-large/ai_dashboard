@@ -39,6 +39,8 @@
   .thinkbox .ti b{color:#1a2030}
   .thinkbox .ti .n{flex-shrink:0;width:18px;height:18px;border-radius:6px;background:#e8f0ff;color:#0052d9;
     font-size:11px;font-weight:800;display:inline-flex;align-items:center;justify-content:center;margin-top:2px}
+  .thinkbox .ti .n.ext{background:#e4f7ee;color:#1aab6b}
+  .thinkbox .ti .n.inn{background:#fdf2dd;color:#e8920a}
 
   :root{
     --bg:#f5f7fb; --panel:#ffffff; --ink:#1a2030; --ink2:#5b6478; --ink3:#8a92a6;
@@ -294,7 +296,7 @@
           <span class="cv-idx">01</span>
           <div class="cv-body">
             <div class="cv-name">CID 升级项目</div>
-            <div class="cv-desc">TID 激增治理 · 我的角色：跟进拉通 / 例会与拆解推动</div>
+            <div class="cv-desc">TID 激增治理 · 我的角色：看外部对标 + 推动内部收敛</div>
           </div>
           <span class="pill amber">● 进行中 · 阶段一基建</span>
           <span class="cv-arrow">→</span>
@@ -303,7 +305,7 @@
           <span class="cv-idx">02</span>
           <div class="cv-body">
             <div class="cv-name">红线扩容收益验证</div>
-            <div class="cv-desc">扩容值不值得，用干净的实验回答 · 我的角色：跟进拉通 / 方案收敛</div>
+            <div class="cv-desc">扩容值不值得，用干净的实验回答 · 我的角色：主导 · 推动各方出方案</div>
           </div>
           <span class="pill blue">◐ 验证中 · 方案收敛</span>
           <span class="cv-arrow">→</span>
@@ -312,7 +314,7 @@
           <span class="cv-idx">03</span>
           <div class="cv-body">
             <div class="cv-name">商分调研 Agent 评测</div>
-            <div class="cv-desc">我们的自有项目 · 评测体系设计与第 0 轮落地</div>
+            <div class="cv-desc">我们的自有项目 · 评测体系 + 评测→迭代闭环</div>
           </div>
           <span class="pill grey">◌ 设计完成初稿</span>
           <span class="cv-arrow">→</span>
@@ -331,10 +333,12 @@
     <div class="fv">保住 8.30 阶段一节点：7 月内把 CID 生产链路方案和指纹生产协议全部定稿 —— 这是阶段二所有模型与工程依赖的起点，晚一天，10.15 的 5% 实验就晚一天。</div>
   </div>
   <div class="thinkbox">
-    <div class="tk">我在做的事（跟进拉通）</div>
-    <div class="ti"><span class="n">1</span><div><b>推动方案收敛并形成决策记录</b>：组织并跟进 0703 / 0710 两轮方案评审，方案从「全链路下线 TID」收敛为「一期简化版（保留 TID）」，各方按新边界重新对齐。</div></div>
-    <div class="ti"><span class="n">2</span><div><b>推动项目化拆解落地</b>：协调各牵头方按统一模板输出模块拆解、依赖与排期（0716 完成），并以项目表为准持续 track 进展、暴露风险。</div></div>
-    <div class="ti"><span class="n">3</span><div><b>搭建本看板</b>，聚焦关键节点与依赖做双周向上同步；当前盯住 7 月两项关键依赖（生产链路方案、指纹协议）不滑期。</div></div>
+    <div class="tk">我的工作（看外部 × 推动内部）</div>
+    <div class="ti"><span class="n ext">外</span><div><b>对标调研：主流平台怎么控制创意 ID 规模。</b>研究头部平台的做法——按消耗分配可投数量的配额/门槛机制、创意 ID 体系的设计、按效果分配基建资源的方式，为本项目的方案选型与容量目标口径提供参照。</div></div>
+    <div class="ti"><span class="n ext">外</span><div><b>跟踪 AI 时代各平台承接海量新创意的机制</b>（冷启动探索、优质创意筛选与淘汰），判断「降 ID 数」路线的长期有效性，避免方案上线即过时。</div></div>
+    <div class="ti"><span class="n inn">内</span><div><b>推动方案收敛并形成决策记录</b>：组织并跟进 0703 / 0710 两轮方案评审，方案从「全链路下线 TID」收敛为「一期简化版（保留 TID）」，各方按新边界重新对齐。</div></div>
+    <div class="ti"><span class="n inn">内</span><div><b>推动项目化拆解落地</b>：协调各牵头方按统一模板输出模块拆解、依赖与排期（0716 完成），并以项目表为准持续 track 进展、暴露风险。</div></div>
+    <div class="ti"><span class="n inn">内</span><div><b>盯节点、做同步</b>：当前盯住 7 月两项关键依赖（生产链路方案、指纹协议）不滑期；搭建本看板，聚焦关键节点与风险做双周向上同步。</div></div>
   </div>
 
   <!-- ============ HEADER ============ -->
@@ -508,30 +512,52 @@
        项目二 · 红线扩容收益验证
        ================================================================ -->
   <div class="proj" id="proj-redline">
-    <div class="backbar"><button class="backbtn" data-go="cover">← 返回封面</button><span class="bc">02 · 红线扩容收益验证</span></div>
+    <div class="backbar"><button class="backbtn" data-go="cover">← 返回封面</button><span class="bc">02 · 红线扩容收益验证（我主导）</span></div>
     <div class="focusbox">
       <div class="fk">当前最重要的事</div>
-      <div class="fv">推动实验方案收敛：先跑一组前置数据判断哪些链路真正需要建实验环境（避免直接投入大规模部署），让「扩容到底值不值」尽快进入可实验、可回答的状态。</div>
+      <div class="fv">推动各方本周把两个前置项落地（前置数据 + 打标口径），让实验方案定稿、进入开发排期 —— 让「扩容到底值不值」尽快变成一个可实验、可回答的问题。</div>
     </div>
 
     <div class="section">
-      <h2><span class="num">1</span>项目现状</h2>
+      <h2><span class="num">1</span>项目背景 · 为什么做</h2>
       <div class="thinkbox" style="margin-bottom:0;border-style:solid">
-        <div class="ti"><span class="n">1</span><div><b>问题：扩容的收益从来没被干净地证明过。</b>在线容量红线长期截断，业务持续要求扩容；但此前的整体扩容尝试没有看到明显跑量差别，没有团队敢为扩容提单。</div></div>
-        <div class="ti"><span class="n">2</span><div><b>判断：不是「扩容没用」，而是「此前的实验不干净」。</b>整体扩容时各召回链路互相影响，看不出增量创意的真实贡献。技术团队因此在设计一个隔离式的对照实验，把「扩容带来的增量」单独衡量出来。</div></div>
-        <div class="ti"><span class="n">3</span><div><b>进展：实验方案正在收敛。</b>已完成两轮方案讨论，明确了各条召回链路的处理原则和实验打标口径；当前先跑一组前置数据 —— 如果新旧候选集高度重合，多数链路就不需要建设实验环境，成本可以大幅压缩。</div></div>
-        <div class="ti"><span class="n">4</span><div><b>这件事的战略意义：</b>验证结论直接决定容量策略的方向 —— 如果扩容有增量收益，CID 项目二期的容量目标口径要按它校准；如果没有，就坚定走「降 ID 数」的路线。</div></div>
+        <div class="ti"><span class="n">1</span><div><b>扩容的收益从来没被干净地证明过。</b>在线创意容量红线长期截断，业务持续要求扩容；但扩容要花真金白银的机器成本，而此前的整体扩容尝试看不到明显跑量差别（疑似只是摊平了冷启动），没有团队敢为扩容提单。</div></div>
+        <div class="ti"><span class="n">2</span><div><b>价值：这是容量策略的分叉路口。</b>如果扩容被证明有增量收益，就应该花钱扩、并按收益决定扩多少；如果没有，就坚定走「降 ID 数」（CID 项目）的路线。验证结论同时是 CID 二期容量目标口径的直接输入 —— 两条路线用同一个实验校准。</div></div>
+        <div class="ti"><span class="n">3</span><div><b>为什么以前测不出来：</b>整体扩容时各召回链路互相影响、增量创意的贡献被稀释和污染。要回答这个问题，必须做隔离式的对照实验（hold-out）：给扩容增量创意打标，实验组流量屏蔽这些创意来模拟「未扩容」，与对照组比消耗差。</div></div>
       </div>
     </div>
 
     <div class="section">
-      <h2><span class="num">2</span>我在做的事（跟进拉通）</h2>
+      <h2><span class="num">2</span>项目现状 · 现在怎么样</h2>
+      <div class="thinkbox" style="margin-bottom:0;border-style:solid">
+        <div class="ti"><span class="n">1</span><div><b>实验方法已定</b>：hold-out 反向实验的整体设计已获各方认可，正在收敛为可开发的方案。</div></div>
+        <div class="ti"><span class="n">2</span><div><b>核心难点已摸清</b>：召回系统有一个强约定 —— 同一广告在不同召回链路下的创意必须严格一致，导致无法简单地「只对某一条链路」做隔离；同时每条链路单独建实验环境的部署成本很高。这正是此前实验测不干净、也是本项目方案设计的关键约束。</div></div>
+        <div class="ti"><span class="n">3</span><div><b>方案框架已收敛（两轮讨论）</b>：按链路分类处理 —— 消耗占比最高的创意主路（约一半消耗）优先做隔离实验；广告级联链路用低成本的过滤方案替代独立建设；生成式链路架构复杂且在快速迭代、实验成本过高，暂缓、视创意主路结果再定；长尾小链路不做隔离（残留误差可接受）。打标口径已定原则：不与既有实验冲突、创意入库即打标。</div></div>
+        <div class="ti"><span class="n">4</span><div><b>当前卡在两个前置项</b>：(a) 前置数据 —— 新旧候选集选出的优质创意重合度：若高度重合，多数链路根本不需要建实验环境，建设成本可大幅压缩；(b) 打标口径的最终确认 —— 打标时机不对会让前置数据失真。两项落地后即可定稿方案、进入开发排期（外部依赖机器申请与环境部署，约两周）。</div></div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2><span class="num">3</span>项目 To-do · 现在要做什么</h2>
       <div class="upbox" style="margin:0">
-        <div class="up-item"><span class="ud">收敛</span><span>参与并跟进两轮实验方案讨论，把各方分歧收敛成可执行结论、记录并同步各方</span><span class="uo">已完成两轮</span></div>
-        <div class="up-item"><span class="ud">推动</span><span>推动「先跑前置数据、再决定部署范围」的低成本路径，避免一上来就投入大规模实验环境建设</span><span class="uo">进行中</span></div>
-        <div class="up-item"><span class="ud">跟进</span><span>盯实验的两个前置项落地：前置数据产出、打标口径最终确认，之后进入开发排期</span><span class="uo">本周</span></div>
-        <div class="up-item"><span class="ud">外部</span><span>验证外部情况校准预期：其他流量/团队的容量水位、改造方式、扩容后的实际效果、承接更多新创意的机制</span><span class="uo">持续</span></div>
-        <div class="up-item"><span class="ud">拉通</span><span>把验证结论拉通到 CID 项目，作为二期容量目标口径的输入</span><span class="uo">结论产出后</span></div>
+        <div class="up-item"><span class="ud">本周</span><span>产出前置数据：新旧候选集「优质创意」重合度对比</span><span class="uo">数据侧</span></div>
+        <div class="up-item"><span class="ud">本周</span><span>打标口径最终确认（创意入库即打标，不与既有实验冲突）</span><span class="uo">数据 / 工程侧</span></div>
+        <div class="up-item"><span class="ud">数日内</span><span>输出完整实验改造方案（含生成式链路的处理结论）</span><span class="uo">检索侧</span></div>
+        <div class="up-item"><span class="ud">定稿后</span><span>机器申请与实验环境部署（约两周）→ 开发 → 实验上线</span><span class="uo">工程 / 运维</span></div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2><span class="num">4</span>我的 To-do 与作用 · 主导推动 + 向外看</h2>
+      <div class="thinkbox" style="margin-bottom:10px;border-style:solid">
+        <div class="ti"><span class="n inn">推</span><div><b>我主导本项目</b>：定义要验证的问题与实验目标，推动检索、数据、算法各方分别出方案，组织两轮方案讨论把分歧收敛成结论并记录同步 —— 包括推动确立「先跑前置数据、再决定部署范围」的低成本路径，避免一上来就投入大规模实验环境建设。</div></div>
+        <div class="ti"><span class="n ext">外</span><div><b>向外看找对标</b>：调研其他流量 / 平台的容量水位在哪、扩容改造怎么做的、扩容后有没有拿到实际收益、靠什么机制承接更多新创意 —— 形成对标输入，校准本实验的收益预期与判断标准。</div></div>
+      </div>
+      <div class="upbox" style="margin:0">
+        <div class="up-item"><span class="ud">本周</span><span>盯两个前置项落地：追前置数据产出、推动打标口径拍板</span><span class="uo">我 · 推动</span></div>
+        <div class="up-item"><span class="ud">本周</span><span>催各方出完整方案并组织定稿评审</span><span class="uo">我 · 推动</span></div>
+        <div class="up-item"><span class="ud">进行中</span><span>外部对标调研：容量水位 / 扩容效果 / 新创意承接机制，输出对标结论</span><span class="uo">我 · 向外看</span></div>
+        <div class="up-item"><span class="ud">结论后</span><span>把验证结论拉通到 CID 项目，作为二期容量目标口径的输入</span><span class="uo">我 · 拉通</span></div>
       </div>
     </div>
   </div><!-- /proj-redline -->
@@ -543,7 +569,7 @@
     <div class="backbar"><button class="backbtn" data-go="cover">← 返回封面</button><span class="bc">03 · 商分调研 Agent 评测（自有项目）</span></div>
     <div class="focusbox">
       <div class="fk">当前最重要的事</div>
-      <div class="fv">把评测流程跑通第 0 轮：10 道长报告题 × 3 个 candidate 盲评 —— 第 0 轮同时产出两样东西：一套可复现的评价标准，和 Agent 当前的水位分。</div>
+      <div class="fv">把评测流程跑通第 0 轮：10 道长报告题 × 3 个 candidate 盲评 —— 第 0 轮同时产出两样东西：一套可复现的评价标准，和 Agent 当前的水位分。评测不是终点，它启动的是「评测 → 归因 → 优化 → 再评测」的迭代闭环，循环至达到上线标准。</div>
     </div>
 
     <div class="section">
@@ -568,7 +594,19 @@
     </div>
 
     <div class="section">
-      <h2><span class="num">3</span>我们在做的事（第 0 轮执行）</h2>
+      <h2><span class="num">3</span>评测 → 迭代闭环（评完就改，改完再评）</h2>
+      <p class="hint">评测的价值不在打分，而在驱动 Agent 一轮轮变好 —— 直到达到上线标准（技术门槛全过 + 结果达到目标星级），推给团队日常使用。</p>
+      <div class="evol" style="margin-top:4px">
+        <div class="ev now"><b>① 评测</b>盲评打星 + 评语（第 0 轮同时建标准）</div><span class="ar">→</span>
+        <div class="ev"><b>② 归因</b>从评语定位短板：上下文抓取 / 框架拆解 / 调研充分度</div><span class="ar">→</span>
+        <div class="ev"><b>③ 优化</b>针对性改提示词与专家团编排</div><span class="ar">→</span>
+        <div class="ev"><b>④ 再评测</b>换题库、同标准同权重，结果可对比</div><span class="ar">→</span>
+        <div class="ev"><b>⑤ 达标上线</b>门槛全过 + 目标星级 → 推广使用</div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2><span class="num">4</span>我们在做的事（第 0 轮执行）</h2>
       <div class="upbox" style="margin:0">
         <div class="up-item"><span class="ud">①</span><span>题库：10 道长报告题（首轮只评长报告、权重 100%），题源用例会天问 / 过往交过的作业</span><span class="uo">本周</span></div>
         <div class="up-item"><span class="ud">②</span><span>控制变量：固定同一模型、统一上下文，保证三个 candidate 可比</span><span class="uo">本周</span></div>
