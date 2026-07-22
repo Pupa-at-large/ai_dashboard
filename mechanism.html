@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>汇报机制构想 · 思路同步</title>
+<style>
+  :root{
+    --bg:#f5f7fb; --panel:#ffffff; --ink:#1a2030; --ink2:#5b6478; --ink3:#8a92a6;
+    --line:#e6e9f0; --line2:#eef1f7;
+    --blue:#0052d9; --blue-soft:#e8f0ff; --blue-deep:#003ba6;
+    --green:#1aab6b; --green-soft:#e4f7ee;
+    --amber:#e8920a; --amber-soft:#fdf2dd;
+    --red:#e0413b; --red-soft:#fdeaea;
+    --grey-soft:#eef0f4;
+    --shadow:0 1px 3px rgba(20,30,60,.06),0 6px 24px rgba(20,30,60,.05);
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:"PingFang SC","Microsoft YaHei","Segoe UI",-apple-system,sans-serif;
+    line-height:1.6;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:1080px;margin:0 auto;padding:26px 22px 80px}
+
+  .hero{background:linear-gradient(130deg,#0a2a6b,#0052d9 65%,#2f7bff);border-radius:20px;
+    padding:42px 44px;color:#fff;box-shadow:0 14px 40px rgba(0,60,166,.28)}
+  .hero .k{font-size:12px;font-weight:700;letter-spacing:2px;color:#9cc0ff}
+  .hero h1{margin:10px 0 0;font-size:27px;font-weight:900;line-height:1.45}
+  .hero .sub{margin-top:12px;font-size:13.5px;color:#cfe0ff;line-height:1.8}
+
+  .section{background:var(--panel);border-radius:16px;box-shadow:var(--shadow);
+    margin-top:20px;padding:26px 30px}
+  .section h2{margin:0 0 4px;font-size:17px;display:flex;align-items:center;gap:10px}
+  .num{width:26px;height:26px;border-radius:8px;background:var(--blue);color:#fff;flex-shrink:0;
+    font-size:14px;font-weight:800;display:inline-flex;align-items:center;justify-content:center}
+  .hint{font-size:12.5px;color:var(--ink2);margin:0 0 18px}
+
+  /* 频率错配示意 */
+  .freq{margin:16px 0 6px}
+  .freq-row{display:flex;align-items:center;gap:14px;margin:10px 0}
+  .freq-label{width:120px;font-size:13px;font-weight:700;text-align:right;flex-shrink:0}
+  .freq-track{flex:1;height:34px;background:var(--line2);border-radius:9px;position:relative;overflow:hidden}
+  .tick{position:absolute;top:6px;bottom:6px;width:9px;border-radius:4px}
+  .gapnote{display:flex;align-items:center;gap:10px;margin-top:14px;background:var(--red-soft);
+    border:1px solid #f6cfcd;border-radius:10px;padding:11px 16px;font-size:13px;color:#9a2a26}
+  .gapnote b{color:var(--red)}
+
+  /* 旧流程 */
+  .oldflow{display:flex;align-items:stretch;gap:10px;flex-wrap:wrap;margin-top:16px}
+  .of{flex:1;min-width:150px;border:1.5px dashed #d8bcbc;background:#fffafa;border-radius:11px;
+    padding:12px 14px;font-size:12.5px;color:#7a4a46}
+  .of b{display:block;color:#9a2a26;font-size:13px;margin-bottom:3px}
+  .ofar{align-self:center;color:#c98b8b;font-size:18px;flex-shrink:0}
+  .costs{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:16px}
+  @media(max-width:760px){.costs{grid-template-columns:1fr}}
+  .cost{border:1px solid var(--line);border-radius:11px;padding:13px 15px;background:#fcfdff;font-size:12.5px;color:var(--ink2)}
+  .cost b{display:block;font-size:13px;color:var(--ink);margin-bottom:4px}
+
+  /* 关键判断 */
+  .insight{background:linear-gradient(90deg,#0a2a6b,#0052d9);border-radius:16px;color:#fff;
+    padding:24px 30px;margin-top:20px;box-shadow:0 10px 30px rgba(0,60,166,.25)}
+  .insight .k{font-size:11px;font-weight:800;letter-spacing:2px;color:#9cc0ff}
+  .insight .v{font-size:16px;font-weight:700;margin-top:8px;line-height:1.85}
+  .insight .v em{font-style:normal;color:#ffd27a}
+
+  /* 新机制 flow */
+  .mech{margin-top:18px}
+  .mrow{display:flex;gap:12px;align-items:stretch;flex-wrap:wrap}
+  .mcard{flex:1;min-width:200px;border:1.5px solid var(--line);border-radius:13px;padding:15px 17px;background:#fff}
+  .mcard.hl{border-color:var(--blue);box-shadow:0 0 0 3px var(--blue-soft)}
+  .mcard .mk{font-size:11px;font-weight:800;letter-spacing:1.5px;color:var(--blue)}
+  .mcard .mt{font-size:15px;font-weight:800;margin:4px 0 6px}
+  .mcard .md{font-size:12.5px;color:var(--ink2);line-height:1.7}
+  .mcard .md b{color:var(--ink)}
+  .mar{align-self:center;font-size:22px;color:var(--blue);font-weight:300;flex-shrink:0}
+  @media(max-width:860px){.mar{transform:rotate(90deg);align-self:center;margin:0 auto}}
+  .srcchips{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+  .srcchip{font-size:11px;font-weight:700;background:var(--green-soft);color:var(--green);
+    padding:4px 10px;border-radius:14px}
+  .outbar{display:flex;gap:12px;flex-wrap:wrap;margin-top:12px}
+  .outcard{flex:1;min-width:220px;border:1px solid var(--line);border-radius:12px;padding:13px 16px;background:#fcfdff}
+  .outcard .ot{font-size:13px;font-weight:800;display:flex;align-items:center;gap:7px}
+  .outcard .od{font-size:12px;color:var(--ink2);margin-top:4px;line-height:1.65}
+  .pill{font-size:10.5px;font-weight:700;padding:2px 9px;border-radius:12px;white-space:nowrap}
+  .pill.blue{background:var(--blue-soft);color:var(--blue)}
+  .pill.green{background:var(--green-soft);color:var(--green)}
+  .pill.amber{background:var(--amber-soft);color:var(--amber)}
+  .feedback{margin-top:14px;border:1.5px dashed #c5d6f7;border-radius:12px;padding:13px 18px;
+    font-size:12.5px;color:var(--ink2);background:#f8fbff}
+  .feedback b{color:var(--blue-deep)}
+
+  /* 对比表 */
+  table.cmp{width:100%;border-collapse:collapse;font-size:13px;margin-top:6px}
+  .cmp th,.cmp td{padding:11px 14px;text-align:left;border-bottom:1px solid var(--line2);vertical-align:top}
+  .cmp thead th{background:#f3f6fc;font-size:12.5px;color:var(--ink2)}
+  .cmp td.metric{font-weight:700;white-space:nowrap;color:var(--ink)}
+  .cmp td.old{color:#9a2a26}
+  .cmp td.new{color:#1f7a4d;font-weight:600}
+
+  /* 路径 */
+  .path{display:flex;gap:12px;flex-wrap:wrap;margin-top:14px}
+  .ph{flex:1;min-width:210px;border:1px solid var(--line);border-radius:13px;padding:15px 17px;background:#fff}
+  .ph.done{border-color:#bfe6d2;background:linear-gradient(180deg,#fff,#f4fbf7)}
+  .ph.cur{border-color:#ffd27a;box-shadow:0 0 0 3px #fff3dd}
+  .ph .pk{font-size:11px;font-weight:800;letter-spacing:1px;color:var(--ink3)}
+  .ph.done .pk{color:var(--green)}
+  .ph.cur .pk{color:var(--amber)}
+  .ph .pt{font-size:14px;font-weight:800;margin:3px 0 6px}
+  .ph .pd{font-size:12px;color:var(--ink2);line-height:1.65}
+
+  .aligns{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:12px}
+  @media(max-width:760px){.aligns{grid-template-columns:1fr}}
+  .al{border:1.5px solid #d4e3ff;background:#f8fbff;border-radius:12px;padding:14px 16px}
+  .al .at{font-size:13px;font-weight:800;color:var(--blue-deep)}
+  .al .ad{font-size:12px;color:var(--ink2);margin-top:4px;line-height:1.65}
+
+  footer{text-align:center;color:var(--ink3);font-size:11.5px;margin-top:28px}
+  .conf{display:inline-block;background:var(--grey-soft);color:#6b7488;font-size:10.5px;
+    padding:2px 9px;border-radius:6px;font-weight:600}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ============ HERO ============ -->
+  <div class="hero">
+    <div class="k">项目信息管理机制 · 思路同步</div>
+    <h1>从「为汇报拼材料」，到「汇报即生成」</h1>
+    <div class="sub">让项目信息在推进过程中自然沉淀为一个信息池和一份活的主文档，配上常设看板；
+    每次汇报，按关注的侧重点即时生成 —— 汇报不再是一个需要准备的动作。</div>
+  </div>
+
+  <!-- ============ 1 现状 ============ -->
+  <div class="section">
+    <h2><span class="num">1</span>现状：文档的更新频率，跟不上汇报的频率</h2>
+    <p class="hint">不是大家不想维护项目文档，而是人工维护的文档往往一个月才更新一次；但向上同步是每周/双周一次。中间的缺口，只能靠一次次临时拼凑来填。</p>
+    <div class="freq">
+      <div class="freq-row">
+        <div class="freq-label" style="color:#9a2a26">文档更新</div>
+        <div class="freq-track">
+          <span class="tick" style="left:4%;background:#e0413b"></span>
+          <span class="tick" style="left:88%;background:#e0413b"></span>
+        </div>
+        <span style="font-size:12px;color:var(--ink3);width:70px">≈ 每月一次</span>
+      </div>
+      <div class="freq-row">
+        <div class="freq-label" style="color:var(--blue-deep)">汇报节奏</div>
+        <div class="freq-track">
+          <span class="tick" style="left:4%;background:#0052d9"></span>
+          <span class="tick" style="left:18%;background:#0052d9"></span>
+          <span class="tick" style="left:32%;background:#0052d9"></span>
+          <span class="tick" style="left:46%;background:#0052d9"></span>
+          <span class="tick" style="left:60%;background:#0052d9"></span>
+          <span class="tick" style="left:74%;background:#0052d9"></span>
+          <span class="tick" style="left:88%;background:#0052d9"></span>
+        </div>
+        <span style="font-size:12px;color:var(--ink3);width:70px">每周/双周</span>
+      </div>
+    </div>
+    <div class="gapnote">⚠ <span>两个频率之间的缺口，今天是这样填的 ——<b>每次汇报都临时造一份一次性文档</b>：</span></div>
+    <div class="oldflow">
+      <div class="of"><b>信息在脑子里</b>项目状态散落在几个人的记忆和碎片记录中</div>
+      <span class="ofar">→</span>
+      <div class="of"><b>要汇报了</b>临时找几个同学逐个问最新情况</div>
+      <span class="ofar">→</span>
+      <div class="of"><b>拼凑材料</b>突击整理一份仅为这次汇报服务的文档</div>
+      <span class="ofar">→</span>
+      <div class="of"><b>用完即弃</b>汇报结束材料作废，下次从头再来</div>
+    </div>
+    <div class="costs">
+      <div class="cost"><b>汇报成本高</b>每次都是一轮突击：问人、攒数、排版，消耗的是骨干的时间。</div>
+      <div class="cost"><b>知识不留存</b>拼凑文档不沉淀、访谈结论随做随丢，人一走信息就断。</div>
+      <div class="cost"><b>口径漂移</b>每次临时整理，格式与口径都不同，难以对比「这次比上次进展了什么」。</div>
+    </div>
+  </div>
+
+  <!-- ============ 2 关键判断 ============ -->
+  <div class="insight">
+    <div class="k">关键判断</div>
+    <div class="v">问题不在「没有主文档」，而在<em>人的维护频率跟不上使用频率</em>。AI 把维护成本降到近零之后，主文档第一次可以做到<em>与项目同频更新</em> —— 于是汇报可以从「临时造文档」变成「从活文档里生成视图」，知识留存问题也顺便解决。</div>
+  </div>
+
+  <!-- ============ 3 新机制 ============ -->
+  <div class="section">
+    <h2><span class="num">2</span>新机制：信息池 + 活主文档（自带看板），汇报按需生成</h2>
+    <p class="hint">同学们的日常动作只有一个：把项目推进中自然产生的信息丢进池子。剩下的整理、更新、呈现，都由 AI 完成、由人审定。</p>
+    <div class="mrow">
+      <div class="mcard">
+        <div class="mk">① 信息池</div>
+        <div class="mt">最大的信息池</div>
+        <div class="md">项目推进过程中产生的信息<b>即时入池</b>，不再等汇报时去回忆和追问。池子主要由三类信息组成：</div>
+        <div class="srcchips">
+          <span class="srcchip">项目例会 / 日常开会</span>
+          <span class="srcchip">项目内同学访谈</span>
+          <span class="srcchip">外部访谈</span>
+        </div>
+        <div class="md" style="margin-top:8px">辅以过程中产生的文档与数据。<b>入池即留存</b> —— 知识资产从此不随人走、不随汇报作废。</div>
+      </div>
+      <span class="mar">➜</span>
+      <div class="mcard hl">
+        <div class="mk">② 活的主文档</div>
+        <div class="mt">AI 持续维护的项目认知</div>
+        <div class="md">AI 随入池信息<b>持续更新</b>这个项目的「当前认知」：背景与价值、最新现状、拆解与进度、谁负责什么、关键决策记录。<br>
+        <b>人从作者变成审定者</b>：AI 起草变更、owner 确认或纠偏。更新以天计，而不是以月计。</div>
+      </div>
+      <span class="mar">➜</span>
+      <div class="mcard">
+        <div class="mk">③ 输出</div>
+        <div class="mt">一个常设看板 + 按需汇报</div>
+        <div class="md">信息池和主文档<b>自带一个 Dashboard</b>，另加两种取用方式（见下）。</div>
+      </div>
+    </div>
+
+    <div class="outbar">
+      <div class="outcard">
+        <div class="ot">常设看板 <span class="pill green">随池更新 · 随时可看</span></div>
+        <div class="od">进展、里程碑、分工、风险、资料与访谈日志的常设页面 —— 不为某一次汇报而生成，团队与老板任何时候打开都是最新状态。（本次交付的项目看板就是它的手工版原型）</div>
+      </div>
+      <div class="outcard">
+        <div class="ot">汇报材料 <span class="pill blue">按侧重点即时生成</span></div>
+        <div class="od">每次汇报前，按老板当期关心的侧重点，AI 从主文档与信息池中抽取生成对应材料 —— 同一份认知，可以出周会版、专项深挖版、高层一页纸版。<b>汇报准备时间趋近于零。</b></div>
+      </div>
+      <div class="outcard">
+        <div class="ot">对话追溯 <span class="pill amber">有据则答 · 无据明说</span></div>
+        <div class="od">对看板或汇报里的任何结论，可以直接追问细节。系统只基于池内信息回答并给出处；答不上来就明说没有。</div>
+      </div>
+    </div>
+
+    <div class="feedback"><b>反馈闭环：</b>追问答不上的问题，自动变成 owner 的补录任务（暴露信息池缺口）；老板反复关注的侧重点，沉淀为汇报框架的迭代方向；owner 对 AI 草稿的修正率持续下降，即是这套机制走向成熟的客观判据。</div>
+  </div>
+
+  <!-- ============ 4 对比 ============ -->
+  <div class="section">
+    <h2><span class="num">3</span>新旧模式对比</h2>
+    <table class="cmp">
+      <thead><tr><th style="width:150px">维度</th><th>现在</th><th>新机制</th></tr></thead>
+      <tbody>
+        <tr><td class="metric">信息存在哪</td><td class="old">脑子里 + 散落碎片</td><td class="new">信息池（例会 / 内部访谈 / 外部访谈，即时入池）</td></tr>
+        <tr><td class="metric">主文档</td><td class="old">约每月人工写一次，写完即过期</td><td class="new">AI 持续更新、人审定，与项目同频</td></tr>
+        <tr><td class="metric">汇报怎么来</td><td class="old">临时找人问 + 突击拼凑</td><td class="new">按侧重点从活文档即时生成</td></tr>
+        <tr><td class="metric">汇报后材料去哪</td><td class="old">用完即弃</td><td class="new">回到池子，成为下一次的基础</td></tr>
+        <tr><td class="metric">知识留存</td><td class="old">随人走、随汇报作废</td><td class="new">入池即资产，可追溯、可复用</td></tr>
+        <tr><td class="metric">老板视角</td><td class="old">只能看快照，追问要开会</td><td class="new">常设看板随时看 + 对话直接追问细节</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ============ 5 路径 ============ -->
+  <div class="section">
+    <h2><span class="num">4</span>已经验证的部分与推进路径</h2>
+    <div class="path">
+      <div class="ph done">
+        <div class="pk">阶段 0 · 已完成 ✓</div>
+        <div class="pt">手工原型</div>
+        <div class="pd">用三个真实项目人工跑通了整条链路：信息入池 → AI 提炼 → 统一框架的看板与汇报页。证明流程成立，也暴露了成本 —— 每次更新需要人工触发。</div>
+      </div>
+      <div class="ph cur">
+        <div class="pk">阶段 1 · 下一步</div>
+        <div class="pt">AI 高频维护主文档</div>
+        <div class="pd">流程反转：新信息入池后由 AI 起草主文档变更，owner 审定即发布，看板自动刷新；与老板对齐汇报框架 v1，开始记录 AI 修正率。</div>
+      </div>
+      <div class="ph">
+        <div class="pk">阶段 2</div>
+        <div class="pt">闭环补全</div>
+        <div class="pd">接入对话追溯；上线反馈回路（追问变任务、到期/停滞主动提醒）；采集自动化（会议转写、访谈纪要直接入池）。</div>
+      </div>
+      <div class="ph">
+        <div class="pk">阶段 3</div>
+        <div class="pt">平台化</div>
+        <div class="pd">承载平台与权限方案另行对齐；前序阶段的设计不绑定平台，届时是「搬家」而非「重做」。</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ 6 对齐点 ============ -->
+  <div class="section">
+    <h2><span class="num">5</span>希望与您对齐的三件事</h2>
+    <div class="aligns">
+      <div class="al"><div class="at">① 汇报框架</div><div class="ad">您希望按什么侧重点看项目（拿本次看板的框架作草稿共创）：最重要的事 / 现状 / To-do / 各人作用……</div></div>
+      <div class="al"><div class="at">② 节奏</div><div class="ad">常设看板的刷新节奏与向上同步的频率（建议：入池即更新，例会前自动生成汇报视图）。</div></div>
+      <div class="al"><div class="at">③ 范围</div><div class="ad">先在哪几个项目试点（建议延续现有三个项目），以及信息池的可见权限分层。</div></div>
+    </div>
+  </div>
+
+  <footer>
+    项目信息管理机制 · 思路同步 &nbsp;·&nbsp; 07-22<br>
+    <span class="conf">内部讨论稿</span>
+  </footer>
+</div>
+</body>
+</html>
